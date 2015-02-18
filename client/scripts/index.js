@@ -18,6 +18,8 @@ var PageNav = React.createClass({
 				<Router.Link to="home">Home</Router.Link>
 				&nbsp; | &nbsp;
 				<Router.Link to="about">About</Router.Link>
+				&nbsp; | &nbsp;
+				<Router.Link to="login">Login</Router.Link>
 			</div>
 		);
 	}
@@ -37,13 +39,15 @@ var App = React.createClass({
 
 var routes = {
 	Home: require('../routes/Home'),
-	About: require('../routes/About')
+	About: require('../routes/About'),
+	Login: require('../routes/Login')
 };
 
 var routes = (
 	<Router.Route name="app" path="/" handler={App}>
 		<Router.Route name="home" path="/" handler={routes.Home}/>
 		<Router.Route name="about" path="/about" handler={routes.About}/>
+		<Router.Route name="login" path="/login" handler={routes.Login}/>
 		<Router.DefaultRoute handler={routes.Home}/>
 	</Router.Route>
 );
