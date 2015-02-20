@@ -106,7 +106,7 @@ var ServerRequests = {
 				if(cb){
 					entries = [];
 					for(var i = 0; i < results.length; i++){
-						entries.push(_.extend({}, results[i].attributes, results[i].id));
+						entries.push(_.extend({}, results[i].attributes, {id: results[i].id}));
 					}
 					cb(entries);
 				}

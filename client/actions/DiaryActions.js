@@ -20,13 +20,20 @@ var DiaryActions = {
 		ServerRequests.getEntries(function(entries){
 			if(entries){
 				for(var i = 0; i < entries.length; i++){
-					AppDispatcher.handleActions({
+					AppDispatcher.handleAction({
 						actionType: DiaryConstants.DIARY_ADD,
-						data: entries[0]
+						data: entries[i]
 					});
 				}
 
 			}
+		});
+	},
+
+	setSelected: function(entry){
+		AppDispatcher.handleAction({
+			actionType: DiaryConstants.DIARY_SELECT,
+			data: entry
 		});
 	}
 };

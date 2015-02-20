@@ -1,7 +1,7 @@
-var React = require('react/addons');
+var React = require('react');
 var Router = require('react-router');
-var ServerRequests = require('../utils/ServerRequests');
 var SelectedEntryStore = require('../stores/SelectedEntryStore');
+var DiaryActions = require('../actions/DiaryActions');
 
 var EntryItem = React.createClass({
 
@@ -22,24 +22,34 @@ var EntryItem = React.createClass({
 		SelectedEntryStore.removeChangeListener(this._onChange);
 	},
 
-	render: function(){
-		var cx = React.addons.classSet;
+	_onClick: function(event){
+		event.preventDefault();
+		DiaryActions.setSelected(this.state.entry);
+	},
 
-		var currentClass = cx({
-			'list-group-item': true,
-			'active': this.state.isEditing
-		});
+	render: function(){
+		// var cx = React.addons.classSet;
+
+		var currentClass = "list-group-item";
+		if(this.state.isSelected){
+			currentClass += " active";
+		}
+
 		return (
-			<a href="#" className={currentClass}>
+			<a href="#" className={currentClass} onClick={this._onClick}>
 			Title: {this.state.entry.title} ({this.state.entry.id})
 			</a>
 		);
 	},
 
 	_onChange:function(){
-		if(SelectedEntryStore.currentSelected){
+		if(SelectedEntryStore.currentSelected() === this.state.entry.id){
 			this.setState({
 				isSelected: true
+			});
+		} else {
+			this.setState({
+				isSelected: false
 			});
 		}
 	}
