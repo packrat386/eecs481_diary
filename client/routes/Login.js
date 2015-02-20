@@ -32,6 +32,8 @@ var Login = React.createClass({
 				var transition =  Login.attemptedTransition;
 				Login.attemptedTransition = null;
 				transition.retry();
+			} else {
+				this.transitionTo('/main');
 			}
 		}.bind(this));	
 	},
@@ -53,11 +55,13 @@ var Login = React.createClass({
 
 	render: function(){
 		// var errors = this.state.error ? <p>Request Error</p> : '';
-		// if(ParseActions.loggedIn()){
-		// 	this.transitionTo('/');
-		// }
+		if(ServerRequests.loggedIn()){
+			this.transitionTo('/main');
+		}
 
 		// console.log(ParseActions.currentUser());
+		
+
 		var input_className = "form-control";
 		var button_className = "btn btn-lg btn-primary";
 		return (

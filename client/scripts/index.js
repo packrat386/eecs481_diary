@@ -1,5 +1,6 @@
 var React = require('react'),
 	Router = require('react-router');
+var ServerRequests = require('../utils/ServerRequests');
 
 var Header = React.createClass({
 	render: function() {
@@ -13,15 +14,19 @@ var Header = React.createClass({
 
 var PageNav = React.createClass({
 	render: function() {
+		var extra_nav;
+		if(!ServerRequests.loggedIn()){
+			extra_nav = <Router.Link to="login">Login/Create Account</Router.Link>;
+		} else {
+			extra_nav = <Router.Link to="main">Main</Router.Link>;
+		}
 		return (
 			<div className="nav">
 				<Router.Link to="home">Home</Router.Link>
 				&nbsp; | &nbsp;
 				<Router.Link to="about">About</Router.Link>
 				&nbsp; | &nbsp;
-				<Router.Link to="login">Login/Create Account</Router.Link>
-				&nbsp; | &nbsp;	
-				<Router.Link to="main">Main</Router.Link>
+				{extra_nav}
 			</div>
 		);
 	}
