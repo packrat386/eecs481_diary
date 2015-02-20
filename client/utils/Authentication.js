@@ -6,7 +6,7 @@ var Authentication = {
 		willTransitionTo: function(transition){
 			console.log("Authentication");
 			if(!ServerRequests.loggedIn()){
-				LoginPage.attemptedTransition = transition;
+				Login.attemptedTransition = transition;
 				transition.redirect('/login');
 			}
 		}

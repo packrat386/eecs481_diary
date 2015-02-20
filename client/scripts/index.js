@@ -20,6 +20,8 @@ var PageNav = React.createClass({
 				<Router.Link to="about">About</Router.Link>
 				&nbsp; | &nbsp;
 				<Router.Link to="login">Login/Create Account</Router.Link>
+				&nbsp; | &nbsp;	
+				<Router.Link to="main">Main</Router.Link>
 			</div>
 		);
 	}

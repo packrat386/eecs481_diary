@@ -13,7 +13,6 @@ var ServerRequests = {
 		{
 			success: function(user){
 				if(cb) cb(true);
-				console.log(user.id);
 				if(Parse.User.current())
 					console.log("LoggedIn");
 				else 
