@@ -35,6 +35,23 @@ var DiaryActions = {
 			actionType: DiaryConstants.DIARY_SELECT,
 			data: entry
 		});
+	},
+
+	updateEntry: function(entry){
+		ServerRequests.updateEntry(entry, function(response){
+			if(response){
+				AppDispatcher.handleAction({
+					actionType: DiaryConstants.DIARY_UPDATE,
+					data: response
+				});
+			} else {
+				console.log("Failed to update");
+			}
+		})
+		// AppDispatcher.handleAction({
+		// 	actionType: DiaryConstants.DIARY_UPDATE,
+		// 	data: entry
+		// });
 	}
 };
 

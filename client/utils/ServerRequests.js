@@ -4,7 +4,14 @@ var Parse = require('./ParseInit');
 var Router = require('react-router');
 var _ = require('underscore');
 
-
+var parseEntry = function(entry){
+	return _.extend({}, 
+		entry.attributes,
+		{
+			id:entry.attributes.id
+		}	
+	)
+}
 
 var ServerRequests = {
 	createUser: function(username, password, cb){
@@ -91,6 +98,28 @@ var ServerRequests = {
 				}
 			}
 		);
+
+	},
+
+	updateEntry: function(diary_entry, cb){
+		var DiaryEntry = Parse.Object.extend("DiaryEntry");
+		var queryObject = new Parse.Query(DiaryEntry);
+		queryObject.get(diary_entry.id, {
+			success: function(diaryEntry){
+				console.log("updateEntrySuccess");
+				diaryEntry.set("title", diary_entry.title);
+				diaryEntry.set("text", diary_entry.text);
+				diaryEntry.save();
+
+				console.log(diary_entry);
+
+				if(cb) cb(diary_entry);
+			},
+			error: function(diaryEntry, error){
+				console.log(error);
+				if(cb) cb(null);
+			}
+		});
 
 	},
 

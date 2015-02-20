@@ -21,6 +21,7 @@ function removeEntry(entry_id){
 
 var DiaryEntryStore = _.extend({}, EventEmitter.prototype, {
 	emitChange: function(){
+		console.log('emit');
 		this.emit('change');
 	},
 
@@ -36,6 +37,10 @@ var DiaryEntryStore = _.extend({}, EventEmitter.prototype, {
 
 	getEntries: function(){
 		return _diary_entries;
+	},
+
+	getEntry: function(entry_id){
+		return _diary_entries[entry_id];
 	}
 });
 
@@ -46,17 +51,24 @@ AppDispatcher.register(function(payload) {
 	switch(action.actionType) {
 		case DiaryConstants.DIARY_ADD:
 			addEntry(action.data);
+			DiaryEntryStore.emitChange();
 			break;
 
 		case DiaryConstants.DIARY_REMOVE:
 			removeEntry(action.entry.id);
+			DiaryEntryStore.emitChange();
+			break;
+
+		case DiaryConstants.DIARY_UPDATE:
+			updateEntry(action.data);
+			DiaryEntryStore.emitChange();
 			break;
 
 		default:
 			return true;
 	}
 
-	DiaryEntryStore.emitChange();
+
 
 	return true;
 });

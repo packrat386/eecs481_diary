@@ -4,5 +4,6 @@ var keyMirror = require('react/lib/keyMirror');
 module.exports = keyMirror({
 	DIARY_ADD: null,
 	DIARY_REMOVE: null,
-	DIARY_SELECT: null
+	DIARY_SELECT: null,
+	DIARY_UPDATE: null
 });

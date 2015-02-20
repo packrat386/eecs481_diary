@@ -12,6 +12,12 @@ var EntryItem = React.createClass({
 		};
 	},
 
+	componentWillReceiveProps: function(newProps){
+		this.setState({
+			entry: newProps.entry
+		});
+	},
+
 	// Add change listeners to stores
 	componentDidMount: function() {
 		SelectedEntryStore.addChangeListener(this._onChange);
@@ -29,7 +35,8 @@ var EntryItem = React.createClass({
 
 	render: function(){
 		// var cx = React.addons.classSet;
-
+		console.log("Render EntryItem");
+		console.log(this.state.entry);
 		var currentClass = "list-group-item";
 		if(this.state.isSelected){
 			currentClass += " active";
