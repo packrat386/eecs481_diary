@@ -2,6 +2,9 @@
 
 var Parse = require('./ParseInit');
 var Router = require('react-router');
+var _ = require('underscore');
+
+
 
 var ServerRequests = {
 	createUser: function(username, password, cb){
@@ -63,30 +66,55 @@ var ServerRequests = {
 		//Diary Entry Structure
 		// {title, text}
 
-		var DiaryEntry = Parse.Object.extend("DiaryEntry");
-		DiaryEntry.set("title", diary_entry.title);
-		DiaryEntry.set("text", diary_entry.text);
-		
-		var DiaryEntries = Parse.User.current().get("DiaryEntries");
-		DiaryEntries.push(DiaryEntry);
+		if(!Parse.User.current()){
+			if(cb) cb(null);
+			return null;
+		}
 
-		Parse.User.current().save(
-			{"DiaryEntries": DiaryEntries}, 
+		console.log(diary_entry);
+
+		var DiaryEntry = Parse.Object.extend("DiaryEntry");
+		var diaryEntry = new DiaryEntry();
+		diaryEntry.set("title", diary_entry.title);
+		diaryEntry.set("text", diary_entry.text);
+		diaryEntry.set("createdBy", Parse.User.current());
+
+		diaryEntry.save(null, 
 			{
-				success: function(DiaryEntry){
-					if(cb) cb(DiaryEntry);
+				success: function(entry){
+					console.log("Added entry");
+					if(cb) cb(_.extend({}, entry.attributes, {id: entry.id}));
 				},
-				error: function(DiaryEntry, error){
+				error: function(entry, error){
+					console.log("Error adding");
 					console.log(error);
+					if(cb) cb(null);
 				}
 			}
 		);
 
+	},
 
+	getEntries: function(cb){
+		console.log("getEntries");
+		var DiaryEntry = Parse.Object.extend("DiaryEntry");
+		var queryObject = new Parse.Query(DiaryEntry).equalTo("createdBy", Parse.User.current());
+		queryObject.find({
+			success: function(results){
+				console.log(results);
 
-		// recieved: {id, ...} 
-
-
+				if(cb){
+					entries = [];
+					for(var i = 0; i < results.length; i++){
+						entries.push(_.extend({}, results[i].attributes, results[i].id));
+					}
+					cb(entries);
+				}
+			},
+			error: function(error){
+				console.log(error);
+			}
+		})
 	}
 };
 

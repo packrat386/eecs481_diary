@@ -1,6 +1,7 @@
 var React = require('react');
 var Router = require('react-router');
 var ServerRequests = require('../utils/ServerRequests');
+var DiaryActions = require('../actions/DiaryActions');
 
 var AddBasicEntry = React.createClass({
 
@@ -9,7 +10,10 @@ var AddBasicEntry = React.createClass({
 		var title = this.refs.title.getDOMNode().value;
 		var text = this.refs.text.getDOMNode().value;
 
-		
+		DiaryActions.addEntry({
+			title: title,
+			text: text
+		});
 
 		console.log(title + " " + text);
 	},

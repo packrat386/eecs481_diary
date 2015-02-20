@@ -4,6 +4,8 @@ var ServerRequests = require('../utils/ServerRequests');
 var AddBasicEntry = require('../components/AddBasicEntry');
 var Authentication = require('../utils/Authentication');
 
+var ListView = require('../components/ListView');
+
 var Main = React.createClass({
 	mixins: [Authentication],
 
@@ -11,6 +13,7 @@ var Main = React.createClass({
 		return (
 			<div className="container">
 				<AddBasicEntry />
+				<ListView />
 			</div>
 		);
 	}
