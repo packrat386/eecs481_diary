@@ -21,10 +21,11 @@ var AddBasicEntry = React.createClass({
 	render: function(){
 		return (
 			<form className="form-horizontal" onSubmit={this.submitEntry}>
+				<h3>Add Diary Entry</h3> 
 				<div className="form-group">
 					<label className="col-sm-1 control-label">Title</label>
 					<div className="col-sm-10">
-						<input ref="title" type="title" className="form-control" placeholder="Title"/>
+						<input ref="title" type="title" className="form-control"/>
 					</div>
 				</div>
 
@@ -37,7 +38,7 @@ var AddBasicEntry = React.createClass({
 				
 				<div className="form-group">
 					<div className="col-sm-offset-1 col-sm-10">
-						<button type="submit" className="btn btn-default">Submit Entry</button>
+						<button type="submit" className="btn btn-default">Create Entry</button>
 					</div>
 				</div>
 			</form>

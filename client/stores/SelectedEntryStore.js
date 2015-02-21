@@ -4,14 +4,14 @@ var _ = require('underscore');
 var EventEmitter = require('events').EventEmitter;
 
 
-var _selected_entry = '';
+var _selected_entry = null;
 
 function selectEntry(data){
 	_selected_entry = data.id;
 }
 
 function clearStore(){
-	_selected_entry = '';
+	_selected_entry = null;
 }
 
 var SelectedEntryStore = _.extend({}, EventEmitter.prototype, {

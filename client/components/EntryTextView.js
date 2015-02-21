@@ -10,13 +10,21 @@ var EntryTextView = React.createClass({
 
 	getInitialState: function(){
 		return {
-			entry: null
+			entry: this.props.initialEntry,
+			edited: false
 		};
 	},
 
 	// Add change listeners to stores
 	componentDidMount: function() {
 		SelectedEntryStore.addChangeListener(this._onChange);
+	},
+
+	componentWillReceiveProps: function(newProps){
+		if(!this.state.entry) return;
+		if(this.state.entry.id !== newProps.entry.id){
+			this._onChange();
+		}
 	},
 
   	// Remove change listers from stores
@@ -28,13 +36,12 @@ var EntryTextView = React.createClass({
 
 		var current_component = null;
 		
-		if(this.state.entry != null){
+		if(this.state.entry){
 			current_component = (
 				<form className="form-horizontal">
-					<h2>Current Note</h2>
 					<div className="form-group">
 						<label className="col-sm-1 control-label">Title</label>
-						<div className="col-sm-10">
+						<div className="col-sm-6">
 							<input
 								className="form-control"
 								ref="diary_title"
@@ -46,7 +53,7 @@ var EntryTextView = React.createClass({
 
 					<div className="form-group">
 						<label className="col-sm-1 control-label">Diary Text</label>
-						<div className="col-sm-10">
+						<div className="col-sm-6">
 							<TextAutosize 
 								className="form-control" 
 								ref="diary_text" 
@@ -57,7 +64,7 @@ var EntryTextView = React.createClass({
 					</div>
 
 					<div className="form-group">
-						<div className="col-sm-1 col-sm-10">
+						<div className="col-sm-1 col-sm-6">
 							<button 
 								className="btn btn-default" 
 								onClick={this._onUpdate}
@@ -66,8 +73,12 @@ var EntryTextView = React.createClass({
 					</div>
 				</form>
 			);
+		} else {
+			current_component = 
+				(<div className="jumbotron">
+					<h3>Diary entries show up here!</h3>
+				</div>);
 		} 
-		console.log('render');
 		return (
 			<div className="container">
 				{current_component}
@@ -77,18 +88,19 @@ var EntryTextView = React.createClass({
 
 	_onUpdate: function(event){
 		event.preventDefault();
-		console.log(this.state.entry);
 		DiaryActions.updateEntry(this.state.entry);
 	},
 
 	_onChange: function(){
 		console.log("onChange");
-		if(this.state.entry){
+		if(this.state.entry && this.state.edited){
+			this.setState({
+				edited: false
+			});
 			DiaryActions.updateEntry(this.state.entry);
 		}
 
 		var entry_id = SelectedEntryStore.currentSelected();
-		console.log(DiaryEntryStore.getEntry(entry_id));
 		this.setState({
 			entry: DiaryEntryStore.getEntry(entry_id)
 		});
@@ -99,7 +111,8 @@ var EntryTextView = React.createClass({
 		console.log("onTitleChange");
 		this.setState({
 			entry:_.extend({}, this.state.entry, {
-				title: event.target.value
+				title: event.target.value,
+				edited: true
 			})
 		});
 	},
@@ -108,7 +121,8 @@ var EntryTextView = React.createClass({
 		console.log("onEntryChange");
 		this.setState({
 			entry:_.extend({}, this.state.entry, {
-				text: event.target.value
+				text: event.target.value,
+				edited: true
 			})
 		});
 	}

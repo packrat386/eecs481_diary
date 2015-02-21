@@ -25,7 +25,6 @@ function removeEntry(entry_id){
 
 var DiaryEntryStore = _.extend({}, EventEmitter.prototype, {
 	emitChange: function(){
-		console.log('emit');
 		this.emit('change');
 	},
 

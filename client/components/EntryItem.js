@@ -5,46 +5,22 @@ var DiaryActions = require('../actions/DiaryActions');
 
 var EntryItem = React.createClass({
 
-	getInitialState: function(){
-		return {
-			entry: this.props.entry,
-			isSelected: false
-		};
-	},
-
-	componentWillReceiveProps: function(newProps){
-		this.setState({
-			entry: newProps.entry
-		});
-	},
-
-	// Add change listeners to stores
-	componentDidMount: function() {
-		SelectedEntryStore.addChangeListener(this._onChange);
-	},
-
-  	// Remove change listers from stores
-	componentWillUnmount: function() {
-		SelectedEntryStore.removeChangeListener(this._onChange);
-	},
-
 	_onClick: function(event){
 		event.preventDefault();
-		DiaryActions.setSelected(this.state.entry);
+		DiaryActions.setSelected(this.props.entry);
 	},
 
 	render: function(){
-		// var cx = React.addons.classSet;
-		console.log("Render EntryItem");
-		console.log(this.state.entry);
 		var currentClass = "list-group-item";
-		if(this.state.isSelected){
+		if(this.props.isSelected === true){
 			currentClass += " active";
 		}
 
 		return (
 			<a href="#" className={currentClass} onClick={this._onClick}>
-			Title: {this.state.entry.title} ({this.state.entry.id})
+				Title: {this.props.entry.title}
+			 	<br/>
+			 	({this.props.entry.id})
 			</a>
 		);
 	},
