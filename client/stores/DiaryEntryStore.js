@@ -15,6 +15,10 @@ function updateEntry(data){
 	addEntry(data);
 }
 
+function clearStore(){
+	_diary_entries = {};
+}
+
 function removeEntry(entry_id){
 	delete _diary_entries[entry_id];
 }
@@ -62,6 +66,10 @@ AppDispatcher.register(function(payload) {
 		case DiaryConstants.DIARY_UPDATE:
 			updateEntry(action.data);
 			DiaryEntryStore.emitChange();
+			break;
+
+		case DiaryConstants.CLEAR_STORES:
+			clearStore();
 			break;
 
 		default:

@@ -52,6 +52,13 @@ var DiaryActions = {
 		// 	actionType: DiaryConstants.DIARY_UPDATE,
 		// 	data: entry
 		// });
+	},
+
+	clearStores: function(){
+		AppDispatcher.handleAction({
+			actionType: DiaryConstants.CLEAR_STORES,
+			data: null
+		})
 	}
 };
 

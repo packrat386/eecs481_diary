@@ -1,5 +1,6 @@
 var React = require('react');
 var Router = require('react-router');
+var DiaryActions = require('../actions/DiaryActions');
 var ServerRequests = require('../utils/ServerRequests');
 
 var Login = React.createClass({
@@ -28,6 +29,8 @@ var Login = React.createClass({
 				return this.setState({signinMessage:"Unable to log in"});
 			}
 
+			DiaryActions.clearStores();
+
 			if(Login.attemptedTransition){
 				var transition =  Login.attemptedTransition;
 				Login.attemptedTransition = null;
@@ -46,6 +49,7 @@ var Login = React.createClass({
 
 		ServerRequests.createUser(username, password, function(createdAccount){
 			if(createdAccount){
+				DiaryActions.clearStores();
 				return this.setState({signupMessage: "Created Account Successfully"});
 			} else {
 				return this.setState({signupMessage:"Failed to Created Account"});

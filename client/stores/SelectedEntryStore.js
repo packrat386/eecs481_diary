@@ -10,6 +10,10 @@ function selectEntry(data){
 	_selected_entry = data.id;
 }
 
+function clearStore(){
+	_selected_entry = '';
+}
+
 var SelectedEntryStore = _.extend({}, EventEmitter.prototype, {
 	emitChange: function(){
 		this.emit('change');
@@ -38,6 +42,10 @@ AppDispatcher.register(function(payload) {
 	switch(action.actionType) {
 		case DiaryConstants.DIARY_SELECT:
 			selectEntry(action.data);
+			break;
+
+		case DiaryConstants.CLEAR_STORES:
+			clearStore();
 			break;
 
 		default:
