@@ -38,7 +38,7 @@ var AddBasicEntry = React.createClass({
 				
 				<div className="form-group">
 					<div className="col-sm-offset-1 col-sm-10">
-						<button type="submit" className="btn btn-default">Create Entry</button>
+						<button type="submit" className="btn btn-primary">Create Entry</button>
 					</div>
 				</div>
 			</form>
