@@ -46,6 +46,7 @@ var ListView = React.createClass({
 		console.log(this.state);
 		return (
 			<div className="container">
+				<h3>Diary Entries</h3>
 				<div className="list-group col-xs-4 col-sm-4">
 					<EntryList 
 						allEntries={this.state.entries} 

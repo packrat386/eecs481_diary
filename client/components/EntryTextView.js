@@ -75,7 +75,7 @@ var EntryTextView = React.createClass({
 			);
 		} else {
 			current_component = 
-				(<div className="jumbotron">
+				(<div className="jumbotron col-xs-7">
 					<h3>Diary entries show up here!</h3>
 				</div>);
 		} 
