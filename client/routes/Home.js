@@ -1,9 +1,13 @@
-React = require('react');
+var React = require('react');
+var Graffiti = require('../components/Graffiti');
 
 var Home = React.createClass({
 	render: function() {
 		return (
-			<p>Home page</p>
+			<div>
+				<p>Sketch Test</p>
+				<Graffiti />
+			</div>
 		);
 	}
 });

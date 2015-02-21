@@ -52,7 +52,7 @@ var EntryTextView = React.createClass({
 					</div>
 
 					<div className="form-group">
-						<label className="col-sm-1 control-label">Diary Text</label>
+						<label className="col-sm-1 control-label">Text</label>
 						<div className="col-sm-6">
 							<TextAutosize 
 								className="form-control" 
