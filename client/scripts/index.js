@@ -6,7 +6,8 @@ var Header = React.createClass({
 	render: function() {
 		return (
 			<div className="page-header">
-				<h1>eecs481_diary</h1>
+				<h1>Welcome Back!</h1>
+				<h4>Your last entry was 4 days ago</h4>
 			</div>
 		);
 	}
@@ -19,7 +20,7 @@ var PageNav = React.createClass({
 			extra_nav = <Router.Link to="login">Login/Create Account</Router.Link>;
 		} else {
 			extra_nav = (<span>
-							<Router.Link to="main">Main</Router.Link>
+							<Router.Link to="main">Write a new Entry</Router.Link>
 							&nbsp; | &nbsp; 
 						 	<Router.Link to="logout">Logout</Router.Link>
 						 </span>);
