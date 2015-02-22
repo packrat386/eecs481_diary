@@ -69,7 +69,6 @@ var Login = React.createClass({
 		var input_className = "form-control";
 		var button_className = "btn btn-lg btn-primary";
 		return (
-
 			<div className="container">
 				<h2>Sign-In</h2>
 				{this.state.signinMessage}

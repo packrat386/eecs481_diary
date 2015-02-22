@@ -5,6 +5,20 @@ var DiaryActions = require('../actions/DiaryActions');
 
 var AddBasicEntry = React.createClass({
 
+	getInitialState: function(){
+		return {
+			addEntry: false
+		};
+	},
+
+	addEntry: function(event){
+		event.preventDefault();
+
+		this.setState({
+			addEntry: true
+		});
+	},
+
 	submitEntry: function(event){
 		event.preventDefault();
 		var title = this.refs.title.getDOMNode().value;
@@ -13,6 +27,12 @@ var AddBasicEntry = React.createClass({
 		DiaryActions.addEntry({
 			title: title,
 			text: text
+		}, function(result){
+			if(result === true){
+				this.setState({
+					addEntry:false
+				})
+			}
 		});
 
 		console.log(title + " " + text);
@@ -38,7 +58,7 @@ var AddBasicEntry = React.createClass({
 				
 				<div className="form-group">
 					<div className="col-sm-offset-1 col-sm-10">
-						<button type="submit" className="btn btn-default">Create Entry</button>
+						<button type="submit" className="btn btn-primary">Create Entry</button>
 					</div>
 				</div>
 			</form>

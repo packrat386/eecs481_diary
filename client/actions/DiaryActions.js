@@ -3,14 +3,17 @@ var AppDispatcher = require('../dispatcher/AppDispatcher');
 var ServerRequests = require('../utils/ServerRequests');
 
 var DiaryActions = {
-	addEntry: function(data){
+	addEntry: function(data, cb){
 		ServerRequests.addEntry(data, function(data){
 			if(data){
 				AppDispatcher.handleAction({
 					actionType: DiaryConstants.DIARY_ADD,
 					data: data
 				});
+
+				if(cb) cb(true);
 			} else {
+				if(cb) cb(false);
 				console.log("Failed to add entry");
 			}
 		});

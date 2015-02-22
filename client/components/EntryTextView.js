@@ -52,7 +52,7 @@ var EntryTextView = React.createClass({
 					</div>
 
 					<div className="form-group">
-						<label className="col-sm-1 control-label">Diary Text</label>
+						<label className="col-sm-1 control-label">Text</label>
 						<div className="col-sm-6">
 							<TextAutosize 
 								className="form-control" 
@@ -64,12 +64,20 @@ var EntryTextView = React.createClass({
 					</div>
 
 					<div className="form-group">
-						<div className="col-sm-1 col-sm-6">
-							<button 
-								className="btn btn-default" 
-								onClick={this._onUpdate}
-								>Save</button>
-						</div>
+
+							<div className="col-sm-7">
+								<button 
+										className="btn btn-primary" 
+										onClick={this._onUpdate}
+										>Save</button>
+								<span className="pull-right">
+									<button 
+											className="btn btn-danger"
+											onClick={this._onDelete}
+											>Delete</button>
+								</span>
+							</div>
+	
 					</div>
 				</form>
 			);
@@ -90,6 +98,10 @@ var EntryTextView = React.createClass({
 	_onUpdate: function(event){
 		event.preventDefault();
 		DiaryActions.updateEntry(this.state.entry);
+	},
+
+	_onDelete: function(event){
+		event.preventDefault();
 	},
 
 	_onChange: function(){
