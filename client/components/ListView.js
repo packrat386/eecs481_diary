@@ -35,6 +35,7 @@ var ListView = React.createClass({
 			entries: DiaryEntryStore.getEntries()
 		});
 
+		//After delection, check if needed to deselect
 		if(this.state.currentSelected && !DiaryEntryStore.hasEntry(this.state.currentSelected)){
 			this.setState({
 				currentSelected: null

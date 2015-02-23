@@ -15,24 +15,23 @@ var Header = React.createClass({
 
 var PageNav = React.createClass({
 	render: function() {
-		var extra_nav;
+		var extra_nav = []
 		if(!ServerRequests.loggedIn()){
-			extra_nav = <Router.Link to="login">Login/Create Account</Router.Link>;
+			extra_nav.push(<li role="presentation"> <Router.Link to="login">Login/Create Account</Router.Link> </li>);
 		} else {
-			extra_nav = (<span>
-							<Router.Link to="main">Write a new Entry</Router.Link>
-							&nbsp; | &nbsp; 
-						 	<Router.Link to="logout">Logout</Router.Link>
-						 </span>);
+			extra_nav.push(<li role="presentation"> <Router.Link to="main">Write a new Entry</Router.Link> </li>);
+			extra_nav.push(<li role="presentation"> <Router.Link to="logout">Logout</Router.Link> </li>);
 		}
 		return (
-			<div className="nav">
-				<Router.Link to="home">Home</Router.Link>
-				&nbsp; | &nbsp;
-				<Router.Link to="about">About</Router.Link>
-				&nbsp; | &nbsp;
+			<ul className="nav nav-pills">
+				<li role="presentation">
+					<Router.Link to="home">Home</Router.Link>
+				</li>
+				<li role="presentation">
+					<Router.Link to="about">About</Router.Link>
+				</li>
 				{extra_nav}
-			</div>
+			</ul>
 		);
 	}
 });
