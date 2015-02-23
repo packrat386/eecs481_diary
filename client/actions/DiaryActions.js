@@ -19,6 +19,21 @@ var DiaryActions = {
 		});
 	},
 
+	removeEntry: function(data, cb){
+		ServerRequests.removeEntry(data, function(response){
+			if(response){
+				AppDispatcher.handleAction({
+					actionType: DiaryConstants.DIARY_REMOVE,
+					data: data
+				});
+
+				if(cb) cb(true);
+			} else {
+				if(cb) cb(false);
+			}
+		})
+	},
+
 	getAllEntries: function(){
 		ServerRequests.getEntries(function(entries){
 			if(entries){
