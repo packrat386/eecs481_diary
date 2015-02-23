@@ -101,6 +101,28 @@ var ServerRequests = {
 
 	},
 
+	removeEntry: function(diary_entry, cb){
+		var DiaryEntry = Parse.Object.extend("DiaryEntry");
+		var queryObject = new Parse.Query(DiaryEntry);
+		queryObject.get(diary_entry.id, {
+			success: function(entry){
+				entry.destroy({
+					success: function(deleted_entry){
+						console.log(deleted_entry);
+						if(cb) cb(true);
+					},
+					error: function(deleted_entry, error){
+						console.log(error);
+						if(cb) cb(false);
+					}
+				})
+			},
+			error: function(entry, error){
+				console.log(error);
+			}
+		});
+	},
+
 	updateEntry: function(diary_entry, cb){
 		var DiaryEntry = Parse.Object.extend("DiaryEntry");
 		var queryObject = new Parse.Query(DiaryEntry);

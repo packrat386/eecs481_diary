@@ -44,6 +44,10 @@ var DiaryEntryStore = _.extend({}, EventEmitter.prototype, {
 
 	getEntry: function(entry_id){
 		return _diary_entries[entry_id];
+	},
+
+	hasEntry: function(entry_id){
+		return entry_id in _diary_entries;
 	}
 });
 
@@ -58,7 +62,7 @@ AppDispatcher.register(function(payload) {
 			break;
 
 		case DiaryConstants.DIARY_REMOVE:
-			removeEntry(action.entry.id);
+			removeEntry(action.data.id);
 			DiaryEntryStore.emitChange();
 			break;
 

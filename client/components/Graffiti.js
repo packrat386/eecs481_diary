@@ -9,8 +9,8 @@ var Graffiti = React.createClass({
 
 	render: function(){
 		var inline_style = {
-				width: '658px',
-				height: '333px',
+				width: 'auto',
+				height: 'auto',
 				border: '1px solid #ccc'
 		};
 		return (

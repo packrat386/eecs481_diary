@@ -7,7 +7,10 @@ var EventEmitter = require('events').EventEmitter;
 var _selected_entry = null;
 
 function selectEntry(data){
-	_selected_entry = data.id;
+	if(!data)
+		_selected_entry = null;
+	else 
+		_selected_entry = data.id;
 }
 
 function clearStore(){

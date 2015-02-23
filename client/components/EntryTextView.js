@@ -101,6 +101,9 @@ var EntryTextView = React.createClass({
 
 	_onDelete: function(event){
 		event.preventDefault();
+		console.log("onDelete");
+		console.log(this.state.entry);
+		DiaryActions.removeEntry(this.state.entry);
 	},
 
 	_onChange: function(){

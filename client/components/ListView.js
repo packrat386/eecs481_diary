@@ -34,9 +34,17 @@ var ListView = React.createClass({
 		this.setState({
 			entries: DiaryEntryStore.getEntries()
 		});
+
+		if(this.state.currentSelected && !DiaryEntryStore.hasEntry(this.state.currentSelected)){
+			this.setState({
+				currentSelected: null
+			});
+			DiaryActions.setSelected(null);
+		}
 	},
 
 	_onSelectionChange: function(){
+
 		this.setState({
 			currentSelected: SelectedEntryStore.currentSelected()
 		});
