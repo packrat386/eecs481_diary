@@ -16,7 +16,6 @@ var Graffiti = React.createClass({
 	render: function(){
 		var inline_style = {
 				width: '100%',
-				height: 'auto',
 				border: '1px solid #ccc'
 		};
 		return (
@@ -31,6 +30,7 @@ var Graffiti = React.createClass({
 				<canvas 
 					id="tools_sketch"
 					ref="sketcher"
+					height="400px"
 					style={inline_style}
 				>
 				</canvas>
