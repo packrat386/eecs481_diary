@@ -1,6 +1,5 @@
 var React = require('react');
 var Router = require('react-router');
-var SelectedEntryStore = require('../stores/SelectedEntryStore');
 var DiaryActions = require('../actions/DiaryActions');
 var DiaryEntryStore = require('../stores/DiaryEntryStore');
 var TextAutosize = require('react-textarea-autosize');
@@ -16,21 +15,10 @@ var EntryTextView = React.createClass({
 		};
 	},
 
-	// Add change listeners to stores
-	componentDidMount: function() {
-		SelectedEntryStore.addChangeListener(this._onChange);
-	},
-
 	componentWillReceiveProps: function(newProps){
-		if(!this.state.entry) return;
-		if(this.state.entry.id !== newProps.entry.id){
-			this._onChange();
-		}
-	},
-
-  	// Remove change listers from stores
-	componentWillUnmount: function() {
-		SelectedEntryStore.removeChangeListener(this._onChange);
+		this.setState({
+			entry: newProps.initialEntry
+		});
 	},
 
 	render: function(){
@@ -38,6 +26,7 @@ var EntryTextView = React.createClass({
 		var current_component = null;
 
 		var buttons;
+		//Save/Delete buttons or Edit button
 		if(this.state.readOnly){
 			buttons = (
 				<div className="form-group">
@@ -75,6 +64,18 @@ var EntryTextView = React.createClass({
 			current_component = (
 				<form className="form-horizontal">
 					{buttons}
+					<div className="form-group">
+						<label className="col-sm-1 control-label">Created</label>
+						<div className="col-sm-6">
+							<input
+								className="form-control"
+								ref="diary_title"
+								value={this.state.entry.createdAt}
+								readOnly="true"
+							/>
+						</div>
+					</div>
+
 					<div className="form-group">
 						<label className="col-sm-1 control-label">Title</label>
 						<div className="col-sm-6">
@@ -117,8 +118,9 @@ var EntryTextView = React.createClass({
 
 	_onUpdate: function(event){
 		event.preventDefault();
-		DiaryActions.updateEntry(this.state.entry, function(){
+		DiaryActions.updateEntry(this.state.entry, function(response){
 			this.setState({
+				entry: response,
 				edited: false,
 				readOnly: true
 			});
@@ -127,30 +129,11 @@ var EntryTextView = React.createClass({
 
 	_onDelete: function(event){
 		event.preventDefault();
-		var current_entry = this.state.entry;
-		DiaryActions.removeEntry(this.state.entry, function(response){
-			//After delection, check if needed to deselect
-			if(SelectedEntryStore.currentSelected() === current_entry.id){
-				DiaryActions.setSelected(null);
-			}
-		});
-	},
-
-	_onChange: function(){
-		if(this.state.entry && this.state.edited){
-			DiaryActions.updateEntry(this.state.entry, function(){
-				this.setState({
-					edited: false,
-					readOnly: true
-				}.bind(this));
-			});
-		}
-
-		var entry_id = SelectedEntryStore.currentSelected();
-		this.setState({
-			entry: DiaryEntryStore.getEntry(entry_id)
-		});
-		
+		r = confirm("Are you sure you want to delete this entry?");
+		if(r == true){
+			var current_entry = this.state.entry;
+			DiaryActions.removeEntry(this.state.entry);
+		} 
 	},
 
 	_onTitleChange: function(event){

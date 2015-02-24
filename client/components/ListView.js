@@ -2,60 +2,93 @@ var React = require('react');
 var Router = require('react-router');
 var EntryList = require('./EntryList');
 var DiaryEntryStore = require('../stores/DiaryEntryStore');
-var SelectedEntryStore = require('../stores/SelectedEntryStore');
 var DiaryActions = require('../actions/DiaryActions');
 var EntryTextView = require('./EntryTextView');
+var _ = require('underscore');
 
-function getEntries(){
-	return {
-		entries: DiaryEntryStore.getEntries(),
-		currentSelected: SelectedEntryStore.currentSelected()
-	};
+function reverseEntries(entries){
+	return Array.prototype.slice.call(entries).reverse();
 }
 
 var ListView = React.createClass({
 
 	getInitialState: function(){
 		DiaryActions.getAllEntries();
-		return getEntries();
+		var initialEntries = reverseEntries(DiaryEntryStore.getEntries());
+		var initialSelected = null;
+		if(initialEntries.length > 0){
+			initialSelected = initialEntries[0];
+		}
+
+		return {
+			entries: initialEntries,
+			currentSelected: initialSelected
+		};
+	},
+
+	validateSelection: function(){
+		//If no selected, select top
+		if(!this.state.currentSelected){
+			if(this.state.entries){
+				this.setState({
+					currentSelected: this.state.entries[0]
+				});
+			}
+		} else if(!DiaryEntryStore.hasEntry(this.state.currentSelected.id)){
+			if(this.state.entries){
+				this.setState({
+					currentSelected: this.state.entries[0]
+				});
+			}
+		}
 	},
 
 	componentDidMount: function() {
 		DiaryEntryStore.addChangeListener(this._onChange);
-		SelectedEntryStore.addChangeListener(this._onSelectionChange);
 	},
 
 	componentWillUnmount: function() {
 		DiaryEntryStore.removeChangeListener(this._onChange);
-		SelectedEntryStore.removeChangeListener(this._onSelectionChange);
 	},
 
 	_onChange: function(){
+		var newEntries = reverseEntries(DiaryEntryStore.getEntries());
+		var newSelected = this.state.currentSelected;
+		if(newEntries.length > 0){
+
+			if((!this.state.currentSelected) || 
+				!(DiaryEntryStore.hasEntry(this.state.currentSelected.id))){
+
+				newSelected = newEntries[0];
+			}
+		}
+
 		this.setState({
-			entries: DiaryEntryStore.getEntries()
+			entries: newEntries,
+			currentSelected: newSelected 
 		});
 	},
 
-	_onSelectionChange: function(){
-
+	_selectionCallback: function(entry, cb){
 		this.setState({
-			currentSelected: SelectedEntryStore.currentSelected()
+			currentSelected: entry
 		});
 	},
 
 	render: function(){
-		console.log(this.state);
+
 		return (
 			<div className="container">
 				<h3>Diary Entries</h3>
 				<div className="list-group col-xs-12 col-sm-12 col-md-4">
 					<EntryList
 						allEntries={this.state.entries}
-						currentSelected={this.state.currentSelected}/>
+						currentSelected={this.state.currentSelected}
+						selectionCallback={this._selectionCallback}/>
 				</div>
 
 				<div className="col-xs-12 col-sm-12 col-md-8">
-					<EntryTextView entry={this.state.currentSelected}/>
+					<EntryTextView initialEntry={this.state.currentSelected}/>
 				</div>
 			</div>
 

@@ -91,7 +91,7 @@ var ServerRequests = {
 			{
 				success: function(entry){
 					console.log("Added entry");
-					if(cb) cb(_.extend({}, entry.attributes, {id: entry.id}));
+					if(cb) cb(parseEntry(entry));
 				},
 				error: function(entry, error){
 					console.log("Error adding");
@@ -151,6 +151,7 @@ var ServerRequests = {
 		console.log("getEntries");
 		var DiaryEntry = Parse.Object.extend("DiaryEntry");
 		var queryObject = new Parse.Query(DiaryEntry).equalTo("createdBy", Parse.User.current());
+		queryObject.ascending("createdAt");
 		queryObject.find({
 			success: function(results){
 				console.log(results);

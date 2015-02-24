@@ -4,20 +4,8 @@ var ServerRequests = require('../utils/ServerRequests');
 var DiaryActions = require('../actions/DiaryActions');
 
 var AddBasicEntry = React.createClass({
+	mixins: [Router.Navigation],
 
-	getInitialState: function(){
-		return {
-			addEntry: false
-		};
-	},
-
-	addEntry: function(event){
-		event.preventDefault();
-
-		this.setState({
-			addEntry: true
-		});
-	},
 
 	submitEntry: function(event){
 		event.preventDefault();
@@ -27,18 +15,16 @@ var AddBasicEntry = React.createClass({
 		DiaryActions.addEntry({
 			title: title,
 			text: text
-		}, function(result){
-			if(result === true){
-				this.setState({
-					addEntry:false
-				})
+		}, function(response){
+			if(response){
+				this.transitionTo('main');
 			}
 		}.bind(this));
-
 		console.log(title + " " + text);
 	},
 
 	render: function(){
+
 		return (
 			<form className="form-horizontal" onSubmit={this.submitEntry}>
 				<h3>Add Diary Entry</h3> 
