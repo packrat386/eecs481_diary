@@ -48,17 +48,17 @@ var ListView = React.createClass({
 		return (
 			<div className="container">
 				<h3>Diary Entries</h3>
-				<div className="list-group col-xs-4 col-sm-4">
-					<EntryList 
-						allEntries={this.state.entries} 
+				<div className="list-group col-xs-12 col-sm-12 col-md-4">
+					<EntryList
+						allEntries={this.state.entries}
 						currentSelected={this.state.currentSelected}/>
 				</div>
 
-				<div className="col-xs-8 col-sm-8">
+				<div className="col-xs-12 col-sm-12 col-md-8">
 					<EntryTextView entry={this.state.currentSelected}/>
 				</div>
 			</div>
-			
+
 		);
 	}
 });
