@@ -4,7 +4,9 @@ var Graffiti = React.createClass({
 
 	componentDidMount: function(){
 		console.log($(this.getDOMNode()));
-		$(this.refs.sketcher.getDOMNode()).sketch();
+		$(this.refs.sketcher.getDOMNode()).sketch({
+			defaultSize: 10
+		});
 	},
 
 	componentWillUpdate: function(){
@@ -13,14 +15,15 @@ var Graffiti = React.createClass({
 
 	render: function(){
 		var inline_style = {
-				width: 'auto',
+				width: '100%',
 				height: 'auto',
 				border: '1px solid #ccc'
 		};
 		return (
 			<div className="container">
 				<div ref="tools">
-					<a className="btn btn-default" href="#tools_sketch" data-tool="marker">Draw</a>
+					<a className="btn btn-default" href="#tools_sketch" data-tool="marker" data-color="#000">Draw</a>
+					<a className="btn btn-default" href="#tools_sketch" data-color="#fff" style={{background: "#fff"}}>Erase</a>
 					<a className="btn btn-default" href="#tools_sketch" data-tool="eraser">Eraser (remove all)</a>
 					<a className="btn btn-default" href="#tools_sketch" data-download="png">Download</a>
 				</div>
@@ -28,8 +31,6 @@ var Graffiti = React.createClass({
 				<canvas 
 					id="tools_sketch"
 					ref="sketcher"
-					width="658" 
-					height="333" 
 					style={inline_style}
 				>
 				</canvas>
