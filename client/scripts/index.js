@@ -53,7 +53,8 @@ var routes = {
 	About: require('../routes/About'),
 	Login: require('../routes/Login'),
 	Logout: require('../routes/Logout'),
-	Main: require('../routes/Main')
+	Main: require('../routes/Main'),
+	NotFound: require('../routes/NotFound')
 };
 
 var routes = (
@@ -64,6 +65,7 @@ var routes = (
 		<Router.Route name="logout" path="/logout" handler={routes.Logout}/>
 		<Router.Route name="main" path="/main" handler={routes.Main}/>
 		<Router.DefaultRoute handler={routes.Home}/>
+		<Router.NotFoundRoute handler={routes.NotFound}/>
 	</Router.Route>
 );
 
