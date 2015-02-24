@@ -11,7 +11,8 @@ var EntryTextView = React.createClass({
 	getInitialState: function(){
 		return {
 			entry: this.props.initialEntry,
-			edited: false
+			edited: false,
+			readOnly: true
 		};
 	},
 
@@ -35,10 +36,45 @@ var EntryTextView = React.createClass({
 	render: function(){
 
 		var current_component = null;
-		
+
+		var buttons;
+		if(this.state.readOnly){
+			buttons = (
+				<div className="form-group">
+					<div className="col-sm-7">
+						<button 
+							className="btn btn-primary"
+							onClick={this._onEditClick}
+						>Edit
+						</button>
+					</div>
+
+
+				</div>
+			);
+		} else {
+			buttons = (					
+				<div className="form-group">
+					<div className="col-sm-7">
+						<button 
+								className="btn btn-primary" 
+								onClick={this._onUpdate}
+							>Save</button>
+						<span className="pull-right">
+							<button 
+									className="btn btn-danger"
+									onClick={this._onDelete}
+							>Delete</button>
+						</span>
+					</div>
+				</div>
+			);
+		}
+
 		if(this.state.entry){
 			current_component = (
 				<form className="form-horizontal">
+					{buttons}
 					<div className="form-group">
 						<label className="col-sm-1 control-label">Title</label>
 						<div className="col-sm-6">
@@ -47,37 +83,22 @@ var EntryTextView = React.createClass({
 								ref="diary_title"
 								onChange={this._onTitleChange}
 								value={this.state.entry.title}
+								readOnly={this.state.readOnly}
 							/>
 						</div>
 					</div>
 
 					<div className="form-group">
-						<label className="col-sm-1 control-label">Text</label>
+						<label className="col-sm-1 control-label" >Text</label>
 						<div className="col-sm-6">
 							<TextAutosize 
 								className="form-control" 
 								ref="diary_text" 
 								onChange={this._onEntryChange} 
 								value={this.state.entry.text}
+								readOnly={this.state.readOnly}
 							/>
 						</div>
-					</div>
-
-					<div className="form-group">
-
-							<div className="col-sm-7">
-								<button 
-										className="btn btn-primary" 
-										onClick={this._onUpdate}
-										>Save</button>
-								<span className="pull-right">
-									<button 
-											className="btn btn-danger"
-											onClick={this._onDelete}
-											>Delete</button>
-								</span>
-							</div>
-	
 					</div>
 				</form>
 			);
@@ -96,7 +117,12 @@ var EntryTextView = React.createClass({
 
 	_onUpdate: function(event){
 		event.preventDefault();
-		DiaryActions.updateEntry(this.state.entry);
+		DiaryActions.updateEntry(this.state.entry, function(){
+			this.setState({
+				edited: false,
+				readOnly: true
+			});
+		}.bind(this));
 	},
 
 	_onDelete: function(event){
@@ -112,10 +138,12 @@ var EntryTextView = React.createClass({
 
 	_onChange: function(){
 		if(this.state.entry && this.state.edited){
-			this.setState({
-				edited: false
+			DiaryActions.updateEntry(this.state.entry, function(){
+				this.setState({
+					edited: false,
+					readOnly: true
+				}.bind(this));
 			});
-			DiaryActions.updateEntry(this.state.entry);
 		}
 
 		var entry_id = SelectedEntryStore.currentSelected();
@@ -142,6 +170,13 @@ var EntryTextView = React.createClass({
 				text: event.target.value,
 				edited: true
 			})
+		});
+	},
+
+	_onEditClick: function(event){
+		event.preventDefault();
+		this.setState({
+			readOnly: false
 		});
 	}
 

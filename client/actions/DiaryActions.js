@@ -55,14 +55,16 @@ var DiaryActions = {
 		});
 	},
 
-	updateEntry: function(entry){
+	updateEntry: function(entry, cb){
 		ServerRequests.updateEntry(entry, function(response){
 			if(response){
 				AppDispatcher.handleAction({
 					actionType: DiaryConstants.DIARY_UPDATE,
 					data: response
 				});
+				if(cb) cb(true);
 			} else {
+				if(cb) cb(false);
 				console.log("Failed to update");
 			}
 		})

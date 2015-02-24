@@ -8,7 +8,9 @@ var parseEntry = function(entry){
 	return _.extend({}, 
 		entry.attributes,
 		{
-			id:entry.attributes.id
+			id:entry.id,
+			createdAt: entry.createdAt,
+			updatedAt: entry.updatedAt
 		}	
 	)
 }
@@ -156,7 +158,7 @@ var ServerRequests = {
 				if(cb){
 					entries = [];
 					for(var i = 0; i < results.length; i++){
-						entries.push(_.extend({}, results[i].attributes, {id: results[i].id}));
+						entries.push(parseEntry(results[i]));
 					}
 					cb(entries);
 				}
