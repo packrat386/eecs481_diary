@@ -33,7 +33,7 @@ var AddBasicEntry = React.createClass({
 					addEntry:false
 				})
 			}
-		});
+		}.bind(this));
 
 		console.log(title + " " + text);
 	},

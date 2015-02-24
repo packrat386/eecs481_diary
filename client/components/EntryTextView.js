@@ -102,13 +102,16 @@ var EntryTextView = React.createClass({
 
 	_onDelete: function(event){
 		event.preventDefault();
-		console.log("onDelete");
-		console.log(this.state.entry);
-		DiaryActions.removeEntry(this.state.entry);
+		var current_entry = this.state.entry;
+		DiaryActions.removeEntry(this.state.entry, function(response){
+			//After delection, check if needed to deselect
+			if(SelectedEntryStore.currentSelected() === current_entry.id){
+				DiaryActions.setSelected(null);
+			}
+		});
 	},
 
 	_onChange: function(){
-		console.log("onChange");
 		if(this.state.entry && this.state.edited){
 			this.setState({
 				edited: false
