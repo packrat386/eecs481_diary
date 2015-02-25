@@ -61,6 +61,8 @@ var ListView = React.createClass({
 
 				newSelected = newEntries[0];
 			}
+		} else {
+			newSelected = null;
 		}
 
 		this.setState({
