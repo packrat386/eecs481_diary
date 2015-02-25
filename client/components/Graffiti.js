@@ -55,14 +55,20 @@ var Graffiti = React.createClass({
 				height: '400px',
 				border: '1px solid #ccc'
 		};
+
+		var tools = null;
+		if(this.props.readOnly === false){
+			tools = (<div ref="tools">
+				<a className="btn btn-default" href="#tools_sketch" data-tool="marker" data-color="#000">Draw</a>
+				<a className="btn btn-default" href="#tools_sketch" data-color="#fff" style={{background: "#fff"}}>Erase</a>
+				<a className="btn btn-default" onClick={this.clearDrawing}>Clear</a>
+				<a className="btn btn-default" href="#tools_sketch" data-download="png">Download</a>
+			</div>);
+		}
+
 		return (
 			<span>
-				<div ref="tools">
-					<a className="btn btn-default" href="#tools_sketch" data-tool="marker" data-color="#000">Draw</a>
-					<a className="btn btn-default" href="#tools_sketch" data-color="#fff" style={{background: "#fff"}}>Erase</a>
-					<a className="btn btn-default" href="#tools_sketch" data-tool="eraser">Eraser (remove all)</a>
-					<a className="btn btn-default" href="#tools_sketch" data-download="png">Download</a>
-				</div>
+				{tools}
 
 				<canvas 
 					id="tools_sketch"
