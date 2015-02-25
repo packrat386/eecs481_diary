@@ -19,8 +19,10 @@ var PageNav = React.createClass({
 		if(!ServerRequests.loggedIn()){
 			extra_nav.push(<li role="presentation"> <Router.Link to="login">Login/Create Account</Router.Link> </li>);
 		} else {
-			extra_nav.push(<li role="presentation"> <Router.Link to="main">Write a new Entry</Router.Link> </li>);
+			extra_nav.push(<li role="presentation"> <Router.Link to="main">View Entries</Router.Link> </li>);
+			extra_nav.push(<li role="presentation"> <Router.Link to="add">Write a New Entry</Router.Link> </li>);
 			extra_nav.push(<li role="presentation"> <Router.Link to="logout">Logout</Router.Link> </li>);
+
 		}
 		return (
 			<ul className="nav nav-pills">
@@ -54,7 +56,8 @@ var routes = {
 	Login: require('../routes/Login'),
 	Logout: require('../routes/Logout'),
 	Main: require('../routes/Main'),
-	NotFound: require('../routes/NotFound')
+	NotFound: require('../routes/NotFound'),
+	AddEntry: require('../routes/AddEntry')
 };
 
 var routes = (
@@ -64,6 +67,7 @@ var routes = (
 		<Router.Route name="login" path="/login" handler={routes.Login}/>
 		<Router.Route name="logout" path="/logout" handler={routes.Logout}/>
 		<Router.Route name="main" path="/main" handler={routes.Main}/>
+		<Router.Route name="add" path="/add" handler={routes.AddEntry}/>
 		<Router.DefaultRoute handler={routes.Home}/>
 		<Router.NotFoundRoute handler={routes.NotFound}/>
 	</Router.Route>

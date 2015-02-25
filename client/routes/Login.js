@@ -74,14 +74,14 @@ var Login = React.createClass({
 				{this.state.signinMessage}
 				<form onSubmit={this.handleLogin}>
 			        <label><input className={input_className} ref="username" placeholder="Username"/></label>
-			        <label><input className={input_className}  ref="pass" placeholder="Password"/></label><br/>
+			        <label><input className={input_className} type="password"  ref="pass" placeholder="Password"/></label><br/>
 			        <button className={button_className} type="submit">Login</button>
 				</form>
 				<h2>Create Account</h2>
 				{this.state.signupMessage}
 				<form onSubmit={this.handleSignup}>
 			        <label><input className={input_className} ref="username1" placeholder="Username"/></label>
-			        <label><input className={input_className} ref="pass1" placeholder="Password"/></label><br/>
+			        <label><input className={input_className} type="password" ref="pass1" placeholder="Password"/></label><br/>
 			        <button className={button_className} type="submit">Create Account</button>
 				</form>
 

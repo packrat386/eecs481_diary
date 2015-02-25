@@ -1,8 +1,6 @@
 var React = require('react');
 var Router = require('react-router');
 var EntryItem = require('./EntryItem');
-var DiaryActions = require('../actions/DiaryActions');
-var SelectedEntryStore = require('../stores/SelectedEntryStore');
 
 var EntryList = React.createClass({
 	render: function(){
@@ -11,10 +9,15 @@ var EntryList = React.createClass({
 		for(var key in this.props.allEntries){
 			var isSelected=false;
 			if((this.props.currentSelected) &&
-				this.props.allEntries[key].id === this.props.currentSelected){
+				this.props.allEntries[key].id === this.props.currentSelected.id){
 				isSelected = true;
 			}
-			entries.push(<EntryItem key={key} entry={this.props.allEntries[key]} isSelected={isSelected} />);
+			entries.push(
+				<EntryItem key={key} 
+					entry={this.props.allEntries[key]} 
+					isSelected={isSelected} 
+					selectionCallback={this.props.selectionCallback}
+				/>);
 		}
 
 		return (

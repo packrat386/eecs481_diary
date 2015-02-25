@@ -4,16 +4,16 @@ var ServerRequests = require('../utils/ServerRequests');
 
 var DiaryActions = {
 	addEntry: function(data, cb){
-		ServerRequests.addEntry(data, function(data){
+		ServerRequests.addEntry(data, function(result_data){
 			if(data){
 				AppDispatcher.handleAction({
 					actionType: DiaryConstants.DIARY_ADD,
-					data: data
+					data: result_data
 				});
 
-				if(cb) cb(true);
+				if(cb) cb(result_data);
 			} else {
-				if(cb) cb(false);
+				if(cb) cb(null);
 				console.log("Failed to add entry");
 			}
 		});
@@ -37,13 +37,10 @@ var DiaryActions = {
 	getAllEntries: function(){
 		ServerRequests.getEntries(function(entries){
 			if(entries){
-				for(var i = 0; i < entries.length; i++){
-					AppDispatcher.handleAction({
-						actionType: DiaryConstants.DIARY_ADD,
-						data: entries[i]
-					});
-				}
-
+				AppDispatcher.handleAction({
+					actionType: DiaryConstants.DIARY_ADD,
+					data: entries
+				});
 			}
 		});
 	},
@@ -55,21 +52,19 @@ var DiaryActions = {
 		});
 	},
 
-	updateEntry: function(entry){
+	updateEntry: function(entry, cb){
 		ServerRequests.updateEntry(entry, function(response){
 			if(response){
 				AppDispatcher.handleAction({
 					actionType: DiaryConstants.DIARY_UPDATE,
 					data: response
 				});
+				if(cb) cb(response);
 			} else {
+				if(cb) cb(null);
 				console.log("Failed to update");
 			}
 		})
-		// AppDispatcher.handleAction({
-		// 	actionType: DiaryConstants.DIARY_UPDATE,
-		// 	data: entry
-		// });
 	},
 
 	clearStores: function(){

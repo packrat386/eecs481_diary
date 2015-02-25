@@ -4,23 +4,40 @@ var _ = require('underscore');
 var EventEmitter = require('events').EventEmitter;
 
 
-var _diary_entries = {};
+var _diary_entries = [];
 
 function addEntry(data){
 	console.log(data);
-	_diary_entries[data.id] = data;
+	if(data.constructor === Array){
+		// for(var i = 0; i < data.length; i++){
+		// 	_diary_entries[data[i].id] = data[i];	
+		// }
+		_diary_entries = data;
+	} else {
+		_diary_entries.push(data);	
+	}
+
 }
 
 function updateEntry(data){
-	addEntry(data);
+	for(var i = 0; i < _diary_entries.length; i++){
+		if(_diary_entries[i].id === data.id){
+			_diary_entries[i] = data;
+			return true;
+		}
+	}
+	return false;
 }
 
 function clearStore(){
-	_diary_entries = {};
+	_diary_entries = [];
 }
 
 function removeEntry(entry_id){
-	delete _diary_entries[entry_id];
+	_diary_entries = _diary_entries.filter(function( obj ) {
+    	return obj.id !== entry_id;
+	});
+	// delete _diary_entries[entry_id];
 }
 
 var DiaryEntryStore = _.extend({}, EventEmitter.prototype, {
@@ -43,11 +60,23 @@ var DiaryEntryStore = _.extend({}, EventEmitter.prototype, {
 	},
 
 	getEntry: function(entry_id){
-		return _diary_entries[entry_id];
+		for(var i = 0; i < _diary_entries.length; i++){
+			if(_diary_entries[i].id == entry_id){
+				return _diary_entries[i];
+			}
+		}
+
+		return null;
 	},
 
 	hasEntry: function(entry_id){
-		return entry_id in _diary_entries;
+		for(var i = 0; i < _diary_entries.length; i++){
+			if(_diary_entries[i].id == entry_id){
+				console.log('hasEntry');
+				return true;
+			}
+		}
+		return false;
 	}
 });
 

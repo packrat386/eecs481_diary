@@ -1,83 +1,112 @@
 var React = require('react');
 var Router = require('react-router');
-var SelectedEntryStore = require('../stores/SelectedEntryStore');
 var DiaryActions = require('../actions/DiaryActions');
 var DiaryEntryStore = require('../stores/DiaryEntryStore');
 var TextAutosize = require('react-textarea-autosize');
 var _ = require('underscore');
+var Graffiti = require('./Graffiti');
 
 var EntryTextView = React.createClass({
 
 	getInitialState: function(){
 		return {
 			entry: this.props.initialEntry,
-			edited: false
+			edited: false,
+			readOnly: true
 		};
 	},
 
-	// Add change listeners to stores
-	componentDidMount: function() {
-		SelectedEntryStore.addChangeListener(this._onChange);
-	},
-
 	componentWillReceiveProps: function(newProps){
-		if(!this.state.entry) return;
-		if(this.state.entry.id !== newProps.entry.id){
-			this._onChange();
-		}
-	},
-
-  	// Remove change listers from stores
-	componentWillUnmount: function() {
-		SelectedEntryStore.removeChangeListener(this._onChange);
+		this.setState({
+			entry: newProps.initialEntry,
+			edited: false,
+			readOnly: true
+		});
 	},
 
 	render: function(){
 
 		var current_component = null;
-		
+
+		var buttons;
+		//Save/Delete buttons or Edit button
+		if(this.state.readOnly){
+			buttons = (
+				<div className="form-group">
+					<div className="col-sm-7">
+						<button 
+							className="btn btn-primary"
+							onClick={this._onEditClick}
+						>Edit
+						</button>
+					</div>
+
+
+				</div>
+			);
+		} else {
+			buttons = (					
+				<div className="form-group">
+					<div className="col-sm-7">
+						<button 
+								className="btn btn-primary" 
+								onClick={this._onUpdate}
+							>Save</button>
+						<span className="pull-right">
+							<button 
+									className="btn btn-danger"
+									onClick={this._onDelete}
+							>Delete</button>
+						</span>
+					</div>
+				</div>
+			);
+		}
+
 		if(this.state.entry){
 			current_component = (
 				<form className="form-horizontal">
+					{buttons}
 					<div className="form-group">
-						<label className="col-sm-1 control-label">Title</label>
-						<div className="col-sm-6">
+						<label className="col-md-1 control-label">Created</label>
+						<div className="col-md-6">
+							<input
+								className="form-control"
+								ref="diary_title"
+								value={this.state.entry.createdAt}
+								readOnly="true"
+							/>
+						</div>
+					</div>
+
+					<div className="form-group">
+						<label className="col-md-1 control-label">Title</label>
+						<div className="col-md-6">
 							<input
 								className="form-control"
 								ref="diary_title"
 								onChange={this._onTitleChange}
 								value={this.state.entry.title}
+								readOnly={this.state.readOnly}
 							/>
 						</div>
 					</div>
 
 					<div className="form-group">
-						<label className="col-sm-1 control-label">Text</label>
-						<div className="col-sm-6">
+						<label className="col-md-1 control-label" >Text</label>
+						<div className="col-md-6">
 							<TextAutosize 
 								className="form-control" 
 								ref="diary_text" 
 								onChange={this._onEntryChange} 
 								value={this.state.entry.text}
+								readOnly={this.state.readOnly}
 							/>
 						</div>
 					</div>
 
-					<div className="form-group">
-
-							<div className="col-sm-7">
-								<button 
-										className="btn btn-primary" 
-										onClick={this._onUpdate}
-										>Save</button>
-								<span className="pull-right">
-									<button 
-											className="btn btn-danger"
-											onClick={this._onDelete}
-											>Delete</button>
-								</span>
-							</div>
-	
+					<div className="col-xs-12 col-md-7">
+						<Graffiti readOnly={this.state.readOnly} entryID={this.state.entry.id}/>
 					</div>
 				</form>
 			);
@@ -97,33 +126,22 @@ var EntryTextView = React.createClass({
 
 	_onUpdate: function(event){
 		event.preventDefault();
-		DiaryActions.updateEntry(this.state.entry);
+		DiaryActions.updateEntry(this.state.entry, function(response){
+			this.setState({
+				entry: response,
+				edited: false,
+				readOnly: true
+			});
+		}.bind(this));
 	},
 
 	_onDelete: function(event){
 		event.preventDefault();
-		var current_entry = this.state.entry;
-		DiaryActions.removeEntry(this.state.entry, function(response){
-			//After delection, check if needed to deselect
-			if(SelectedEntryStore.currentSelected() === current_entry.id){
-				DiaryActions.setSelected(null);
-			}
-		});
-	},
-
-	_onChange: function(){
-		if(this.state.entry && this.state.edited){
-			this.setState({
-				edited: false
-			});
-			DiaryActions.updateEntry(this.state.entry);
-		}
-
-		var entry_id = SelectedEntryStore.currentSelected();
-		this.setState({
-			entry: DiaryEntryStore.getEntry(entry_id)
-		});
-		
+		r = confirm("Are you sure you want to delete this entry?");
+		if(r == true){
+			var current_entry = this.state.entry;
+			DiaryActions.removeEntry(this.state.entry);
+		} 
 	},
 
 	_onTitleChange: function(event){
@@ -143,6 +161,13 @@ var EntryTextView = React.createClass({
 				text: event.target.value,
 				edited: true
 			})
+		});
+	},
+
+	_onEditClick: function(event){
+		event.preventDefault();
+		this.setState({
+			readOnly: false
 		});
 	}
 

@@ -8,7 +8,9 @@ var parseEntry = function(entry){
 	return _.extend({}, 
 		entry.attributes,
 		{
-			id:entry.attributes.id
+			id:entry.id,
+			createdAt: entry.createdAt,
+			updatedAt: entry.updatedAt
 		}	
 	)
 }
@@ -89,7 +91,7 @@ var ServerRequests = {
 			{
 				success: function(entry){
 					console.log("Added entry");
-					if(cb) cb(_.extend({}, entry.attributes, {id: entry.id}));
+					if(cb) cb(parseEntry(entry));
 				},
 				error: function(entry, error){
 					console.log("Error adding");
@@ -149,6 +151,7 @@ var ServerRequests = {
 		console.log("getEntries");
 		var DiaryEntry = Parse.Object.extend("DiaryEntry");
 		var queryObject = new Parse.Query(DiaryEntry).equalTo("createdBy", Parse.User.current());
+		queryObject.ascending("createdAt");
 		queryObject.find({
 			success: function(results){
 				console.log(results);
@@ -156,7 +159,7 @@ var ServerRequests = {
 				if(cb){
 					entries = [];
 					for(var i = 0; i < results.length; i++){
-						entries.push(_.extend({}, results[i].attributes, {id: results[i].id}));
+						entries.push(parseEntry(results[i]));
 					}
 					cb(entries);
 				}
@@ -165,6 +168,12 @@ var ServerRequests = {
 				console.log(error);
 			}
 		})
+	},
+
+	saveDrawing: function(data, cb){
+		var image_data = data.substring(str.indexOf(',')+1);
+
+		console.log(image_data);
 	}
 };
 
