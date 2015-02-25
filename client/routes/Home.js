@@ -1,12 +1,13 @@
 var React = require('react');
-var Graffiti = require('../components/Graffiti');
+var Router = require('react-router');
 
 var Home = React.createClass({
 	render: function() {
 		return (
-			<div>
-				<p>Sketch Test</p>
-				<Graffiti />
+			<div className="jumbotron">
+			  <h1>EECS 481 ICU Diary</h1>
+			  <p> Create, edit, and view diary entries! </p>
+			  <p> <Router.Link className="btn btn-primary btn-lg" to="main">Try it out</Router.Link> </p>
 			</div>
 		);
 	}

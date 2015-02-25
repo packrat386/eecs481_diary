@@ -3,14 +3,15 @@
 var Parse = require('./ParseInit');
 var Router = require('react-router');
 var _ = require('underscore');
+var moment = require('moment');
 
 var parseEntry = function(entry){
 	return _.extend({}, 
 		entry.attributes,
 		{
 			id:entry.id,
-			createdAt: entry.createdAt,
-			updatedAt: entry.updatedAt
+			createdAt: moment(entry.createdAt, "ddd MMM DD YYYY hh:mm:ss"),
+			updatedAt: moment(entry.createdAt, "ddd MMM DD YYYY hh:mm:ss")
 		}	
 	)
 }
@@ -54,15 +55,10 @@ var ServerRequests = {
 	},
 
 	logout: function(){
-		console.log("Logged out");
 		Parse.User.logOut();
 	},
 
 	loggedIn: function(){
-		console.log("Check logged in");
-		var curUser = Parse.User.current();
-		console.log(!(Parse.User.current() === null));
-		console.log(curUser);
 		return !(Parse.User.current() === null);
 	},
 
@@ -163,7 +159,7 @@ var ServerRequests = {
 		queryObject.find({
 			success: function(results){
 				console.log(results);
-
+				var b = performance.now();
 				if(cb){
 					entries = [];
 					for(var i = 0; i < results.length; i++){

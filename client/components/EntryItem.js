@@ -2,6 +2,7 @@ var React = require('react');
 var Router = require('react-router');
 var DiaryActions = require('../actions/DiaryActions');
 var _ = require('underscore');
+var moment = require('moment');
 
 var EntryItem = React.createClass({
 
@@ -18,14 +19,16 @@ var EntryItem = React.createClass({
 		if(this.props.isSelected){
 			currentClass += " active";
 		}
-
+		// var a = performance.now();
+		// var dateString = moment(this.props.entry.createdAt, "ddd MMM DD YYYY hh:mm:ss").format("dddd, MMMM Do YYYY, h:mm:ss a");
+		var dateString = this.props.entry.createdAt.format("dddd, MMMM Do YYYY, h:mm:ss a");
+		// var b = performance.now();
+		// console.log("dateString formatting " + (b-a) + "ms");
 		return (
 			<a href="#" className={currentClass} onClick={this._onClick}>
-				Title: {this.props.entry.title}
+				<b>{this.props.entry.title}</b>
 			 	<br/>
-			 	({this.props.entry.id})
-			 	<br/>
-			 	{this.props.entry.createdAt}
+			 	{dateString}
 			</a>
 		);
 	}

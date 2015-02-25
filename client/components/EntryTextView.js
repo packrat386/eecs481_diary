@@ -6,6 +6,7 @@ var TextAutosize = require('react-textarea-autosize');
 var _ = require('underscore');
 var Graffiti = require('./Graffiti');
 var UploadImageForm = require('./UploadImageForm');
+var moment = require('moment');
 
 var EntryTextView = React.createClass({
 
@@ -75,7 +76,7 @@ var EntryTextView = React.createClass({
 							<input
 								className="form-control"
 								ref="diary_title"
-								value={this.state.entry.createdAt}
+								value={this.state.entry.createdAt.format("dddd, MMMM Do YYYY, h:mm:ss a")}
 								readOnly="true"
 							/>
 						</div>
@@ -116,11 +117,9 @@ var EntryTextView = React.createClass({
 					</div>
 
 					<div className="col-xs-12 col-md-7">
-
-					<h3> Add Photo: </h3>
-					<button type="button">Select File!</button>
-					<UploadImageForm />
-
+						<h3> Add Photo: </h3>
+						<p>Select File!</p>
+						<UploadImageForm />
 					</div>
 
 				</form>

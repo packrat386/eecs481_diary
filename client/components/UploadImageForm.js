@@ -49,12 +49,12 @@ var UploadImageForm = React.createClass({
       {
         success: function(entry){
           console.log("Added image");
-          if(cb) cb(parseEntry(entry));
+          // if(cb) cb(parseEntry(entry));
         },
         error: function(entry, error){
           console.log("Error adding");
           console.log(error);
-          if(cb) cb(null);
+          // if(cb) cb(null);
         }
       }
     );
@@ -91,10 +91,10 @@ var UploadImageForm = React.createClass({
 
   render: function() {
       return  (
-        <form onSubmit={this.handleSubmit}>
+        <div>
           <input type="file" onChange={this.handleChange} id="profilePhotoFileUpload" />
-          <input type="submit" value="Post" />
-        </form>
+          <button type="submit" onClick={this.handleSubmit}>Post</button>
+        </div>
       );
   }
 });

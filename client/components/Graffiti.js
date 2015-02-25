@@ -7,14 +7,18 @@ var Graffiti = React.createClass({
 	},
 
 	disableDrawing: function(){
+		//Set tool to component defined within componentDidMount
 		$(this.refs.sketcher.getDOMNode()).sketch().set('tool', 'nothing');
 	},
 
 	enableDrawing: function(){
+		//
 		$(this.refs.sketcher.getDOMNode()).sketch().set('tool', 'marker');
 	},
 
 	clearDrawing: function(){
+		//Resets canvas actions and redraws canvas
+
 		var canvas = $(this.refs.sketcher.getDOMNode());
 		var ctx = canvas[0].getContext('2d');
 		canvas.sketch().action = [];
@@ -67,8 +71,6 @@ var Graffiti = React.createClass({
 				this.drawImage(this.props.entry.canvasImage);
 			}
 		}
-
-
 
 		if(this.props.readOnly == true){
 			this.disableDrawing();
