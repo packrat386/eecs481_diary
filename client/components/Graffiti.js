@@ -3,22 +3,50 @@ var React = require('react');
 var Graffiti = React.createClass({
 
 	disableDrawing: function(){
-		$(this.refs.sketcher.getDOMNode()).sketch().set('tool', null);
+		$(this.refs.sketcher.getDOMNode()).sketch().set('tool', 'nothing');
 	},
 
 	enableDrawing: function(){
 		$(this.refs.sketcher.getDOMNode()).sketch().set('tool', 'marker');
 	},
 
+	clearDrawing: function(){
+		var canvas = $(this.refs.sketcher.getDOMNode());
+		var ctx = canvas[0].getContext('2d');
+		canvas.sketch().actions = [];
+		ctx.clearRect(0,0,canvas.width, canvas.height);
+		canvas.sketch().redraw();
+	},
+
 	componentDidMount: function(){
-		console.log($(this.getDOMNode()));
 		$(this.refs.sketcher.getDOMNode()).sketch({
 			defaultSize: 10
 		});
+		console.log($.sketch.tools);
+		$.sketch.tools["nothing"] = {
+			draw: function(action){
+
+			},
+			onEvent: function(e){
+
+			}
+		};
+		this.disableDrawing();
 	},
 
-	componentWillUpdate: function(){
-		$(this.refs.sketcher.getDOMNode()).sketch();
+	componentDidUpdate: function(prevProps, prevState){
+		if(prevProps.entryID !== this.props.entryID){
+			console.log("clearDrawing");
+			this.clearDrawing();
+		}
+
+		if(this.props.readOnly == true){
+			console.log("readONly");
+			this.disableDrawing();
+		} else {
+			console.log("drawing");
+			this.enableDrawing();
+		}
 	},
 
 	render: function(){

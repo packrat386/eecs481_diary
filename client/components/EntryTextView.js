@@ -18,7 +18,9 @@ var EntryTextView = React.createClass({
 
 	componentWillReceiveProps: function(newProps){
 		this.setState({
-			entry: newProps.initialEntry
+			entry: newProps.initialEntry,
+			edited: false,
+			readOnly: true
 		});
 	},
 
@@ -104,7 +106,7 @@ var EntryTextView = React.createClass({
 					</div>
 
 					<div className="col-xs-12 col-md-7">
-						<Graffiti />
+						<Graffiti readOnly={this.state.readOnly} entryID={this.state.entry.id}/>
 					</div>
 				</form>
 			);
