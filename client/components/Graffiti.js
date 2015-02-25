@@ -17,6 +17,7 @@ var Graffiti = React.createClass({
 	clearDrawing: function(){
 		var canvas = $(this.refs.sketcher.getDOMNode());
 		var ctx = canvas[0].getContext('2d');
+		canvas.sketch().action = [];
 		canvas.sketch().actions = [];
 		ctx.clearRect(0,0,ctx.width, ctx.height);
 		canvas.sketch().redraw();
@@ -61,13 +62,13 @@ var Graffiti = React.createClass({
 
 	componentDidUpdate: function(prevProps, prevState){
 		if((!prevProps.entry) || (prevProps.entry.id !== this.props.entry.id)){
-			console.log("clearDrawing");
 			this.clearDrawing();
+			if(this.props.entry.canvasImage){
+				this.drawImage(this.props.entry.canvasImage);
+			}
 		}
 
-		if(this.props.entry && this.props.entry.canvasImage){
-			this.drawImage(this.props.entry.canvasImage);
-		}
+
 
 		if(this.props.readOnly == true){
 			this.disableDrawing();
@@ -89,7 +90,7 @@ var Graffiti = React.createClass({
 				<a className="btn btn-default" href="#tools_sketch" data-tool="marker" data-color="#000">Draw</a>
 				<a className="btn btn-default" href="#tools_sketch" data-color="#fff" style={{background: "#fff"}}>Erase</a>
 				<a className="btn btn-default" onClick={this.clearDrawing}>Clear</a>
-				<a className="btn btn-default" onClick={this.getImage}>Download</a>
+				<a className="btn btn-default" href="#tools_sketch" data-download="png">Download</a>
 			</div>);
 		}
 
