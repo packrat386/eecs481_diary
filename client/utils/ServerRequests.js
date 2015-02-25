@@ -86,6 +86,9 @@ var ServerRequests = {
 		diaryEntry.set("title", diary_entry.title);
 		diaryEntry.set("text", diary_entry.text);
 		diaryEntry.set("createdBy", Parse.User.current());
+		if(diary_entry.canvasImage)
+			// diaryEntry.set("canvasImage", new Parse.File("canvas.png", {base64:diary_entry.canvasImage}));
+			diaryEntry.set("canvasImage", diary_entry.canvasImage);
 
 		diaryEntry.save(null, 
 			{
@@ -133,6 +136,11 @@ var ServerRequests = {
 				console.log("updateEntrySuccess");
 				diaryEntry.set("title", diary_entry.title);
 				diaryEntry.set("text", diary_entry.text);
+				if(diary_entry.canvasImage){
+					// diaryEntry.set("canvasImage", new Parse.File("canvas.png", {base64:diary_entry.canvasImage}));
+					diaryEntry.set("canvasImage", diary_entry.canvasImage);
+				}
+
 				diaryEntry.save();
 
 				console.log(diary_entry);

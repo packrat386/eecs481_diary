@@ -2,6 +2,8 @@ var React = require('react');
 var Router = require('react-router');
 var ServerRequests = require('../utils/ServerRequests');
 var DiaryActions = require('../actions/DiaryActions');
+var Graffiti = require('./Graffiti');
+
 
 var AddBasicEntry = React.createClass({
 	mixins: [Router.Navigation],
