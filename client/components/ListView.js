@@ -70,6 +70,9 @@ var ListView = React.createClass({
 	},
 
 	_selectionCallback: function(entry, cb){
+		if(this.state.currentSelected.id == entry.id){
+			return;
+		}
 		this.setState({
 			currentSelected: entry
 		});

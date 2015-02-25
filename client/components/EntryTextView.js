@@ -12,7 +12,8 @@ var EntryTextView = React.createClass({
 		return {
 			entry: this.props.initialEntry,
 			edited: false,
-			readOnly: true
+			readOnly: true,
+			canvasFunc: null
 		};
 	},
 
@@ -106,7 +107,11 @@ var EntryTextView = React.createClass({
 					</div>
 
 					<div className="col-xs-12 col-md-7">
-						<Graffiti readOnly={this.state.readOnly} entryID={this.state.entry.id}/>
+						<Graffiti 
+							readOnly={this.state.readOnly} 
+							entry={this.state.entry}
+							registerCanvas={this.registerCanvas}
+						/>
 					</div>
 				</form>
 			);
@@ -125,6 +130,12 @@ var EntryTextView = React.createClass({
 
 	_onUpdate: function(event){
 		event.preventDefault();
+		console.log('onUpdate');
+		if(this.state.canvasFunc){
+			this.state.entry.canvasImage = this.state.canvasFunc();
+			console.log(this.state.entry.canvasString);
+		}
+
 		DiaryActions.updateEntry(this.state.entry, function(response){
 			this.setState({
 				entry: response,
@@ -167,6 +178,12 @@ var EntryTextView = React.createClass({
 		event.preventDefault();
 		this.setState({
 			readOnly: false
+		});
+	},
+
+	registerCanvas: function(getCanvasFunc){
+		this.setState({
+			canvasFunc: getCanvasFunc
 		});
 	}
 

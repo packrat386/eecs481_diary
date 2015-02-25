@@ -2,6 +2,10 @@ var React = require('react');
 
 var Graffiti = React.createClass({
 
+	getInitialState: function(){
+		return {};
+	},
+
 	disableDrawing: function(){
 		$(this.refs.sketcher.getDOMNode()).sketch().set('tool', 'nothing');
 	},
@@ -14,7 +18,20 @@ var Graffiti = React.createClass({
 		var canvas = $(this.refs.sketcher.getDOMNode());
 		var ctx = canvas[0].getContext('2d');
 		canvas.sketch().actions = [];
-		ctx.clearRect(0,0,canvas.width, canvas.height);
+		ctx.clearRect(0,0,ctx.width, ctx.height);
+		canvas.sketch().redraw();
+	},
+
+	getImage: function(){
+		var canvas = $(this.refs.sketcher.getDOMNode());
+		var ctx = canvas[0].getContext('2d');
+		return canvas.sketch().actions;
+	},
+
+	drawImage: function(actions){
+		var canvas = $(this.refs.sketcher.getDOMNode());
+		var ctx = canvas[0].getContext('2d');
+		canvas.sketch().actions = actions.slice();
 		canvas.sketch().redraw();
 	},
 
@@ -31,20 +48,30 @@ var Graffiti = React.createClass({
 
 			}
 		};
+		if(this.props.registerCanvas){
+			this.props.registerCanvas(this.getImage);
+		}
 		this.disableDrawing();
+
+		if(this.props.entry && this.props.entry.canvasImage){
+			console.log(this.props.entry.canvasImage);
+			this.drawImage(this.props.entry.canvasImage);
+		}
 	},
 
 	componentDidUpdate: function(prevProps, prevState){
-		if(prevProps.entryID !== this.props.entryID){
+		if((!prevProps.entry) || (prevProps.entry.id !== this.props.entry.id)){
 			console.log("clearDrawing");
 			this.clearDrawing();
 		}
 
+		if(this.props.entry && this.props.entry.canvasImage){
+			this.drawImage(this.props.entry.canvasImage);
+		}
+
 		if(this.props.readOnly == true){
-			console.log("readONly");
 			this.disableDrawing();
 		} else {
-			console.log("drawing");
 			this.enableDrawing();
 		}
 	},
@@ -62,7 +89,7 @@ var Graffiti = React.createClass({
 				<a className="btn btn-default" href="#tools_sketch" data-tool="marker" data-color="#000">Draw</a>
 				<a className="btn btn-default" href="#tools_sketch" data-color="#fff" style={{background: "#fff"}}>Erase</a>
 				<a className="btn btn-default" onClick={this.clearDrawing}>Clear</a>
-				<a className="btn btn-default" href="#tools_sketch" data-download="png">Download</a>
+				<a className="btn btn-default" onClick={this.getImage}>Download</a>
 			</div>);
 		}
 

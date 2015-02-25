@@ -6,8 +6,7 @@ var Header = React.createClass({
 	render: function() {
 		return (
 			<div className="page-header">
-				<h1>Welcome Back!</h1>
-				<h4>Your last entry was 4 days ago</h4>
+				<h1>ICU Diary</h1>
 			</div>
 		);
 	}
