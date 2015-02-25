@@ -4,6 +4,7 @@ var DiaryActions = require('../actions/DiaryActions');
 var DiaryEntryStore = require('../stores/DiaryEntryStore');
 var TextAutosize = require('react-textarea-autosize');
 var _ = require('underscore');
+var Graffiti = require('./Graffiti');
 
 var EntryTextView = React.createClass({
 
@@ -65,8 +66,8 @@ var EntryTextView = React.createClass({
 				<form className="form-horizontal">
 					{buttons}
 					<div className="form-group">
-						<label className="col-sm-1 control-label">Created</label>
-						<div className="col-sm-6">
+						<label className="col-md-1 control-label">Created</label>
+						<div className="col-md-6">
 							<input
 								className="form-control"
 								ref="diary_title"
@@ -77,8 +78,8 @@ var EntryTextView = React.createClass({
 					</div>
 
 					<div className="form-group">
-						<label className="col-sm-1 control-label">Title</label>
-						<div className="col-sm-6">
+						<label className="col-md-1 control-label">Title</label>
+						<div className="col-md-6">
 							<input
 								className="form-control"
 								ref="diary_title"
@@ -90,8 +91,8 @@ var EntryTextView = React.createClass({
 					</div>
 
 					<div className="form-group">
-						<label className="col-sm-1 control-label" >Text</label>
-						<div className="col-sm-6">
+						<label className="col-md-1 control-label" >Text</label>
+						<div className="col-md-6">
 							<TextAutosize 
 								className="form-control" 
 								ref="diary_text" 
@@ -100,6 +101,10 @@ var EntryTextView = React.createClass({
 								readOnly={this.state.readOnly}
 							/>
 						</div>
+					</div>
+
+					<div className="col-xs-12 col-md-7">
+						<Graffiti />
 					</div>
 				</form>
 			);

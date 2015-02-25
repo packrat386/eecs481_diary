@@ -168,6 +168,12 @@ var ServerRequests = {
 				console.log(error);
 			}
 		})
+	},
+
+	saveDrawing: function(data, cb){
+		var image_data = data.substring(str.indexOf(',')+1);
+
+		console.log(image_data);
 	}
 };
 

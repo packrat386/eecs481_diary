@@ -2,6 +2,14 @@ var React = require('react');
 
 var Graffiti = React.createClass({
 
+	disableDrawing: function(){
+		$(this.refs.sketcher.getDOMNode()).sketch().set('tool', null);
+	},
+
+	enableDrawing: function(){
+		$(this.refs.sketcher.getDOMNode()).sketch().set('tool', 'marker');
+	},
+
 	componentDidMount: function(){
 		console.log($(this.getDOMNode()));
 		$(this.refs.sketcher.getDOMNode()).sketch({
@@ -16,10 +24,11 @@ var Graffiti = React.createClass({
 	render: function(){
 		var inline_style = {
 				width: '100%',
+				height: '400px',
 				border: '1px solid #ccc'
 		};
 		return (
-			<div className="container">
+			<span>
 				<div ref="tools">
 					<a className="btn btn-default" href="#tools_sketch" data-tool="marker" data-color="#000">Draw</a>
 					<a className="btn btn-default" href="#tools_sketch" data-color="#fff" style={{background: "#fff"}}>Erase</a>
@@ -34,7 +43,7 @@ var Graffiti = React.createClass({
 					style={inline_style}
 				>
 				</canvas>
-			</div>
+			</span>
 		);
 	}
 });
