@@ -30,6 +30,7 @@ var Graffiti = React.createClass({
 	getImage: function(){
 		var canvas = $(this.refs.sketcher.getDOMNode());
 		var ctx = canvas[0].getContext('2d');
+		canvas.sketch().actions.push(canvas.sketch().action);
 		return canvas.sketch().actions;
 	},
 
