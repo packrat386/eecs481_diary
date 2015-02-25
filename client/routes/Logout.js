@@ -5,11 +5,14 @@ var ServerRequests = require('../utils/ServerRequests');
 var Authentication = require('../utils/Authentication');
 
 var Logout = React.createClass({
+	mixins: [Router.Navigation],
 
 	componentDidMount: function(){
 		console.log("log me out");
 		DiaryActions.clearStores();
 		ServerRequests.logout();
+
+		this.transitionTo("/");
 	},
 
 	render: function(){
