@@ -5,6 +5,7 @@ var DiaryEntryStore = require('../stores/DiaryEntryStore');
 var TextAutosize = require('react-textarea-autosize');
 var _ = require('underscore');
 var Graffiti = require('./Graffiti');
+var UploadImageForm = require('./UploadImageForm');
 
 var EntryTextView = React.createClass({
 
@@ -113,13 +114,21 @@ var EntryTextView = React.createClass({
 							registerCanvas={this.registerCanvas}
 						/>
 					</div>
+
+					<div className="col-xs-12 col-md-7">
+
+					<h3> Add Photo: </h3>
+					<button type="button">Select File!</button>
+					<UploadImageForm />
+
+					</div>
+
 				</form>
 			);
 		} else {
 			current_component = 
 				(<div className="jumbotron col-xs-7">
 					<h3>Diary entries show up here!</h3>
-					
 				</div>);
 		} 
 		return (
