@@ -27,7 +27,7 @@ var Header = React.createClass({
 		}
 
 		return (
-			<div className="page-header">
+			<div className="page-header" id="header">
 				<h1>ICU Diary</h1>
 				{user_header}
 			</div>
@@ -47,7 +47,7 @@ var PageNav = React.createClass({
 
 		}
 		return (
-			<ul className="nav nav-pills">
+			<ul className="nav nav-pills" id="nav-bar">
 				<li role="presentation">
 					<Router.Link to="home">Home</Router.Link>
 				</li>

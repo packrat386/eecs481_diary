@@ -10,6 +10,11 @@ var Main = React.createClass({
 
 	componentDidMount: function(){
 		document.title = "ICU Diary | View All";
+
+		//Scroll Test
+		// $('html,body').animate({
+  // 			scrollTop: $("#nav-bar").offset().top
+		// });
 	},
 
 	render: function(){

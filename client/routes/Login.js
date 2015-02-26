@@ -42,23 +42,6 @@ var Login = React.createClass({
 				}
 			}
 		}.bind(this));
-
-		// ServerRequests.login(username, password, function(loggedIn){
-		// 	console.log("handleLogin");
-		// 	if(!loggedIn){
-		// 		return this.setState({signinMessage:"Unable to log in"});
-		// 	}
-
-		// 	DiaryActions.clearStores();
-
-		// 	if(Login.attemptedTransition){
-		// 		var transition =  Login.attemptedTransition;
-		// 		Login.attemptedTransition = null;
-		// 		transition.retry();
-		// 	} else {
-		// 		this.transitionTo('/main');
-		// 	}
-		// }.bind(this));	
 	},
 
 	handleSignup: function(event){
