@@ -8,6 +8,10 @@ var Authentication = require('../utils/Authentication');
 var AddEntry = React.createClass({
 	mixins: [Authentication],
 
+	componentDidMount: function(){
+		document.title = "ICU Diary | Add";
+	},
+
 	render: function(){
 		return (
 			<div className="container">

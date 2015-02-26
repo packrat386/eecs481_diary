@@ -1,12 +1,35 @@
 var React = require('react'),
 	Router = require('react-router');
 var ServerRequests = require('../utils/ServerRequests');
+var CurrentUserStore = require('../stores/CurrentUserStore');
 
 var Header = React.createClass({
+	componentDidMount: function() {
+		CurrentUserStore.addChangeListener(this._onChange);
+	},
+
+	componentWillUnmount: function() {
+		CurrentUserStore.removeChangeListener(this._onChange);
+	},
+
+	_onChange: function(){
+		this.setState({});
+	},
+
 	render: function() {
+
+		var user_header = null;
+		if(ServerRequests.loggedIn()){
+			console.log(ServerRequests.currentUser()); 
+			user_header = (
+				<p>Logged in as <b>{ServerRequests.currentUser().attributes.username}</b></p>
+			);
+		}
+
 		return (
 			<div className="page-header">
 				<h1>ICU Diary</h1>
+				{user_header}
 			</div>
 		);
 	}

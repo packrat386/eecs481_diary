@@ -8,6 +8,10 @@ var ListView = require('../components/ListView');
 var Main = React.createClass({
 	mixins: [Authentication],
 
+	componentDidMount: function(){
+		document.title = "ICU Diary | View All";
+	},
+
 	render: function(){
 		return (
 			<div className="container">

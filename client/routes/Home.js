@@ -2,6 +2,10 @@ var React = require('react');
 var Router = require('react-router');
 
 var Home = React.createClass({
+	componentDidMount: function(){
+		document.title = "ICU Diary | Home";
+	},
+
 	render: function() {
 		return (
 			<div className="jumbotron">

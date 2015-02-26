@@ -3,10 +3,17 @@ var DiaryConstants = require('../constants/DiaryConstants');
 var _ = require('underscore');
 var EventEmitter = require('events').EventEmitter;
 
-var _is_editing = false;
+var _current_user = null;
 
+function login(user){
+	_current_user = user;
+}
 
-var EditingEntryStore = _.extend({}, EventEmitter.prototype, {
+function logout(){
+	_current_user = null;
+}
+
+var CurrentUserStore = _.extend({}, EventEmitter.prototype, {
 	emitChange: function(){
 		this.emit('change');
 	},
@@ -26,4 +33,25 @@ var EditingEntryStore = _.extend({}, EventEmitter.prototype, {
 	}
 });
 
-var module.exports = EditingEntryStore;
+// Register callback with AppDispatcher
+AppDispatcher.register(function(payload) {
+	var action = payload.action;
+
+	switch(action.actionType) {
+		case DiaryConstants.LOGIN:
+			login(action.data);
+			break;
+
+
+		case DiaryConstants.LOGOUT:
+			logout();
+			break;
+
+		default:
+			return true;
+	}
+
+	return true;
+});
+
+module.exports = CurrentUserStore;

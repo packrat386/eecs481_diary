@@ -1,6 +1,10 @@
 React = require('react');
 
 var About = React.createClass({
+	componentDidMount: function(){
+		document.title = "ICU Diary | About";
+	},
+
 	render: function() {
 		return (
 	  	<div className="jumbotron">

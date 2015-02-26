@@ -72,6 +72,28 @@ var DiaryActions = {
 			actionType: DiaryConstants.CLEAR_STORES,
 			data: null
 		})
+	},
+
+	login: function(credentials, cb){
+		ServerRequests.login(credentials.username, credentials.password, function(response){
+			console.log("handleLogin");
+
+			if(response){
+				AppDispatcher.handleAction({
+					actionType: DiaryConstants.CLEAR_STORES,
+					data: response
+				});
+
+				if(cb) cb(response);
+			} else {
+				if(cb) cb(null);
+			}
+
+		});
+	},
+
+	logout: function(){
+
 	}
 };
 

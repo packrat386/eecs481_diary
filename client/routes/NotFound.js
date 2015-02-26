@@ -2,6 +2,10 @@ var React = require('react');
 var Router = require('react-router');
 
 var NotFound = React.createClass({
+	componentDidMount: function(){
+		document.title = "ICU Diary | 404";
+	},
+
 	render: function(){
 
 		return (

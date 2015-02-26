@@ -17,28 +17,48 @@ var Login = React.createClass({
 		};
 	},
 
+	componentDidMount: function(){
+		document.title = "ICU Diary | Login";
+	},
+
 	handleLogin: function(event){
 		event.preventDefault();
 		var username = this.refs.username.getDOMNode().value;
 		var password = this.refs.pass.getDOMNode().value;
 		console.log("handleLogin: " + username + " " + password);
 	
-		ServerRequests.login(username, password, function(loggedIn){
-			console.log("handleLogin");
-			if(!loggedIn){
-				return this.setState({signinMessage:"Unable to log in"});
+		DiaryActions.login({
+			username: username,
+			password: password
+		}, function(response){
+			if(response){	
+				DiaryActions.clearStores();
+				if(Login.attemptedTransition){
+					var transition =  Login.attemptedTransition;
+					Login.attemptedTransition = null;
+					transition.retry();
+				} else {
+					this.transitionTo('/main');
+				}
 			}
+		}.bind(this));
 
-			DiaryActions.clearStores();
+		// ServerRequests.login(username, password, function(loggedIn){
+		// 	console.log("handleLogin");
+		// 	if(!loggedIn){
+		// 		return this.setState({signinMessage:"Unable to log in"});
+		// 	}
 
-			if(Login.attemptedTransition){
-				var transition =  Login.attemptedTransition;
-				Login.attemptedTransition = null;
-				transition.retry();
-			} else {
-				this.transitionTo('/main');
-			}
-		}.bind(this));	
+		// 	DiaryActions.clearStores();
+
+		// 	if(Login.attemptedTransition){
+		// 		var transition =  Login.attemptedTransition;
+		// 		Login.attemptedTransition = null;
+		// 		transition.retry();
+		// 	} else {
+		// 		this.transitionTo('/main');
+		// 	}
+		// }.bind(this));	
 	},
 
 	handleSignup: function(event){

@@ -45,11 +45,11 @@ var ServerRequests = {
 		console.log("LoginAccount");
 		Parse.User.logIn(username, password, {
 			success: function(user){
-				cb(true);
+				cb(user);
 			}, 
 			error: function(user, error){
 				console.log(error);
-				cb(false);
+				cb(null);
 			}
 		});
 	},

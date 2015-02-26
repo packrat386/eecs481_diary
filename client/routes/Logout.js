@@ -8,6 +8,10 @@ var Logout = React.createClass({
 	mixins: [Router.Navigation],
 
 	componentDidMount: function(){
+		document.title = "ICU Diary | Logout";
+	},
+
+	componentDidMount: function(){
 		console.log("log me out");
 		DiaryActions.clearStores();
 		ServerRequests.logout();

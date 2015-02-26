@@ -6,5 +6,7 @@ module.exports = keyMirror({
 	DIARY_DELETE: null,
 	DIARY_SELECT: null,
 	DIARY_UPDATE: null,
-	CLEAR_STORES: null
+	CLEAR_STORES: null,
+	LOGIN: null,
+	LOGOUT: null
 });
