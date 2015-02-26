@@ -38,6 +38,9 @@ var Graffiti = React.createClass({
 		var canvas = $(this.refs.sketcher.getDOMNode());
 		var ctx = canvas[0].getContext('2d');
 		canvas.sketch().actions = actions.slice();
+		if(canvas.sketch().actions && canvas.sketch().actions.length > 0){
+			canvas.sketch().action = canvas.sketch().actions[canvas.sketch().actions.length-1];
+		}
 		canvas.sketch().redraw();
 	},
 
