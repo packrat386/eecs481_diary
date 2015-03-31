@@ -5,73 +5,73 @@ var Router = require('react-router');
 var _ = require('underscore');
 var moment = require('moment');
 
-var parseEntry = function(entry){
-	return _.extend({}, 
+var parseEntry = function (entry) {
+	return _.extend({},
 		entry.attributes,
 		{
-			id:entry.id,
+			id: entry.id,
 			createdAt: moment(entry.createdAt, "ddd MMM DD YYYY hh:mm:ss"),
 			updatedAt: moment(entry.createdAt, "ddd MMM DD YYYY hh:mm:ss")
-		}	
+		}
 	)
-}
+};
 
 var ServerRequests = {
-	createUser: function(username, password, cb){
+	createUser: function (username, password, cb) {
 		console.log("CreateAccount");
-		Parse.User.signUp(username, password, {ACL: new Parse.ACL()}, 
-		{
-			success: function(user){
-				if(cb) cb(true);
-				if(Parse.User.current())
-					console.log("LoggedIn");
-				else 
-					console.log("Not logged in");
-			},
-			error: function(user, error){
-				if(cb) cb(false);
-				console.log(error);
-			}
-		});
+		Parse.User.signUp(username, password, {ACL: new Parse.ACL()},
+			{
+				success: function (user) {
+					if (cb) cb(true);
+					if (Parse.User.current())
+						console.log("LoggedIn");
+					else
+						console.log("Not logged in");
+				},
+				error: function (user, error) {
+					if (cb) cb(false);
+					console.log(error);
+				}
+			});
 	},
 
-	login: function(username, password, cb){
+	login: function (username, password, cb) {
 		// if(localStorage.token){
-		if(!(Parse.User.current() === null)){
+		if (!(Parse.User.current() === null)) {
 			console.log("Already logged in");
 			return false;
 		}
 
 		console.log("LoginAccount");
 		Parse.User.logIn(username, password, {
-			success: function(user){
+			success: function (user) {
 				cb(user);
-			}, 
-			error: function(user, error){
+			},
+			error: function (user, error) {
 				console.log(error);
 				cb(null);
 			}
 		});
 	},
 
-	logout: function(){
+	logout: function () {
 		Parse.User.logOut();
 	},
 
-	loggedIn: function(){
+	loggedIn: function () {
 		return !(Parse.User.current() === null);
 	},
 
-	currentUser: function(){
+	currentUser: function () {
 		return Parse.User.current();
 	},
 
-	addEntry: function(diary_entry, cb){
+	addEntry: function (diary_entry, cb) {
 		//Diary Entry Structure
 		// {title, text}
 
-		if(!Parse.User.current()){
-			if(cb) cb(null);
+		if (!Parse.User.current()) {
+			if (cb) cb(null);
 			return null;
 		}
 
@@ -82,57 +82,112 @@ var ServerRequests = {
 		diaryEntry.set("title", diary_entry.title);
 		diaryEntry.set("text", diary_entry.text);
 		diaryEntry.set("createdBy", Parse.User.current());
-		if(diary_entry.canvasImage)
-			// diaryEntry.set("canvasImage", new Parse.File("canvas.png", {base64:diary_entry.canvasImage}));
+		if (diary_entry.canvasImage)
+		// diaryEntry.set("canvasImage", new Parse.File("canvas.png", {base64:diary_entry.canvasImage}));
 			diaryEntry.set("canvasImage", diary_entry.canvasImage);
 
-		diaryEntry.save(null, 
+		diaryEntry.save(null,
 			{
-				success: function(entry){
+				success: function (entry) {
 					console.log("Added entry");
-					if(cb) cb(parseEntry(entry));
+					if (cb) cb(parseEntry(entry));
 				},
-				error: function(entry, error){
+				error: function (entry, error) {
 					console.log("Error adding");
 					console.log(error);
-					if(cb) cb(null);
+					if (cb) cb(null);
 				}
 			}
 		);
 
 	},
+	addDoodle: function (diary_entry, cb) {
+		if (!Parse.User.current()) {
+			if (cb) cb(null);
+			return null;
+		}
+		console.log(diary_entry);
 
-	removeEntry: function(diary_entry, cb){
+		var DiaryEntry = Parse.Object.extend("DiaryEntry");
+		var diaryEntry = new DiaryEntry();
+		diaryEntry.set("title", diary_entry.title);
+		diaryEntry.set("createdBy", Parse.User.current());
+		diaryEntry.set("type", "doodle");
+		diaryEntry.set("canvasImage", diary_entry.canvasImage);
+		diaryEntry.save(null,
+			{
+				success: function (entry) {
+					console.log("Added doodle entry");
+					if (cb) cb(parseEntry(entry));
+				},
+				error: function (entry, error) {
+					console.log("Error adding doodle entry");
+					console.log(error);
+					if (cb) cb(null);
+				}
+			}
+		);
+	},
+
+	addVisit: function(diary_entry, cb) {
+		if (!Parse.User.current()) {
+			if (cb) cb(null);
+			return null;
+		}
+		console.log(diary_entry);
+
+		var DiaryEntry = Parse.Object.extend("DiaryEntry");
+		var diaryEntry = new DiaryEntry();
+		diaryEntry.set("title", diary_entry.title);
+		diaryEntry.set("createdBy", Parse.User.current());
+		diaryEntry.set("type", "visit");
+		diaryEntry.set("data", diary_entry.visitor);
+		diaryEntry.save(null,
+			{
+				success: function (entry) {
+					console.log("Added visit entry");
+					if (cb) cb(parseEntry(entry));
+				},
+				error: function (entry, error) {
+					console.log("Error adding visit entry");
+					console.log(error);
+					if (cb) cb(null);
+				}
+			}
+		);
+	},
+
+	removeEntry: function (diary_entry, cb) {
 		var DiaryEntry = Parse.Object.extend("DiaryEntry");
 		var queryObject = new Parse.Query(DiaryEntry);
 		queryObject.get(diary_entry.id, {
-			success: function(entry){
+			success: function (entry) {
 				entry.destroy({
-					success: function(deleted_entry){
+					success: function (deleted_entry) {
 						console.log(deleted_entry);
-						if(cb) cb(true);
+						if (cb) cb(true);
 					},
-					error: function(deleted_entry, error){
+					error: function (deleted_entry, error) {
 						console.log(error);
-						if(cb) cb(false);
+						if (cb) cb(false);
 					}
 				})
 			},
-			error: function(entry, error){
+			error: function (entry, error) {
 				console.log(error);
 			}
 		});
 	},
 
-	updateEntry: function(diary_entry, cb){
+	updateEntry: function (diary_entry, cb) {
 		var DiaryEntry = Parse.Object.extend("DiaryEntry");
 		var queryObject = new Parse.Query(DiaryEntry);
 		queryObject.get(diary_entry.id, {
-			success: function(diaryEntry){
+			success: function (diaryEntry) {
 				console.log("updateEntrySuccess");
 				diaryEntry.set("title", diary_entry.title);
 				diaryEntry.set("text", diary_entry.text);
-				if(diary_entry.canvasImage){
+				if (diary_entry.canvasImage) {
 					// diaryEntry.set("canvasImage", new Parse.File("canvas.png", {base64:diary_entry.canvasImage}));
 					diaryEntry.set("canvasImage", diary_entry.canvasImage);
 				}
@@ -141,41 +196,41 @@ var ServerRequests = {
 
 				console.log(diary_entry);
 
-				if(cb) cb(diary_entry);
+				if (cb) cb(diary_entry);
 			},
-			error: function(diaryEntry, error){
+			error: function (diaryEntry, error) {
 				console.log(error);
-				if(cb) cb(null);
+				if (cb) cb(null);
 			}
 		});
 
 	},
 
-	getEntries: function(cb){
+	getEntries: function (cb) {
 		console.log("getEntries");
 		var DiaryEntry = Parse.Object.extend("DiaryEntry");
 		var queryObject = new Parse.Query(DiaryEntry).equalTo("createdBy", Parse.User.current());
 		queryObject.ascending("createdAt");
 		queryObject.find({
-			success: function(results){
+			success: function (results) {
 				console.log(results);
 				var b = performance.now();
-				if(cb){
+				if (cb) {
 					entries = [];
-					for(var i = 0; i < results.length; i++){
+					for (var i = 0; i < results.length; i++) {
 						entries.push(parseEntry(results[i]));
 					}
 					cb(entries);
 				}
 			},
-			error: function(error){
+			error: function (error) {
 				console.log(error);
 			}
 		})
 	},
 
-	saveDrawing: function(data, cb){
-		var image_data = data.substring(str.indexOf(',')+1);
+	saveDrawing: function (data, cb) {
+		var image_data = data.substring(str.indexOf(',') + 1);
 
 		console.log(image_data);
 	}

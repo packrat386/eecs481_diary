@@ -20,7 +20,7 @@ var Header = React.createClass({
 
 		var user_header = null;
 		if(ServerRequests.loggedIn()){
-			console.log(ServerRequests.currentUser()); 
+			console.log(ServerRequests.currentUser());
 			user_header = (
 				<p>Logged in as <b>{ServerRequests.currentUser().attributes.username}</b></p>
 			);
@@ -37,7 +37,7 @@ var Header = React.createClass({
 
 var PageNav = React.createClass({
 	render: function() {
-		var extra_nav = []
+		var extra_nav = [];
 		if(!ServerRequests.loggedIn()){
 			extra_nav.push(<li role="presentation"> <Router.Link to="login">Login/Create Account</Router.Link> </li>);
 		} else {
@@ -79,7 +79,11 @@ var routes = {
 	Logout: require('../routes/Logout'),
 	Main: require('../routes/Main'),
 	NotFound: require('../routes/NotFound'),
-	AddEntry: require('../routes/AddEntry')
+	AddEntry: require('../routes/AddEntry'),
+	AddBasicEntry: require('../routes/AddBasicEntry'),
+	AddDoodleEntry: require('../routes/AddDoodleEntry'),
+	AddMoodEntry: require('../routes/AddMoodEntry'),
+	AddVisitEntry: require('../routes/AddVisitEntry')
 };
 
 var routes = (
@@ -90,6 +94,10 @@ var routes = (
 		<Router.Route name="logout" path="/logout" handler={routes.Logout}/>
 		<Router.Route name="main" path="/main" handler={routes.Main}/>
 		<Router.Route name="add" path="/add" handler={routes.AddEntry}/>
+		<Router.Route name="addText" path="/add/text" handler={routes.AddBasicEntry}/>
+		<Router.Route name="addDoodle" path="/add/doodle" handler={routes.AddDoodleEntry}/>
+		<Router.Route name="addMood" path="/add/mood" handler={routes.AddMoodEntry}/>
+		<Router.Route name="addVisit" path="/add/visit" handler={routes.AddVisitEntry}/>
 		<Router.DefaultRoute handler={routes.Home}/>
 		<Router.NotFoundRoute handler={routes.NotFound}/>
 	</Router.Route>
