@@ -68,6 +68,8 @@ var EntryTextView = React.createClass({
 
 		if(this.state.entry){
 			current_component = (
+
+
 				<form className="form-horizontal">
 					{buttons}
 					<div className="form-group">

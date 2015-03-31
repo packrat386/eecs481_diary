@@ -9,6 +9,8 @@ var AddMoodEntry = React.createClass({
 	mixins: [Router.Navigation],
 
 
+
+
 	submitEntry: function(event){
 		event.preventDefault();
 		var title = this.refs.title.getDOMNode().value;

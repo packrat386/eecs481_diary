@@ -5,9 +5,22 @@ var DiaryActions = require('../actions/DiaryActions');
 var Graffiti = require('./Graffiti');
 
 
+
+function getEntryTypes() {
+	return [
+		{name: "Andrew", icon: "glyphicon glyphicon-pencil", type: "text", path: ""},
+		{name: "Eric", icon: "glyphicon glyphicon-picture", type: "text", path: ""},
+		{name: "Katie", icon: "glyphicon glyphicon-heart", type: "text", path: ""},
+		{name: "Visit", icon: "glyphicon glyphicon-user", type: "text", path: ""}
+	];
+}
+
 var AddBasicEntry = React.createClass({
 	mixins: [Router.Navigation],
 
+	getInitialState: function(){
+		return { types: getEntryTypes() };
+	},
 
 	submitEntry: function(event){
 		event.preventDefault();
@@ -27,29 +40,24 @@ var AddBasicEntry = React.createClass({
 
 	render: function(){
 
+		var entryTypes = this.state.types.map(function (entryType) {
+			return (
+				<div className="btn-group">
+						<button type="button" className="btn-lg">
+							{ entryType.name }
+						</button>
+				</div>
+			);
+		});
+
 		return (
-			<form className="form-horizontal" onSubmit={this.submitEntry}>
-				<h3>Add Visit Entry</h3>
-				<div className="form-group">
-					<label className="col-sm-1 control-label">Title</label>
-					<div className="col-sm-10">
-						<input ref="title" type="title" className="form-control"/>
-					</div>
-				</div>
+			<div> 
+			<h1>Who is visiting today?</h1>
+			{entryTypes}
+			<h1>Someone new?</h1>
 
-				<div className="form-group">
-					<label className="col-sm-1 control-label">Diary Text</label>
-					<div className="col-sm-10">
-						<textarea ref="text" className="form-control" rows="4"></textarea>
-					</div>
-				</div>
+			</div>
 
-				<div className="form-group">
-					<div className="col-sm-offset-1 col-sm-10">
-						<button type="submit" className="btn btn-primary">Create Entry</button>
-					</div>
-				</div>
-			</form>
 		);
 	}
 });
