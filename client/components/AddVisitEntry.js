@@ -51,11 +51,24 @@ var AddBasicEntry = React.createClass({
 		});
 
 		return (
+
 			<div> 
 			<h1>Who is visiting today?</h1>
 			{entryTypes}
 			<h1>Someone new?</h1>
+			<form className="form-horizontal" onSubmit={this.submitEntry}>
+				<div className="form-group">
+					<label className="col-sm-1 control-label">Name?</label>
+					<div className="col-sm-10">
+						<input ref="title" type="title" className="form-control"/>
+					</div>
+				</div>
+				<button type="button" className="btn">
+				 Done
+				</button>
 
+
+			</form>
 			</div>
 
 		);
