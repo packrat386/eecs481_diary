@@ -12,13 +12,11 @@ var Graffiti = React.createClass({
 	},
 
 	enableDrawing: function(){
-		//
 		$(this.refs.sketcher.getDOMNode()).sketch().set('tool', 'marker');
 	},
 
 	clearDrawing: function(){
 		//Resets canvas actions and redraws canvas
-
 		var canvas = $(this.refs.sketcher.getDOMNode());
 		var ctx = canvas[0].getContext('2d');
 		canvas.sketch().action = [];
@@ -28,6 +26,7 @@ var Graffiti = React.createClass({
 	},
 
 	getImage: function(){
+		//Get the actions array from the canvas
 		var canvas = $(this.refs.sketcher.getDOMNode());
 		var ctx = canvas[0].getContext('2d');
 		canvas.sketch().actions.push(canvas.sketch().action);
@@ -35,6 +34,7 @@ var Graffiti = React.createClass({
 	},
 
 	drawImage: function(actions){
+		//Draws all the actions onto the canvas
 		var canvas = $(this.refs.sketcher.getDOMNode());
 		var ctx = canvas[0].getContext('2d');
 		canvas.sketch().actions = actions.slice();
@@ -49,6 +49,8 @@ var Graffiti = React.createClass({
 			defaultSize: 10
 		});
 		console.log($.sketch.tools);
+
+		//Set the non-drawing "tool"
 		$.sketch.tools["nothing"] = {
 			draw: function(action){
 
@@ -57,11 +59,16 @@ var Graffiti = React.createClass({
 
 			}
 		};
+
+		//Register function with parent to return image when needed
 		if(this.props.registerCanvas){
 			this.props.registerCanvas(this.getImage);
 		}
+
+		//Initial disable drawing on the graffiti
 		this.disableDrawing();
 
+		//Draw image if entry is passed down
 		if(this.props.entry && this.props.entry.canvasImage){
 			console.log(this.props.entry.canvasImage);
 			this.drawImage(this.props.entry.canvasImage);
@@ -69,13 +76,16 @@ var Graffiti = React.createClass({
 	},
 
 	componentDidUpdate: function(prevProps, prevState){
+
+		//Redraws the new graffiti based on new props
 		if((!prevProps.entry) || (prevProps.entry.id !== this.props.entry.id)){
 			this.clearDrawing();
-			if(this.props.entry.canvasImage){
+			if(this.props.entry && this.props.entry.canvasImage){
 				this.drawImage(this.props.entry.canvasImage);
 			}
 		}
 
+		//Only allows drawing when edit is false
 		if(this.props.readOnly == true){
 			this.disableDrawing();
 		} else {

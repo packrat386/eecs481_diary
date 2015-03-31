@@ -28,8 +28,8 @@ var CurrentUserStore = _.extend({}, EventEmitter.prototype, {
 		this.removeListener('change', callback);
 	},
 
-	currentSelected: function(){
-		return _selected_entry;
+	getUser: function(){
+		return _current_user;
 	}
 });
 
