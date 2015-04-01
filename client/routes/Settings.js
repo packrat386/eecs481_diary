@@ -5,14 +5,23 @@ var Authentication = require('../utils/Authentication');
 var CurrentUserStore = require('../stores/CurrentUserStore');
 var DiaryActions = require('../actions/DiaryActions');
 var Parse = require('../utils/ParseInit');
+var UpdateEmail = require('../components/UpdateEmail');
+var UpdatePassword = require('../components/UpdatePassword');
 
 var Settings = React.createClass({
 	mixins: [Authentication],
 
+	componentDidMount: function() {
+		CurrentUserStore.addChangeListener(this._onChange);
+	},
+
+	componentWillUnmount: function() {
+		CurrentUserStore.removeChangeListener(this._onChange);
+	},
+
 	getInitialState: function() {
 		return {
-			updatePasswordMessage: null,
-			updateEmailMessage: null
+			currentUser: CurrentUserStore.getUser()
 		};
 	},
 
@@ -120,6 +129,12 @@ var Settings = React.createClass({
 				</div>;
 		}
 
+		//Instantiate patient list
+		var patients = null;
+		if(CurrentUserStore.getUser().attributes.user_type == "staff"){
+
+		}
+
 		return (
 
 			<div className="container">
@@ -127,22 +142,11 @@ var Settings = React.createClass({
 				<p>{user_type_component}</p>
 				<hr className="col-md-12"/>
 
-				<h3>Update Password</h3>
-				{updatePasswordComponent}
-				<form onSubmit={this.changePassword} ref="update_password_form">
-		       		<label><input className={input_className} type="password" ref="pass1" placeholder="Password"/></label><br/>
-		       		<label><input className={input_className} type="password" ref="pass1_confirm" placeholder="Confirm Password"/></label><br/>
-		        	<button className={button_className} type="submit">Update Password</button>
-					
-				</form>
+				<UpdatePassword />
 				<hr className="col-md-12"/>
 
 				<h3>Update E-mail</h3>
-				{updateEmailComponent}
-				<form onSubmit={this.updateEmail} ref="update_email_form">
-					{email_component}
-		        	<button className={button_className} type="submit">Update E-mail</button>
-				</form>
+				<UpdateEmail />
 				<hr className="col-md-12"/>
 			</div>
 		)
