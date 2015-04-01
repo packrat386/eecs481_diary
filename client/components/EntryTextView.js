@@ -8,6 +8,8 @@ var Graffiti = require('./Graffiti');
 var UploadImageForm = require('./UploadImageForm');
 var moment = require('moment');
 
+var Parse = require('../utils/ParseInit');
+
 var EntryTextView = React.createClass({
 
 	getInitialState: function(){
@@ -72,6 +74,18 @@ var EntryTextView = React.createClass({
 
 				<form className="form-horizontal">
 					{buttons}
+					<div className="form-group">
+						<label className="col-md-1 control-label">Updated</label>
+						<div className="col-md-6">
+							<input
+								className="form-control"
+								ref="diary_title"
+								value={this.state.entry.updatedAt.format("dddd, MMMM Do YYYY, h:mm:ss a")}
+								readOnly="true"
+							/>
+						</div>
+					</div>
+
 					<div className="form-group">
 						<label className="col-md-1 control-label">Created</label>
 						<div className="col-md-6">
@@ -148,11 +162,14 @@ var EntryTextView = React.createClass({
 		}
 
 		DiaryActions.updateEntry(this.state.entry, function(response){
-			this.setState({
-				entry: response,
-				edited: false,
-				readOnly: true
-			});
+			if(!(response instanceof Parse.Error)){
+				this.setState({
+					entry: response,
+					edited: false,
+					readOnly: true
+				});		
+			}
+
 		}.bind(this));
 	},
 

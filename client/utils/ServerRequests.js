@@ -11,15 +11,15 @@ var parseEntry = function (entry) {
 		{
 			id: entry.id,
 			createdAt: moment(entry.createdAt, "ddd MMM DD YYYY hh:mm:ss"),
-			updatedAt: moment(entry.createdAt, "ddd MMM DD YYYY hh:mm:ss")
+			updatedAt: moment(entry.updatedAt, "ddd MMM DD YYYY hh:mm:ss")
 		}
 	)
 };
 
 var ServerRequests = {
-	createUser: function (username, password, cb) {
+	createUser: function (user_obj, cb) {
 		console.log("CreateAccount");
-		Parse.User.signUp(username, password, {ACL: new Parse.ACL()},
+		Parse.User.signUp(user_obj.username, user_obj.password, {user_type: user_obj.user_type, ACL: new Parse.ACL()},
 			{
 				success: function (user) {
 					if (cb) cb(user);
@@ -194,16 +194,43 @@ var ServerRequests = {
 
 				diaryEntry.save();
 
-				console.log(diary_entry);
+				console.log("Server requests updateEntry");
+				console.log(parseEntry(diaryEntry));
 
-				if (cb) cb(diary_entry);
+				if (cb) cb(parseEntry(diaryEntry));
 			},
 			error: function (diaryEntry, error) {
 				console.log(error);
-				if (cb) cb(null);
+				if (cb) cb(error);
 			}
 		});
 
+	},
+
+	updateCurrentUser: function(data, cb){
+		console.log("Server Requests updateCurrentUser");
+		var currentUser = Parse.User.current();
+		// for(key in data){
+		// 	console.log(key + " " + data[key]);
+
+		// 	if(data.hasOwnProperty(data)){
+		// 		console.log(key + " " + data[key]);
+		// 		currentUser.set(key, data[key]);
+		// 	}
+		// }
+		currentUser.save(data, {
+			success: function(currentUser) {
+				// Execute any logic that should take place after the object is saved.
+				console.log("User update success");
+				console.log(currentUser);
+				if(cb) return cb(currentUser);
+			},
+			error: function(currentUser, error) {
+				// Execute any logic that should take place if the save fails.
+				// error is a Parse.Error with an error code and message.
+				if(cb) return cb(error);
+			}
+		});
 	},
 
 	getEntries: function (cb) {

@@ -6,11 +6,17 @@ var EventEmitter = require('events').EventEmitter;
 var _current_user = null;
 
 function login(user){
+	console.log("Login CurrentUserStore");
 	_current_user = user;
 }
 
 function logout(){
 	_current_user = null;
+}
+
+function update(user){
+	console.log("Update CurrentUserStore");
+	_current_user = user;
 }
 
 var CurrentUserStore = _.extend({}, EventEmitter.prototype, {
@@ -30,6 +36,10 @@ var CurrentUserStore = _.extend({}, EventEmitter.prototype, {
 
 	getUser: function(){
 		return _current_user;
+	},
+
+	setUser: function(user){
+		_current_user = user;
 	}
 });
 
@@ -45,6 +55,10 @@ AppDispatcher.register(function(payload) {
 
 		case DiaryConstants.LOGOUT:
 			logout();
+			break;
+
+		case DiaryConstants.UPDATE_USER:
+			update(action.data);
 			break;
 
 		default:

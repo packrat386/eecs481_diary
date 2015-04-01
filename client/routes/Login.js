@@ -45,7 +45,6 @@ var Login = React.createClass({
 			if(response instanceof Parse.Error){	
 				this.setState({signinMessage: response.message.capitalizeFirstLetter()});
 			} else {
-				DiaryActions.clearStores();
 				if(Login.attemptedTransition){
 					var transition =  Login.attemptedTransition;
 					Login.attemptedTransition = null;
@@ -61,6 +60,13 @@ var Login = React.createClass({
 		event.preventDefault();
 		var username = this.refs.username1.getDOMNode().value;
 		var password = this.refs.pass1.getDOMNode().value;
+		var password_confirm = this.refs.pass1_confirm.getDOMNode().value;
+
+		if(password != password_confirm){
+			this.setState({signupMessage: "Passwords don't match"});
+			return;
+		}
+
 		var user_type = $("input:radio:checked").val();
 		console.log($("input:radio:checked").val());
 
@@ -71,7 +77,7 @@ var Login = React.createClass({
 		console.log("handleSignup: " + username + " " + password);
 
 		//Hack, fix this: This should be an action through DiaryActions to create a user account like logins
-		ServerRequests.createUser(username, password, function(createdAccount){
+		ServerRequests.createUser({username: username, password: password, user_type: user_type}, function(createdAccount){
 			if(createdAccount instanceof Parse.Error){
 				console.log(createdAccount);
 				this.setState({signupMessage: createdAccount.message.capitalizeFirstLetter()});
@@ -120,49 +126,39 @@ var Login = React.createClass({
 		var button_className = "btn btn-lg btn-primary";
 		return (
 			<div>
-				<div className="row">
+				<div className="col-xs-12 col-sm-12 col-md-4">
 					<h2>Sign-In</h2>
-				</div>
-				<div className="row">
 					{signinComponent}
+					<form onSubmit={this.handleLogin}>
+
+						<label><input className={input_className} ref="username" placeholder="Username"/></label><br/>
+
+						<label><input className={input_className} type="password"  ref="pass" placeholder="Password"/></label><br/>
+
+						<button className={button_className} type="submit">Login</button><br/>
+						
+					</form>
 				</div>
-				<form onSubmit={this.handleLogin}>
-					<div className="row">
-			        	<label><input className={input_className} ref="username" placeholder="Username"/></label>
-			        </div>
 
-			        <div className="row">
-			        	<label><input className={input_className} type="password"  ref="pass" placeholder="Password"/></label><br/>
-			        </div>
-
-			        <div className="row">
-			        	<button className={button_className} type="submit">Login</button>
-					</div>
-				</form>
-				<div className="row">
+				<div className="col-xs-12 col-sm-12 col-md-4">
 					<h2>Create Account</h2>
-				</div>
-
-				<div className="row">
 					{signupComponent}
-				</div>
-				<form onSubmit={this.handleSignup} ref="create_user_form">
-			        <div className="row">
-			        	<label><input className={input_className} ref="username1" placeholder="Username"/></label>
-			        </div>
-			        <div className="row">
+					<form onSubmit={this.handleSignup} ref="create_user_form">
+				        
+			        	<label><input className={input_className} ref="username1" placeholder="Username"/></label><br/>
+			        
 			       		<label><input className={input_className} type="password" ref="pass1" placeholder="Password"/></label><br/>
-			        </div>
-
-			        <div className="row">
+			   
+			       		<label><input className={input_className} type="password" ref="pass1_confirm" placeholder="Confirm"/></label><br/>
+			   
 				        <div className="btn-group" data-toggle="buttons">
 				        	{radioButtonComponent}
-				        </div>
-				    </div>
-			        <div className="row">
-			        	<button className={button_className} type="submit">Create Account</button>
-					</div>
-				</form>
+				        </div> <br/>
+				    
+			        	<button className={button_className} type="submit">Create Account</button><br/>
+						
+					</form>
+				</div>
 
 			</div>
 		);
