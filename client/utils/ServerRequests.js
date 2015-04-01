@@ -22,14 +22,14 @@ var ServerRequests = {
 		Parse.User.signUp(username, password, {ACL: new Parse.ACL()},
 			{
 				success: function (user) {
-					if (cb) cb(true);
+					if (cb) cb(user);
 					if (Parse.User.current())
 						console.log("LoggedIn");
 					else
 						console.log("Not logged in");
 				},
 				error: function (user, error) {
-					if (cb) cb(false);
+					if (cb) cb(error);
 					console.log(error);
 				}
 			});
@@ -49,7 +49,7 @@ var ServerRequests = {
 			},
 			error: function (user, error) {
 				console.log(error);
-				cb(null);
+				cb(error);
 			}
 		});
 	},

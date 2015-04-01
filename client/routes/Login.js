@@ -2,6 +2,16 @@ var React = require('react');
 var Router = require('react-router');
 var DiaryActions = require('../actions/DiaryActions');
 var ServerRequests = require('../utils/ServerRequests');
+var Parse = require('../utils/ParseInit');
+
+function getUserTypes() {
+	return [
+		"patient",
+		"staff",
+		"visitor"
+	];
+}
+
 
 var Login = React.createClass({
 	mixins: [Router.Navigation],
@@ -13,7 +23,8 @@ var Login = React.createClass({
 	getInitialState: function() {
 		return {
 			signinMessage: null,
-			signupMessage: null
+			signupMessage: null,
+			userTypes: getUserTypes()
 		};
 	},
 
@@ -31,7 +42,9 @@ var Login = React.createClass({
 			username: username,
 			password: password
 		}, function(response){
-			if(response){	
+			if(response instanceof Parse.Error){	
+				this.setState({signinMessage: response.message.capitalizeFirstLetter()});
+			} else {
 				DiaryActions.clearStores();
 				if(Login.attemptedTransition){
 					var transition =  Login.attemptedTransition;
@@ -57,24 +70,25 @@ var Login = React.createClass({
 		}
 		console.log("handleSignup: " + username + " " + password);
 
+		//Hack, fix this: This should be an action through DiaryActions to create a user account like logins
 		ServerRequests.createUser(username, password, function(createdAccount){
-			if(createdAccount){
+			if(createdAccount instanceof Parse.Error){
+				console.log(createdAccount);
+				this.setState({signupMessage: createdAccount.message.capitalizeFirstLetter()});
+			} else {
+				console.log(createdAccount);
 				DiaryActions.clearStores();
 				this.transitionTo('/main');
-				// return this.setState({signupMessage: "Created Account Successfully"});
-			} else {
-				// return this.setState({signupMessage:"Failed to Created Account"});
 			}
 		}.bind(this));
 	},
 
 	render: function(){
-		// var errors = this.state.error ? <p>Request Error</p> : '';
 		if(ServerRequests.loggedIn()){
 			this.transitionTo('/main');
 		}
 
-		// console.log(ParseActions.currentUser());
+		//Create components for signin/signup error messages
 		signupComponent = null;
 		signinComponent = null;
 
@@ -91,6 +105,16 @@ var Login = React.createClass({
 					{this.state.signinMessage}
 				</div>;
 		}
+
+		radioButtonComponent = this.state.userTypes.map(function(userType){
+			return (
+                <label className="btn btn-default">
+	                    <input type="radio" id="q1" name="user_type" key={userType} value={userType}/> {userType.capitalizeFirstLetter()}
+                </label> 
+
+            );
+
+		});
 
 		var input_className = "form-control";
 		var button_className = "btn btn-lg btn-primary";
@@ -132,16 +156,7 @@ var Login = React.createClass({
 
 			        <div className="row">
 				        <div className="btn-group" data-toggle="buttons">
-			                <label className="btn btn-default">
-			                    <input type="radio" id="q1" name="user_type" value="Patient"/> Patient
-			                </label> 
-			                <label className="btn btn-default">
-			                    <input type="radio" id="q2" name="user_type" value="Staff" /> Staff
-			                </label> 
-
-	    		                <label className="btn btn-default">
-			                    <input type="radio" id="q3" name="user_type" value="Visitor" /> Visitor
-			                </label> 
+				        	{radioButtonComponent}
 				        </div>
 				    </div>
 			        <div className="row">

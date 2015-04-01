@@ -1,6 +1,8 @@
 var DiaryConstants = require('../constants/DiaryConstants');
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var ServerRequests = require('../utils/ServerRequests');
+var Parse = require('../utils/ParseInit');
+
 
 var DiaryActions = {
 	addEntry: function(data, cb){
@@ -78,7 +80,7 @@ var DiaryActions = {
 		ServerRequests.login(credentials.username, credentials.password, function(response){
 			console.log("handleLogin");
 
-			if(response){
+			if(!(response instanceof Parse.Error)){
 				AppDispatcher.handleAction({
 					actionType: DiaryConstants.CLEAR_STORES,
 					data: response
@@ -86,7 +88,7 @@ var DiaryActions = {
 
 				if(cb) cb(response);
 			} else {
-				if(cb) cb(null);
+				if(cb) cb(response);
 			}
 
 		});

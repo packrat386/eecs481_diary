@@ -60,6 +60,10 @@ var PageNav = React.createClass({
 	}
 });
 
+String.prototype.capitalizeFirstLetter = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+}
+
 var App = React.createClass({
 	render: function() {
 		return (
