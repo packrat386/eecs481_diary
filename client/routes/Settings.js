@@ -11,17 +11,10 @@ var UpdatePassword = require('../components/UpdatePassword');
 var Settings = React.createClass({
 	mixins: [Authentication],
 
-	componentDidMount: function() {
-		CurrentUserStore.addChangeListener(this._onChange);
-	},
-
-	componentWillUnmount: function() {
-		CurrentUserStore.removeChangeListener(this._onChange);
-	},
 
 	getInitialState: function() {
 		return {
-			currentUser: CurrentUserStore.getUser()
+
 		};
 	},
 
