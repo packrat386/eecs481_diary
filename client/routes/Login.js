@@ -76,15 +76,21 @@ var Login = React.createClass({
 		}
 		console.log("handleSignup: " + username + " " + password);
 
-		//Hack, fix this: This should be an action through DiaryActions to create a user account like logins
-		ServerRequests.createUser({username: username, password: password, user_type: user_type}, function(createdAccount){
-			if(createdAccount instanceof Parse.Error){
-				console.log(createdAccount);
-				this.setState({signupMessage: createdAccount.message.capitalizeFirstLetter()});
+		DiaryActions.createUser({
+			username: username, 
+			password: password, 
+			user_type: user_type
+		}, function(response){
+			if(response instanceof Parse.Error){	
+				this.setState({signupMessage: response.message.capitalizeFirstLetter()});
 			} else {
-				console.log(createdAccount);
-				DiaryActions.clearStores();
-				this.transitionTo('/main');
+				if(Login.attemptedTransition){
+					var transition =  Login.attemptedTransition;
+					Login.attemptedTransition = null;
+					transition.retry();
+				} else {
+					this.transitionTo('/main');
+				}
 			}
 		}.bind(this));
 	},

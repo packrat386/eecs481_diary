@@ -97,7 +97,7 @@ var Settings = React.createClass({
 
 		var user_type_component = "None";
 		if(CurrentUserStore.getUser().attributes.user_type){
-			user_type_component = CurrentUserStore.getUser().attributes.user_type;
+			user_type_component = CurrentUserStore.getUser().attributes.user_type.capitalizeFirstLetter();
 		}
 
 		//Instantiate patient list
@@ -111,6 +111,10 @@ var Settings = React.createClass({
 			<div className="container">
 				<h3>User Type</h3>
 				<p>{user_type_component}</p>
+				<hr className="col-md-12"/>
+
+				<h3>Share ID</h3>
+				<p>{CurrentUserStore.getUser().id}</p>
 				<hr className="col-md-12"/>
 
 				<UpdatePassword />

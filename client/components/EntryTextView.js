@@ -147,7 +147,7 @@ var EntryTextView = React.createClass({
 				</div>);
 		} 
 		return (
-			<div className="container">
+			<div>
 				{current_component}
 			</div>
 		);

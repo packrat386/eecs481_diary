@@ -128,6 +128,27 @@ var DiaryActions = {
 				if(cb) cb(currentUser);
 			}
 		})
+	},
+
+	createUser: function(data, cb){
+		ServerRequests.createUser(data, function(response){
+			if(response instanceof Parse.Error){
+				console.log(response);
+				if(cb) cb(response);
+			} else {
+				AppDispatcher.handleAction({
+					actionType: DiaryConstants.CLEAR_STORES
+				});
+
+				AppDispatcher.handleAction({
+					actionType: DiaryConstants.LOGIN,
+					data: response
+				});
+
+				if(cb) cb(response);
+				// this.transitionTo('/main');
+			}
+		}.bind(this));
 	}
 };
 

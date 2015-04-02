@@ -83,7 +83,7 @@ var ListView = React.createClass({
 	render: function(){
 
 		return (
-			<div className="container">
+			<div>
 				<h3>Diary Entries</h3>
 				<div className="list-group col-xs-12 col-sm-12 col-md-4">
 					<EntryList
