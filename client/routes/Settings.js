@@ -96,30 +96,8 @@ var Settings = React.createClass({
 		console.log(CurrentUserStore.getUser());
 
 		var user_type_component = "None";
-
 		if(CurrentUserStore.getUser().attributes.user_type){
 			user_type_component = CurrentUserStore.getUser().attributes.user_type;
-		}
-
-		var email_component = 
-			<span>
-				<label><input className={input_className} ref="email" defaultValue={CurrentUserStore.getUser().attributes.email}/></label><br/>
-			</span>
-
-		var updatePasswordComponent = null;
-		if(this.state.updatePasswordMessage){
-			updatePasswordComponent = 
-				<div className={this.state.updatePasswordMessage.className}>
-					{this.state.updatePasswordMessage.message}
-				</div>;
-		}
-
-		var updateEmailComponent = null;
-		if(this.state.updateEmailMessage){
-			updateEmailComponent = 
-				<div className={this.state.updateEmailMessage.className}>
-					{this.state.updateEmailMessage.message}
-				</div>;
 		}
 
 		//Instantiate patient list
