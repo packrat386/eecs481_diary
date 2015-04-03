@@ -115,6 +115,7 @@ var Settings = React.createClass({
 				<span>
 					<h3>Patient Following</h3>
 					<CaseList />
+					<hr className="col-md-12"/>
 				</span>;	
 		}
 
@@ -130,7 +131,6 @@ var Settings = React.createClass({
 				<hr className="col-md-12"/>
 					
 				{patients}
-				<hr className="col-md-12"/>
 
 				<UpdatePassword />
 				<hr className="col-md-12"/>
