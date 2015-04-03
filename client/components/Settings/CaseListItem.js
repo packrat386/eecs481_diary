@@ -6,7 +6,6 @@ var CaseListItem =  React.createClass({
 
 	_onClick: function(event){
 		event.preventDefault();
-		console.log("?");
 		SettingsActions.toggleActive(this.props.patient);
 	},
 

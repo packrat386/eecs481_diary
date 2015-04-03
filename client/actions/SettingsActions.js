@@ -14,14 +14,25 @@ var SettingsActions = {
 			data: patient
 		});
 
-		console.log("Toggle ative");
-		console.log(patient);
+		console.log("Toggle active");
 	},
-	deletePatients: function(){
-		AppDispatcher.handleAction({
-			actionType: SettingsConstants.DELETE_PATIENTS,
-			data: ""
+	deletePatients: function(cb){
+		var patientsToDelete = CaseStore.getCases(true);
+
+		ServerRequests.deleteFromFollowingPatientList(patientsToDelete, function(response){
+			if(response instanceof Parse.Error){
+
+			} else {
+				AppDispatcher.handleAction({
+					actionType: SettingsConstants.DELETE_PATIENTS,
+					data: ""
+				});
+			}
+			if(cb) return cb(response);
 		});
+
+
+
 	},
 
 	addPatient: function(patient, cb){

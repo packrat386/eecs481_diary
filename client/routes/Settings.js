@@ -102,10 +102,20 @@ var Settings = React.createClass({
 			user_type_component = CurrentUserStore.getUser().attributes.user_type.capitalizeFirstLetter();
 		}
 
-		//Instantiate patient list
+		//Instantiate patient follow list
 		var patients = null;
-		if(CurrentUserStore.getUser().attributes.user_type == "staff"){
-
+		if(CurrentUserStore.getUser().attributes.user_type === "staff"){
+			patients = 
+				<span>
+					<h3>Patient List</h3>
+					<CaseList />
+				</span>;
+		} else if(CurrentUserStore.getUser().attributes.user_type === "visitor"){
+			patients = 
+				<span>
+					<h3>Patient Following</h3>
+					<CaseList />
+				</span>;	
 		}
 
 		return (
@@ -118,8 +128,8 @@ var Settings = React.createClass({
 				<h3>Share ID</h3>
 				<p>{CurrentUserStore.getUser().id}</p>
 				<hr className="col-md-12"/>
-
-				<CaseList />
+					
+				{patients}
 				<hr className="col-md-12"/>
 
 				<UpdatePassword />

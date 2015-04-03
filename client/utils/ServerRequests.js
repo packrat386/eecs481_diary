@@ -285,7 +285,7 @@ var ServerRequests = {
 		var userObject = new Parse.Query(Parse.User).equalTo("objectId", userID);
 		userObject.find({
 			success: function(results){
-							
+
 				if(results.length > 0){
 					var relation = currentUser.relation("patients");
 
@@ -319,6 +319,25 @@ var ServerRequests = {
 				if(cb) cb(error);
 			}
 		})
+	},
+
+	deleteFromFollowingPatientList: function(patientsToDelete, cb){
+		var currentUser = Parse.User.current();
+		var relation = currentUser.relation("patients");
+		for(var i = 0; i < patientsToDelete.length; i++){
+			relation.remove(patientsToDelete[i]);
+		}
+
+		currentUser.save(null, 
+			{
+				success: function(response){
+					if(cb) return cb(response);
+				},
+				error: function(response, error){
+					if(cb) return cb(error);
+				}
+			}
+		)
 	},
 
 	getEntries: function (cb) {

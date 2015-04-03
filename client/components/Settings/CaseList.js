@@ -48,8 +48,7 @@ var CaseList =  React.createClass({
 		});
 	},
 
-	_newPatient: function(event){
-		event.preventDefault();
+	_addPatient: function(){
 		console.log(this.refs.new_patient.getDOMNode().value);
 		if(this.refs.new_patient.getDOMNode().value == ""){
 			this.setState({
@@ -63,7 +62,6 @@ var CaseList =  React.createClass({
 		}
 		SettingsActions.addPatient(this.refs.new_patient.getDOMNode().value, function(response){
 			if(response instanceof Parse.Error){
-				console.log("hi");
 				return this.setState({
 					message: 
 						{
@@ -74,9 +72,20 @@ var CaseList =  React.createClass({
 			} else {
 				this.refs.new_patient.getDOMNode().value = "";	
 			}
-		}.bind(this));
-		//Need to add callback for this to actually work LOL
 
+
+		}.bind(this));
+	},
+
+	_newPatient: function(event){
+		event.preventDefault();
+		this._disableButtonWrapper(this._addPatient);
+	},
+
+	_disableButtonWrapper: function(func){
+		this._disableButtons();
+		func();
+		this._enableButtons();
 	},
 
 	_deleteSelected: function(event){
@@ -85,11 +94,23 @@ var CaseList =  React.createClass({
 
 	},
 
+	_disableButtons: function(){
+		$(this.refs.button_add.getDOMNode()).prop('disabled', true);
+		$(this.refs.button_delete.getDOMNode()).prop('disabled', true);
+	},
+
+	_enableButtons: function(){
+		$(this.refs.button_add.getDOMNode()).prop('disabled', false);
+		$(this.refs.button_delete.getDOMNode()).prop('disabled', false);
+	},
+
 	render: function(){
+		//Pass down each patient into the CaseListItem
 		var CaseListItems = this.state.caseList.map(function(patientRef){
 					return (<CaseListItem patient={patientRef} key={patientRef.id}/>);
 				});
 
+		//Display message if it exists
 		var messageComponent = null;
 		if(this.state.message){
 			messageComponent = 
@@ -100,15 +121,15 @@ var CaseList =  React.createClass({
 
 		return (
 			<span>
-				<h3>Patient List</h3>
 				{messageComponent}
 				<div className="list-group">
 					{CaseListItems}
-					<input ref="new_patient" placeholder="New Patient ID" className="list-group-item" />
-					
+					<form onSubmit={this._newPatient}>
+						<input ref="new_patient" placeholder="New Patient ID" className="list-group-item" />
+					</form>
 				</div>
-				<button className="btn btn-lg btn-primary" onClick={this._newPatient}>Add Patient</button><br/>
-				<button className="btn btn-lg btn-danger" onClick={this._deleteSelected}>Delete Selected Patients</button>
+				<button className="btn btn-lg btn-primary" ref="button_add" onClick={this._newPatient}>Add Patient</button><br/>
+				<button className="btn btn-lg btn-danger" ref="button_delete" onClick={this._deleteSelected}>Delete Selected Patients</button>
 			</span>
 		);
 	}
