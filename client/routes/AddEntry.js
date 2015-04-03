@@ -30,7 +30,7 @@ var AddEntry = React.createClass({
 		};
 		var entryTypes = this.state.types.map(function (entryType) {
 			return (
-				<div className="col-md-3 col-sm-6 col-xs-12">
+				<div className="col-md-3 col-sm-6 col-xs-12" key={entryType.name}>
 					<Router.Link to={ entryType.path }>
 						<button type="button" className="btn btn-default btn-lg">
 							<span style={buttonStyle} className={entryType.icon} aria-hidden="true"></span>

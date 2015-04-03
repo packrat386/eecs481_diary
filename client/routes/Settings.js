@@ -5,8 +5,10 @@ var Authentication = require('../utils/Authentication');
 var CurrentUserStore = require('../stores/CurrentUserStore');
 var DiaryActions = require('../actions/DiaryActions');
 var Parse = require('../utils/ParseInit');
-var UpdateEmail = require('../components/UpdateEmail');
-var UpdatePassword = require('../components/UpdatePassword');
+
+var UpdateEmail = require('../components/Settings/UpdateEmail');
+var UpdatePassword = require('../components/Settings/UpdatePassword');
+var CaseList = require('../components/Settings/CaseList');
 
 var Settings = React.createClass({
 	mixins: [Authentication],
@@ -117,10 +119,12 @@ var Settings = React.createClass({
 				<p>{CurrentUserStore.getUser().id}</p>
 				<hr className="col-md-12"/>
 
+				<CaseList />
+				<hr className="col-md-12"/>
+
 				<UpdatePassword />
 				<hr className="col-md-12"/>
 
-				<h3>Update E-mail</h3>
 				<UpdateEmail />
 				<hr className="col-md-12"/>
 			</div>

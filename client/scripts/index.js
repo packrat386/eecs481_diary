@@ -39,12 +39,12 @@ var PageNav = React.createClass({
 	render: function() {
 		var extra_nav = [];
 		if(!ServerRequests.loggedIn()){
-			extra_nav.push(<li role="presentation"> <Router.Link to="login">Login/Create Account</Router.Link> </li>);
+			extra_nav.push(<li role="presentation" key="login"> <Router.Link to="login">Login/Create Account</Router.Link> </li>);
 		} else {
-			extra_nav.push(<li role="presentation"> <Router.Link to="main">View Entries</Router.Link> </li>);
-			extra_nav.push(<li role="presentation"> <Router.Link to="add">Write a New Entry</Router.Link> </li>);
-			extra_nav.push(<li role="presentation"> <Router.Link to="settings">Settings</Router.Link> </li>);
-			extra_nav.push(<li role="presentation"> <Router.Link to="logout">Logout</Router.Link> </li>);
+			extra_nav.push(<li role="presentation" key="main"> <Router.Link to="main">View Entries</Router.Link> </li>);
+			extra_nav.push(<li role="presentation" key="add"> <Router.Link to="add">Write a New Entry</Router.Link> </li>);
+			extra_nav.push(<li role="presentation" key="settings"> <Router.Link to="settings">Settings</Router.Link> </li>);
+			extra_nav.push(<li role="presentation" key="logout"> <Router.Link to="logout">Logout</Router.Link> </li>);
 
 		}
 		return (

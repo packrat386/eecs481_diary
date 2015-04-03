@@ -19,14 +19,52 @@ var parseEntry = function (entry) {
 var ServerRequests = {
 	createUser: function (user_obj, cb) {
 		console.log("CreateAccount");
+		var CaseEntry = Parse.Object.extend("Case");
+		var caseEntry = new CaseEntry();
 		Parse.User.signUp(user_obj.username, user_obj.password, {user_type: user_obj.user_type, ACL: new Parse.ACL()},
 			{
 				success: function (user) {
-					if (cb) cb(user);
+
 					if (Parse.User.current())
 						console.log("LoggedIn");
 					else
 						console.log("Not logged in");
+
+
+					if(user.attributes.user_type == "patient"){
+						//Create a new case entry
+						caseEntry.save(null, 
+								{
+									success: function (new_caseEntry) {
+										console.log("Added entry");
+
+											//Create and save relation
+											var relation = caseEntry.relation("Patient");
+											relation.add(user);
+
+											new_caseEntry.save(null, 
+												{ 
+													success: function(response){
+														console.log("Saved new case");
+														if (cb) return cb(user);
+													},
+													error: function(response, error){
+														if (cb) return cb(user);
+													}
+												}
+
+											);										
+									},
+									error: function (entry, response) {
+										console.log("Error adding");
+										console.log(error);
+										if (cb) return cb(response);
+									}
+								});
+					} else {
+						if(cb) return cb(user);
+					}
+
 				},
 				error: function (user, error) {
 					if (cb) cb(error);
@@ -210,14 +248,7 @@ var ServerRequests = {
 	updateCurrentUser: function(data, cb){
 		console.log("Server Requests updateCurrentUser");
 		var currentUser = Parse.User.current();
-		// for(key in data){
-		// 	console.log(key + " " + data[key]);
 
-		// 	if(data.hasOwnProperty(data)){
-		// 		console.log(key + " " + data[key]);
-		// 		currentUser.set(key, data[key]);
-		// 	}
-		// }
 		currentUser.save(data, {
 			success: function(currentUser) {
 				// Execute any logic that should take place after the object is saved.

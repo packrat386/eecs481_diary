@@ -50,15 +50,18 @@ AppDispatcher.register(function(payload) {
 	switch(action.actionType) {
 		case DiaryConstants.LOGIN:
 			login(action.data);
+			CurrentUserStore.emitChange();
 			break;
 
 
 		case DiaryConstants.LOGOUT:
 			logout();
+			CurrentUserStore.emitChange();
 			break;
 
 		case DiaryConstants.UPDATE_USER:
 			update(action.data);
+			CurrentUserStore.emitChange();
 			break;
 
 		default:
