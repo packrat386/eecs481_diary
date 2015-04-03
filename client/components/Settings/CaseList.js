@@ -1,7 +1,10 @@
 var React = require('react');
+var Parse = require('../../utils/ParseInit');
 var CaseListItem = require('./CaseListItem');
 var CaseStore = require('../../stores/CaseStore');
+var CurrentUserStore = require('../../stores/CurrentUserStore');
 var SettingsActions = require('../../actions/SettingsActions');
+
 
 var CaseList =  React.createClass({
 	getInitialState: function(){
@@ -13,10 +16,30 @@ var CaseList =  React.createClass({
 
 	componentDidMount: function() {
 		CaseStore.addChangeListener(this._onChange);
+		CaseStore.addChangeListener(this._onCurrentUserChange);
+
+		SettingsActions.updatePatients(function(response){
+			if(response){
+				this.setState({
+					caseList: response
+				});
+			}
+		}.bind(this));
 	},
 
 	componentWillUnmount: function() {
 		CaseStore.removeChangeListener(this._onChange);
+		CaseStore.removeChangeListener(this._onCurrentUserChange);
+	},
+
+	_onCurrentUserChange: function(){
+		// SettingsActions.updatePatients(function(response){
+		// 	if(response){
+		// 		this.setState({
+		// 			caseList: CaseStore.getCases()
+		// 		});
+		// 	}
+		// });
 	},
 
 	_onChange: function(){
@@ -38,9 +61,22 @@ var CaseList =  React.createClass({
 			})
 			return;
 		}
-		SettingsActions.addPatient(this.refs.new_patient.getDOMNode().value);
+		SettingsActions.addPatient(this.refs.new_patient.getDOMNode().value, function(response){
+			if(response instanceof Parse.Error){
+				console.log("hi");
+				return this.setState({
+					message: 
+						{
+							className: "alert alert-danger",
+							message: response.message
+						}
+				});
+			} else {
+				this.refs.new_patient.getDOMNode().value = "";	
+			}
+		}.bind(this));
 		//Need to add callback for this to actually work LOL
-		this.refs.new_patient.getDOMNode().value = "";
+
 	},
 
 	_deleteSelected: function(event){
@@ -50,9 +86,8 @@ var CaseList =  React.createClass({
 	},
 
 	render: function(){
-
-		var CaseListItems = this.state.caseList.map(function(dataElement){
-					return (<CaseListItem text={dataElement} key={dataElement}/>);
+		var CaseListItems = this.state.caseList.map(function(patientRef){
+					return (<CaseListItem patient={patientRef} key={patientRef.id}/>);
 				});
 
 		var messageComponent = null;

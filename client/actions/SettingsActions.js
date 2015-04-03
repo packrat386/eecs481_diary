@@ -3,13 +3,19 @@ var AppDispatcher = require('../dispatcher/AppDispatcher');
 var ServerRequests = require('../utils/ServerRequests');
 var Parse = require('../utils/ParseInit');
 
+var CurrentUserStore = require('../stores/CurrentUserStore');
+var CaseStore = require('../stores/CaseStore');
+
 
 var SettingsActions = {
-	toggleActive: function(key){
+	toggleActive: function(patient){
 		AppDispatcher.handleAction({
 			actionType: SettingsConstants.TOGGLE_ACTIVE,
-			data: key
+			data: patient
 		});
+
+		console.log("Toggle ative");
+		console.log(patient);
 	},
 	deletePatients: function(){
 		AppDispatcher.handleAction({
@@ -18,11 +24,44 @@ var SettingsActions = {
 		});
 	},
 
-	addPatient: function(patient){
-		AppDispatcher.handleAction({
-			actionType: SettingsConstants.ADD_PATIENT,
-			data: patient
+	addPatient: function(patient, cb){
+		if(CaseStore.getCase(patient)){
+			if(cb) cb(new Parse.Error("-1", "Already following user."));
+			return;
+		} else if(patient === CurrentUserStore.getUser().id){
+			if(cb) cb(new Parse.Error("-1", "Can't add yourself."));
+			return;
+		}
+
+		console.log("AddPatient");
+		ServerRequests.addToFollowingPatientList(patient, function(response){
+			if(response instanceof Parse.Error){
+				console.log("AddPatient error");
+				if(cb) return cb(response);
+			} else {
+				console.log("AddPatient success");
+
+				this.updatePatients();
+			}	
+		}.bind(this));
+
+	},
+
+	updatePatients: function(cb){
+		var currentUser = CurrentUserStore.getUser();
+		ServerRequests.getPatients(function(response){
+			if(response instanceof Parse.Error){
+				if(cb) return cb(error);
+			} else {
+				AppDispatcher.handleAction({
+					actionType: SettingsConstants.LOAD_PATIENTS,
+					data: response
+				});
+				if(cb) return cb(response);
+			}
 		});
-	}
+
+
+	},
 };
 module.exports = SettingsActions;

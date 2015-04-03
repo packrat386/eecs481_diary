@@ -38,6 +38,12 @@ var CurrentUserStore = _.extend({}, EventEmitter.prototype, {
 		return _current_user;
 	},
 
+	loggedIn: function(){
+		if(_current_user) return true;
+
+		return false;
+	},
+
 	setUser: function(user){
 		_current_user = user;
 	}

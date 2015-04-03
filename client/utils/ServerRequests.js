@@ -21,7 +21,7 @@ var ServerRequests = {
 		console.log("CreateAccount");
 		var CaseEntry = Parse.Object.extend("Case");
 		var caseEntry = new CaseEntry();
-		Parse.User.signUp(user_obj.username, user_obj.password, {user_type: user_obj.user_type, ACL: new Parse.ACL()},
+		Parse.User.signUp(user_obj.username, user_obj.password, {user_type: user_obj.user_type},
 			{
 				success: function (user) {
 
@@ -31,39 +31,39 @@ var ServerRequests = {
 						console.log("Not logged in");
 
 
-					if(user.attributes.user_type == "patient"){
-						//Create a new case entry
-						caseEntry.save(null, 
-								{
-									success: function (new_caseEntry) {
-										console.log("Added entry");
+					// if(user.attributes.user_type == "patient"){
+					// 	//Create a new case entry
+					// 	caseEntry.save(null, 
+					// 			{
+					// 				success: function (new_caseEntry) {
+					// 					console.log("Added entry");
 
-											//Create and save relation
-											var relation = caseEntry.relation("Patient");
-											relation.add(user);
+					// 						//Create and save relation
+					// 						var relation = caseEntry.relation("Patient");
+					// 						relation.add(user);
 
-											new_caseEntry.save(null, 
-												{ 
-													success: function(response){
-														console.log("Saved new case");
-														if (cb) return cb(user);
-													},
-													error: function(response, error){
-														if (cb) return cb(user);
-													}
-												}
+					// 						new_caseEntry.save(null, 
+					// 							{ 
+					// 								success: function(response){
+					// 									console.log("Saved new case");
+					// 									if (cb) return cb(user);
+					// 								},
+					// 								error: function(response, error){
+					// 									if (cb) return cb(user);
+					// 								}
+					// 							}
 
-											);										
-									},
-									error: function (entry, response) {
-										console.log("Error adding");
-										console.log(error);
-										if (cb) return cb(response);
-									}
-								});
-					} else {
-						if(cb) return cb(user);
-					}
+					// 						);										
+					// 				},
+					// 				error: function (entry, response) {
+					// 					console.log("Error adding");
+					// 					console.log(error);
+					// 					if (cb) return cb(response);
+					// 				}
+					// 			});
+					// } else {
+					if(cb) return cb(user);
+					// }
 
 				},
 				error: function (user, error) {
@@ -245,6 +245,20 @@ var ServerRequests = {
 
 	},
 
+	getPatients: function(cb){
+		var currentUser = Parse.User.current();
+		var r = currentUser.relation("patients");
+		r.query().find({
+			success: function(patients){
+				console.log(patients);
+				if(cb) cb(patients);
+			},
+			error: function(error){
+				if(cb) cb(error);
+			}
+		});
+	},
+
 	updateCurrentUser: function(data, cb){
 		console.log("Server Requests updateCurrentUser");
 		var currentUser = Parse.User.current();
@@ -264,6 +278,49 @@ var ServerRequests = {
 		});
 	},
 
+	addToFollowingPatientList: function(userID, cb){
+		var currentUser = Parse.User.current();
+
+		console.log(userID);
+		var userObject = new Parse.Query(Parse.User).equalTo("objectId", userID);
+		userObject.find({
+			success: function(results){
+							
+				if(results.length > 0){
+					var relation = currentUser.relation("patients");
+
+					// for(var i = 0; i < results.length; i++){
+					// 	//Create and save relation
+					relation.add(results[0]);	
+					// }
+
+
+					currentUser.save(null, 
+							{ 
+								success: function(response){
+									if (cb) return cb(response);
+								},
+								error: function(response, error){
+									consolelog("patient save fail");
+									if (cb) return cb(error);
+								}
+							}
+					);		
+
+				} else {
+					if(cb) cb(new Parse.Error("-1", "Could not follow user."));
+				}
+
+				// if (cb) cb(results);
+			},
+
+			error: function(error){
+
+				if(cb) cb(error);
+			}
+		})
+	},
+
 	getEntries: function (cb) {
 		console.log("getEntries");
 		var DiaryEntry = Parse.Object.extend("DiaryEntry");
@@ -272,7 +329,6 @@ var ServerRequests = {
 		queryObject.find({
 			success: function (results) {
 				console.log(results);
-				var b = performance.now();
 				if (cb) {
 					entries = [];
 					for (var i = 0; i < results.length; i++) {

@@ -4,31 +4,34 @@ var _ = require('underscore');
 var EventEmitter = require('events').EventEmitter;
 
 var _case_store = {};
+var _selected = {};
 
-function toggleActive(key){
-	_case_store[key] = !_case_store[key];
+function toggleActive(patient){
+
+	_selected[patient.id] = !_selected[patient.id];
 }
 
-function loadValues(array){
+function loadPatients(array){
 	_case_store = {};
-	for(var i in array){
-		_case_store[i] = false;
+	for(var i=0; i < array.length; i++){
+		_case_store[array[i].id] = array[i];
+		_selected[array[i].id] = false;
 	}
 }
 
 function addPatient(patient){
-	_case_store[patient] = false;
+	_case_store[patient.id] = patient;
+	_selected[patient.id] = false;
 }
 
 function deleteSelected(){
-	for(key in _case_store){
-		if(_case_store[key] === true){
+	for(key in _selected){
+		if(_selected[key] === true){
 			delete _case_store[key];
+			delete _selected[key];
 		}
 	}
 }
-
-loadValues(["1", "2", "3"]);
 
 var CaseStore = _.extend({}, EventEmitter.prototype, {
 	emitChange: function(){
@@ -46,38 +49,30 @@ var CaseStore = _.extend({}, EventEmitter.prototype, {
 	},
 
 	getCases: function(isActive){
-		if(isActive !== undefined){
-			var selected_cases = [];
-			for(key in _case_store){
-				if(_case_store[key] === isActive){
-					selected_cases.push(_case_store[key]);
-				}
+		var selected_cases = [];
+		for(key in _case_store){
+			if(isActive === undefined || (_selected[key] === isActive)){
+				selected_cases.push(_case_store[key]);
 			}
+		}
 
-			return selected_cases;
-
-		} else 
-			return Object.keys(_case_store).sort();
+		return selected_cases;
 	},
 
-	// getCases: function(isActive){
-	// 	var active_cases = [];
-	// 	for(key in _case_store){
-	// 		if(_case_store[key] === true){
-	// 			active_cases.push(_case_store[key]);
-	// 		}
-	// 	}
+	isActive: function(patient){
+		return _selected[patient.id];
+	},
 
-	// 	return active_cases;
-	// },
+	getCase: function(id){
+		return _case_store[id];
+	},
 
-	isActive: function(key){
-		return _case_store[key];
+	numCases: function(){
+		return _case_store.length();
 	}
 });
 
 AppDispatcher.register(function(payload) {
-
 
 	var action = payload.action;
 
@@ -94,6 +89,11 @@ AppDispatcher.register(function(payload) {
 
 		case SettingsConstants.DELETE_PATIENTS:
 			deleteSelected();
+			CaseStore.emitChange();
+			break;
+
+		case SettingsConstants.LOAD_PATIENTS:
+			loadPatients(action.data);
 			CaseStore.emitChange();
 			break;
 

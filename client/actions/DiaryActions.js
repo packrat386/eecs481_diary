@@ -127,7 +127,7 @@ var DiaryActions = {
 
 				if(cb) cb(currentUser);
 			}
-		})
+		});
 	},
 
 	createUser: function(data, cb){
