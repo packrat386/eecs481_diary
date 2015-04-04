@@ -118,7 +118,7 @@ var AddEntryVisitor = React.createClass({
 
 		return (
 			<span>
-				<h3>Add Diary Entry</h3> 
+				<h3>Add Post</h3> 
 				<p><b>Share with</b></p>
 				{shareWith}
 				<TextInput registerCallback={this.addToCallbackList}/>
