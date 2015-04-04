@@ -69,21 +69,21 @@ var Graffiti = React.createClass({
 		this.disableDrawing();
 
 		//Draw image if entry is passed down
-		if(this.props.entry && this.props.entry.canvasImage){
-			console.log(this.props.entry.canvasImage);
-			this.drawImage(this.props.entry.canvasImage);
+		if(this.props.entry){
+			console.log(this.props.entry);
+			this.drawImage(this.props.entry);
 		}
 	},
 
 	componentDidUpdate: function(prevProps, prevState){
 
 		//Redraws the new graffiti based on new props
-		if((!prevProps.entry) || (prevProps.entry.id !== this.props.entry.id)){
-			this.clearDrawing();
-			if(this.props.entry && this.props.entry.canvasImage){
-				this.drawImage(this.props.entry.canvasImage);
-			}
+		// if((!prevProps.entry) || (prevProps.entry.id !== this.props.entry.id)){
+		this.clearDrawing();
+		if(this.props.entry){
+			this.drawImage(this.props.entry);
 		}
+		// }
 
 		//Only allows drawing when edit is false
 		if(this.props.readOnly == true){

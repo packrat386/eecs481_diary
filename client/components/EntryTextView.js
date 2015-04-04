@@ -75,64 +75,64 @@ var EntryTextView = React.createClass({
 				<form className="form-horizontal">
 					{buttons}
 					<div className="form-group">
-						<label className="col-md-1 control-label">Updated</label>
+						<label className="col-md-2 control-label">Updated</label>
 						<div className="col-md-6">
 							<input
 								className="form-control"
 								ref="diary_title"
-								value={this.state.entry.updatedAt.format("dddd, MMMM Do YYYY, h:mm:ss a")}
+								value={moment(this.state.entry.updatedAt, "ddd MMM DD YYYY hh:mm:ss").format("dddd, MMMM Do YYYY, h:mm:ss a")}
 								readOnly="true"
 							/>
 						</div>
 					</div>
 
 					<div className="form-group">
-						<label className="col-md-1 control-label">Created</label>
+						<label className="col-md-2 control-label">Created</label>
 						<div className="col-md-6">
 							<input
 								className="form-control"
 								ref="diary_title"
-								value={this.state.entry.createdAt.format("dddd, MMMM Do YYYY, h:mm:ss a")}
+								value={moment(this.state.entry.createdAt, "ddd MMM DD YYYY hh:mm:ss").format("dddd, MMMM Do YYYY, h:mm:ss a")}
 								readOnly="true"
 							/>
 						</div>
 					</div>
 
 					<div className="form-group">
-						<label className="col-md-1 control-label">Title</label>
+						<label className="col-md-2 control-label">Title</label>
 						<div className="col-md-6">
 							<input
 								className="form-control"
 								ref="diary_title"
 								onChange={this._onTitleChange}
-								value={this.state.entry.title}
+								value={this.state.entry.get("data").title}
 								readOnly={this.state.readOnly}
 							/>
 						</div>
 					</div>
 
 					<div className="form-group">
-						<label className="col-md-1 control-label" >Text</label>
+						<label className="col-md-2 control-label" >Text</label>
 						<div className="col-md-6">
 							<TextAutosize 
 								className="form-control" 
 								ref="diary_text" 
 								onChange={this._onEntryChange} 
-								value={this.state.entry.text}
+								value={this.state.entry.get("data").text}
 								readOnly={this.state.readOnly}
 							/>
 						</div>
 					</div>
 
-					<div className="col-xs-12 col-md-7">
+					<div className="col-xs-12 col-md-11">
 						<Graffiti 
 							readOnly={this.state.readOnly} 
-							entry={this.state.entry}
+							entry={this.state.entry.get("data").canvasImage}
 							registerCanvas={this.registerCanvas}
 						/>
 					</div>
 
-					<div className="col-xs-12 col-md-7">
+					<div className="col-xs-12 col-md-11">
 						<h3> Add Photo: </h3>
 						<p>Select File!</p>
 						<UploadImageForm />
@@ -156,12 +156,16 @@ var EntryTextView = React.createClass({
 	_onUpdate: function(event){
 		event.preventDefault();
 		console.log('onUpdate');
+		var curData = 
+			{
+				id: this.state.entry.id,
+				data: this.state.entry.get("data")
+			};
 		if(this.state.canvasFunc){
-			this.state.entry.canvasImage = this.state.canvasFunc();
-			console.log(this.state.entry.canvasString);
+			curData.data["canvasImage"] = this.state.canvasFunc();
 		}
 
-		DiaryActions.updateEntry(this.state.entry, function(response){
+		DiaryActions.updateEntry(curData, function(response){
 			if(!(response instanceof Parse.Error)){
 				this.setState({
 					entry: response,

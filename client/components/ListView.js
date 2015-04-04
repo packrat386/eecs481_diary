@@ -92,7 +92,7 @@ var ListView = React.createClass({
 						selectionCallback={this._selectionCallback}/>
 				</div>
 
-				<div className="col-xs-12 col-sm-12 col-md-7">
+				<div className="col-xs-12 col-sm-12 col-md-8">
 					<EntryTextView initialEntry={this.state.currentSelected}/>
 				</div>
 			</div>

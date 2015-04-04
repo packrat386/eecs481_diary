@@ -6,14 +6,7 @@ var _ = require('underscore');
 var moment = require('moment');
 
 var parseEntry = function (entry) {
-	return _.extend({},
-		entry.attributes,
-		{
-			id: entry.id,
-			createdAt: moment(entry.createdAt, "ddd MMM DD YYYY hh:mm:ss"),
-			updatedAt: moment(entry.updatedAt, "ddd MMM DD YYYY hh:mm:ss")
-		}
-	)
+	return entry;
 };
 
 var ServerRequests = {
@@ -106,29 +99,36 @@ var ServerRequests = {
 
 	addEntry: function (diary_entry, cb) {
 		//Diary Entry Structure
-		// {title, text}
+		// {id, data}
 
-		if (!Parse.User.current()) {
+		var currentUser = Parse.User.current();
+
+		if (!currentUser) {
 			if (cb) cb(null);
 			return null;
 		}
 
-		console.log(diary_entry);
-
 		var DiaryEntry = Parse.Object.extend("DiaryEntry");
 		var diaryEntry = new DiaryEntry();
-		diaryEntry.set("title", diary_entry.title);
-		diaryEntry.set("text", diary_entry.text);
-		diaryEntry.set("createdBy", Parse.User.current());
-		if (diary_entry.canvasImage)
-		// diaryEntry.set("canvasImage", new Parse.File("canvas.png", {base64:diary_entry.canvasImage}));
-			diaryEntry.set("canvasImage", diary_entry.canvasImage);
+
+		//Create new ACL access
+		var newACL = new Parse.ACL(currentUser);
+
+		if(diaryEntry.ACL){
+			for(i = 0; i < ACL.length; i++){
+				newACL.setReadAccess(ACL[i], true);
+			}
+		}
+		diaryEntry.setACL(newACL);
+
+		diaryEntry.set("data", diary_entry.data);
+		diaryEntry.set("createdBy", currentUser);
 
 		diaryEntry.save(null,
 			{
 				success: function (entry) {
 					console.log("Added entry");
-					if (cb) cb(parseEntry(entry));
+					if (cb) cb(entry);
 				},
 				error: function (entry, error) {
 					console.log("Error adding");
@@ -223,8 +223,11 @@ var ServerRequests = {
 		queryObject.get(diary_entry.id, {
 			success: function (diaryEntry) {
 				console.log("updateEntrySuccess");
-				diaryEntry.set("title", diary_entry.title);
-				diaryEntry.set("text", diary_entry.text);
+				// diaryEntry.set("title", diary_entry.title);
+				// diaryEntry.set("text", diary_entry.text);
+
+				diaryEntry.set("data", diary_entry.data);
+
 				if (diary_entry.canvasImage) {
 					// diaryEntry.set("canvasImage", new Parse.File("canvas.png", {base64:diary_entry.canvasImage}));
 					diaryEntry.set("canvasImage", diary_entry.canvasImage);
@@ -343,7 +346,7 @@ var ServerRequests = {
 	getEntries: function (cb) {
 		console.log("getEntries");
 		var DiaryEntry = Parse.Object.extend("DiaryEntry");
-		var queryObject = new Parse.Query(DiaryEntry).equalTo("createdBy", Parse.User.current());
+		var queryObject = new Parse.Query(DiaryEntry);
 		queryObject.ascending("createdAt");
 		queryObject.find({
 			success: function (results) {
