@@ -19,10 +19,10 @@ var Header = React.createClass({
 	render: function() {
 
 		var user_header = null;
-		if(ServerRequests.loggedIn()){
-			console.log(ServerRequests.currentUser());
+		if(CurrentUserStore.getUser()){
+			// console.log(ServerRequests.currentUser());
 			user_header = (
-				<p>Logged in as <b>{ServerRequests.currentUser().attributes.username}</b></p>
+				<p>Logged in as <b>{CurrentUserStore.getUser().attributes.username}</b></p>
 			);
 		}
 
@@ -39,11 +39,12 @@ var PageNav = React.createClass({
 	render: function() {
 		var extra_nav = [];
 		if(!ServerRequests.loggedIn()){
-			extra_nav.push(<li role="presentation"> <Router.Link to="login">Login/Create Account</Router.Link> </li>);
+			extra_nav.push(<li role="presentation" key="login"> <Router.Link to="login">Login/Create Account</Router.Link> </li>);
 		} else {
-			extra_nav.push(<li role="presentation"> <Router.Link to="main">View Entries</Router.Link> </li>);
-			extra_nav.push(<li role="presentation"> <Router.Link to="add">Write a New Entry</Router.Link> </li>);
-			extra_nav.push(<li role="presentation"> <Router.Link to="logout">Logout</Router.Link> </li>);
+			extra_nav.push(<li role="presentation" key="main"> <Router.Link to="main">View Entries</Router.Link> </li>);
+			extra_nav.push(<li role="presentation" key="add"> <Router.Link to="add">Write a New Entry</Router.Link> </li>);
+			extra_nav.push(<li role="presentation" key="settings"> <Router.Link to="settings">Settings</Router.Link> </li>);
+			extra_nav.push(<li role="presentation" key="logout"> <Router.Link to="logout">Logout</Router.Link> </li>);
 
 		}
 		return (
@@ -59,6 +60,10 @@ var PageNav = React.createClass({
 		);
 	}
 });
+
+String.prototype.capitalizeFirstLetter = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+}
 
 var App = React.createClass({
 	render: function() {
@@ -83,8 +88,11 @@ var routes = {
 	AddBasicEntry: require('../routes/AddBasicEntry'),
 	AddDoodleEntry: require('../routes/AddDoodleEntry'),
 	AddMoodEntry: require('../routes/AddMoodEntry'),
-	AddVisitEntry: require('../routes/AddVisitEntry')
+	AddVisitEntry: require('../routes/AddVisitEntry'),
+	Settings: require('../routes/Settings')
 };
+
+
 
 var routes = (
 	<Router.Route name="app" path="/" handler={App}>
@@ -93,6 +101,8 @@ var routes = (
 		<Router.Route name="login" path="/login" handler={routes.Login}/>
 		<Router.Route name="logout" path="/logout" handler={routes.Logout}/>
 		<Router.Route name="main" path="/main" handler={routes.Main}/>
+		<Router.Route name="settings" path="/settings" handler={routes.Settings}/>
+
 		<Router.Route name="add" path="/add" handler={routes.AddEntry}/>
 		<Router.Route name="addText" path="/add/text" handler={routes.AddBasicEntry}/>
 		<Router.Route name="addDoodle" path="/add/doodle" handler={routes.AddDoodleEntry}/>
@@ -102,6 +112,11 @@ var routes = (
 		<Router.NotFoundRoute handler={routes.NotFound}/>
 	</Router.Route>
 );
+
+if(ServerRequests.loggedIn()){
+	//Set the initial current user inside the CurrentUserStore
+	CurrentUserStore.setUser(ServerRequests.currentUser());
+}
 
 Router.run(routes, Router.HistoryLocation, function (Handler) {
 	React.render(<Handler/>, document.body);

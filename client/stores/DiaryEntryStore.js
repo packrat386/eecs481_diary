@@ -102,6 +102,7 @@ AppDispatcher.register(function(payload) {
 
 		case DiaryConstants.CLEAR_STORES:
 			clearStore();
+			DiaryEntryStore.emitChange();
 			break;
 
 		default:

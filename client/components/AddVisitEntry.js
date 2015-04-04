@@ -28,8 +28,10 @@ var AddBasicEntry = React.createClass({
 		var text = this.refs.text.getDOMNode().value;
 
 		DiaryActions.addEntry({
-			title: title,
-			text: text
+			data: {
+				title: title,
+				text: text
+			}
 		}, function(response){
 			if(response){
 				this.transitionTo('main');

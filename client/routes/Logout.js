@@ -16,6 +16,8 @@ var Logout = React.createClass({
 		DiaryActions.clearStores();
 		ServerRequests.logout();
 
+		DiaryActions.logout();
+
 		this.transitionTo("/");
 	},
 

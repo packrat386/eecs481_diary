@@ -21,12 +21,14 @@ var EntryItem = React.createClass({
 		}
 		// var a = performance.now();
 		// var dateString = moment(this.props.entry.createdAt, "ddd MMM DD YYYY hh:mm:ss").format("dddd, MMMM Do YYYY, h:mm:ss a");
-		var dateString = this.props.entry.createdAt.format("dddd, MMMM Do YYYY, h:mm:ss a");
+		console.log(this.props.entry);
+		console.log(this.props.entry.createdAt);
+		var dateString = moment(this.props.entry.createdAt, "ddd MMM DD YYYY hh:mm:ss").format("dddd, MMMM Do YYYY, h:mm:ss a");
 		// var b = performance.now();
 		// console.log("dateString formatting " + (b-a) + "ms");
 		return (
 			<a href="#" className={currentClass} onClick={this._onClick}>
-				<b>{this.props.entry.title}</b>
+				<b>{this.props.entry.get("data").title}</b>
 			 	<br/>
 			 	{dateString}
 			</a>

@@ -2,6 +2,16 @@ var React = require('react');
 var Router = require('react-router');
 var DiaryActions = require('../actions/DiaryActions');
 var ServerRequests = require('../utils/ServerRequests');
+var Parse = require('../utils/ParseInit');
+
+function getUserTypes() {
+	return [
+		"patient",
+		"staff",
+		"visitor"
+	];
+}
+
 
 var Login = React.createClass({
 	mixins: [Router.Navigation],
@@ -13,7 +23,8 @@ var Login = React.createClass({
 	getInitialState: function() {
 		return {
 			signinMessage: null,
-			signupMessage: null
+			signupMessage: null,
+			userTypes: getUserTypes()
 		};
 	},
 
@@ -31,8 +42,9 @@ var Login = React.createClass({
 			username: username,
 			password: password
 		}, function(response){
-			if(response){	
-				DiaryActions.clearStores();
+			if(response instanceof Parse.Error){	
+				this.setState({signinMessage: response.message.capitalizeFirstLetter()});
+			} else {
 				if(Login.attemptedTransition){
 					var transition =  Login.attemptedTransition;
 					Login.attemptedTransition = null;
@@ -48,6 +60,13 @@ var Login = React.createClass({
 		event.preventDefault();
 		var username = this.refs.username1.getDOMNode().value;
 		var password = this.refs.pass1.getDOMNode().value;
+		var password_confirm = this.refs.pass1_confirm.getDOMNode().value;
+
+		if(password != password_confirm){
+			this.setState({signupMessage: "Passwords don't match"});
+			return;
+		}
+
 		var user_type = $("input:radio:checked").val();
 		console.log($("input:radio:checked").val());
 
@@ -57,24 +76,31 @@ var Login = React.createClass({
 		}
 		console.log("handleSignup: " + username + " " + password);
 
-		ServerRequests.createUser(username, password, function(createdAccount){
-			if(createdAccount){
-				DiaryActions.clearStores();
-				this.transitionTo('/main');
-				// return this.setState({signupMessage: "Created Account Successfully"});
+		DiaryActions.createUser({
+			username: username, 
+			password: password, 
+			user_type: user_type
+		}, function(response){
+			if(response instanceof Parse.Error){	
+				this.setState({signupMessage: response.message.capitalizeFirstLetter()});
 			} else {
-				// return this.setState({signupMessage:"Failed to Created Account"});
+				if(Login.attemptedTransition){
+					var transition =  Login.attemptedTransition;
+					Login.attemptedTransition = null;
+					transition.retry();
+				} else {
+					this.transitionTo('/main');
+				}
 			}
 		}.bind(this));
 	},
 
 	render: function(){
-		// var errors = this.state.error ? <p>Request Error</p> : '';
 		if(ServerRequests.loggedIn()){
 			this.transitionTo('/main');
 		}
 
-		// console.log(ParseActions.currentUser());
+		//Create components for signin/signup error messages
 		signupComponent = null;
 		signinComponent = null;
 
@@ -92,62 +118,53 @@ var Login = React.createClass({
 				</div>;
 		}
 
+		radioButtonComponent = this.state.userTypes.map(function(userType){
+			return (
+                <label className="btn btn-default">
+	                    <input type="radio" id="q1" name="user_type" key={userType} value={userType}/> {userType.capitalizeFirstLetter()}
+                </label> 
+
+            );
+
+		});
+
 		var input_className = "form-control";
 		var button_className = "btn btn-lg btn-primary";
 		return (
 			<div>
-				<div className="row">
+				<div className="col-xs-12 col-sm-12 col-md-4">
 					<h2>Sign-In</h2>
-				</div>
-				<div className="row">
 					{signinComponent}
+					<form onSubmit={this.handleLogin}>
+
+						<label><input className={input_className} ref="username" placeholder="Username"/></label><br/>
+
+						<label><input className={input_className} type="password"  ref="pass" placeholder="Password"/></label><br/>
+
+						<button className={button_className} type="submit">Login</button><br/>
+						
+					</form>
 				</div>
-				<form onSubmit={this.handleLogin}>
-					<div className="row">
-			        	<label><input className={input_className} ref="username" placeholder="Username"/></label>
-			        </div>
 
-			        <div className="row">
-			        	<label><input className={input_className} type="password"  ref="pass" placeholder="Password"/></label><br/>
-			        </div>
-
-			        <div className="row">
-			        	<button className={button_className} type="submit">Login</button>
-					</div>
-				</form>
-				<div className="row">
+				<div className="col-xs-12 col-sm-12 col-md-4">
 					<h2>Create Account</h2>
-				</div>
-
-				<div className="row">
 					{signupComponent}
-				</div>
-				<form onSubmit={this.handleSignup} ref="create_user_form">
-			        <div className="row">
-			        	<label><input className={input_className} ref="username1" placeholder="Username"/></label>
-			        </div>
-			        <div className="row">
+					<form onSubmit={this.handleSignup} ref="create_user_form">
+				        
+			        	<label><input className={input_className} ref="username1" placeholder="Username"/></label><br/>
+			        
 			       		<label><input className={input_className} type="password" ref="pass1" placeholder="Password"/></label><br/>
-			        </div>
-
-			        <div className="row">
+			   
+			       		<label><input className={input_className} type="password" ref="pass1_confirm" placeholder="Confirm"/></label><br/>
+			   
 				        <div className="btn-group" data-toggle="buttons">
-			                <label className="btn btn-default">
-			                    <input type="radio" id="q1" name="user_type" value="Patient"/> Patient
-			                </label> 
-			                <label className="btn btn-default">
-			                    <input type="radio" id="q2" name="user_type" value="Staff" /> Staff
-			                </label> 
-
-	    		                <label className="btn btn-default">
-			                    <input type="radio" id="q3" name="user_type" value="Visitor" /> Visitor
-			                </label> 
-				        </div>
-				    </div>
-			        <div className="row">
-			        	<button className={button_className} type="submit">Create Account</button>
-					</div>
-				</form>
+				        	{radioButtonComponent}
+				        </div> <br/>
+				    
+			        	<button className={button_className} type="submit">Create Account</button><br/>
+						
+					</form>
+				</div>
 
 			</div>
 		);

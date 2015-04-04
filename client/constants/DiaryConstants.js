@@ -8,5 +8,6 @@ module.exports = keyMirror({
 	DIARY_UPDATE: null,
 	CLEAR_STORES: null,
 	LOGIN: null,
-	LOGOUT: null
+	LOGOUT: null,
+	UPDATE_USER: null
 });
