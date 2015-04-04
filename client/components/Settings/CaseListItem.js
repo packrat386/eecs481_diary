@@ -9,18 +9,6 @@ var CaseListItem =  React.createClass({
 		SettingsActions.toggleActive(this.props.patient);
 	},
 
-	// componentDidMount: function() {
-	// 	CaseStore.addChangeListener(this._onChange);
-	// },
-
-	// componentWillUnmount: function() {
-	// 	CaseStore.removeChangeListener(this._onChange);
-	// },
-
-	// _onChange: function(){
-	// 	this.setState({});
-	// },
-
 	render: function(){
 
 		var classString = "list-group-item";

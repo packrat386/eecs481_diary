@@ -22,7 +22,7 @@ var Header = React.createClass({
 		if(CurrentUserStore.getUser()){
 			// console.log(ServerRequests.currentUser());
 			user_header = (
-				<p>Logged in as <b>{CurrentUserStore.getUser().attributes.username}</b></p>
+				<p>Logged in as <b>{CurrentUserStore.getUser().attributes.username}</b> ({CurrentUserStore.getUser().get("user_type").capitalizeFirstLetter()})</p>
 			);
 		}
 

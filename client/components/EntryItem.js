@@ -21,8 +21,9 @@ var EntryItem = React.createClass({
 		}
 		// var a = performance.now();
 		// var dateString = moment(this.props.entry.createdAt, "ddd MMM DD YYYY hh:mm:ss").format("dddd, MMMM Do YYYY, h:mm:ss a");
-		console.log(this.props.entry);
-		console.log(this.props.entry.createdAt);
+		// console.log(this.props.entry);
+		// console.log(this.props.entry.createdAt);
+		
 		var dateString = moment(this.props.entry.createdAt, "ddd MMM DD YYYY hh:mm:ss").format("dddd, MMMM Do YYYY, h:mm:ss a");
 		// var b = performance.now();
 		// console.log("dateString formatting " + (b-a) + "ms");

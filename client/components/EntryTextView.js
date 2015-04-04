@@ -8,6 +8,8 @@ var Graffiti = require('./Graffiti');
 var UploadImageForm = require('./UploadImageForm');
 var moment = require('moment');
 
+var CurrentUserStore = require ('../stores/CurrentUserStore');
+
 var Parse = require('../utils/ParseInit');
 
 var EntryTextView = React.createClass({
@@ -35,38 +37,42 @@ var EntryTextView = React.createClass({
 
 		var buttons;
 		//Save/Delete buttons or Edit button
-		if(this.state.readOnly){
-			buttons = (
-				<div className="form-group">
-					<div className="col-sm-7">
-						<button 
-							className="btn btn-primary"
-							onClick={this._onEditClick}
-						>Edit
-						</button>
-					</div>
-
-
-				</div>
-			);
-		} else {
-			buttons = (					
-				<div className="form-group">
-					<div className="col-sm-7">
-						<button 
-								className="btn btn-primary" 
-								onClick={this._onUpdate}
-							>Save</button>
-						<span className="pull-right">
+		//Do not show edit buttons if the user cannot actually edit the entry
+		if(this.state.entry && this.state.entry.getACL().getWriteAccess(CurrentUserStore.getUser().id)){
+			if(this.state.readOnly){
+				buttons = (
+					<div className="form-group">
+						<div className="col-sm-7">
 							<button 
-									className="btn btn-danger"
-									onClick={this._onDelete}
-							>Delete</button>
-						</span>
+								className="btn btn-primary"
+								onClick={this._onEditClick}
+							>Edit
+							</button>
+						</div>
+
+
 					</div>
-				</div>
-			);
+				);
+			} else {
+				buttons = (					
+					<div className="form-group">
+						<div className="col-sm-7">
+							<button 
+									className="btn btn-primary" 
+									onClick={this._onUpdate}
+								>Save</button>
+							<span className="pull-right">
+								<button 
+										className="btn btn-danger"
+										onClick={this._onDelete}
+								>Delete</button>
+							</span>
+						</div>
+					</div>
+				);
+			}			
 		}
+
 
 		if(this.state.entry){
 			current_component = (
@@ -79,7 +85,6 @@ var EntryTextView = React.createClass({
 						<div className="col-md-6">
 							<input
 								className="form-control"
-								ref="diary_title"
 								value={moment(this.state.entry.updatedAt, "ddd MMM DD YYYY hh:mm:ss").format("dddd, MMMM Do YYYY, h:mm:ss a")}
 								readOnly="true"
 							/>
@@ -91,7 +96,6 @@ var EntryTextView = React.createClass({
 						<div className="col-md-6">
 							<input
 								className="form-control"
-								ref="diary_title"
 								value={moment(this.state.entry.createdAt, "ddd MMM DD YYYY hh:mm:ss").format("dddd, MMMM Do YYYY, h:mm:ss a")}
 								readOnly="true"
 							/>
@@ -104,8 +108,7 @@ var EntryTextView = React.createClass({
 							<input
 								className="form-control"
 								ref="diary_title"
-								onChange={this._onTitleChange}
-								value={this.state.entry.get("data").title}
+								defaultValue={this.state.entry.get("data").title}
 								readOnly={this.state.readOnly}
 							/>
 						</div>
@@ -117,8 +120,7 @@ var EntryTextView = React.createClass({
 							<TextAutosize 
 								className="form-control" 
 								ref="diary_text" 
-								onChange={this._onEntryChange} 
-								value={this.state.entry.get("data").text}
+								defaultValue={this.state.entry.get("data").text}
 								readOnly={this.state.readOnly}
 							/>
 						</div>
@@ -163,7 +165,12 @@ var EntryTextView = React.createClass({
 			};
 		if(this.state.canvasFunc){
 			curData.data["canvasImage"] = this.state.canvasFunc();
+
 		}
+		curData.data["title"] = this.refs.diary_title.getDOMNode().value;
+		curData.data["text"] = this.refs.diary_text.getDOMNode().value;
+
+		console.log(curData);
 
 		DiaryActions.updateEntry(curData, function(response){
 			if(!(response instanceof Parse.Error)){
@@ -186,25 +193,25 @@ var EntryTextView = React.createClass({
 		} 
 	},
 
-	_onTitleChange: function(event){
-		console.log("onTitleChange");
-		this.setState({
-			entry:_.extend({}, this.state.entry, {
-				title: event.target.value,
-				edited: true
-			})
-		});
-	},
+	// _onTitleChange: function(event){
+	// 	console.log("onTitleChange");
+	// 	this.setState({
+	// 		entry:_.extend({}, this.state.entry, {
+	// 			title: event.target.value,
+	// 			edited: true
+	// 		})
+	// 	});
+	// },
 
-	_onEntryChange: function(event){
-		console.log("onEntryChange");
-		this.setState({
-			entry:_.extend({}, this.state.entry, {
-				text: event.target.value,
-				edited: true
-			})
-		});
-	},
+	// _onEntryChange: function(event){
+	// 	console.log("onEntryChange");
+	// 	this.setState({
+	// 		entry:_.extend({}, this.state.entry, {
+	// 			text: event.target.value,
+	// 			edited: true
+	// 		})
+	// 	});
+	// },
 
 	_onEditClick: function(event){
 		event.preventDefault();

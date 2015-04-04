@@ -111,18 +111,22 @@ var ServerRequests = {
 		var DiaryEntry = Parse.Object.extend("DiaryEntry");
 		var diaryEntry = new DiaryEntry();
 
+
 		//Create new ACL access
 		var newACL = new Parse.ACL(currentUser);
+		console.log(diary_entry);
 
-		if(diaryEntry.ACL){
-			for(i = 0; i < ACL.length; i++){
-				newACL.setReadAccess(ACL[i], true);
+		if(diary_entry.ACL){
+			var sharedWith = [];
+			for(i = 0; i < diary_entry.ACL.length; i++){
+				newACL.setReadAccess(diary_entry.ACL[i], true);
+				sharedWith.push(diary_entry.ACL[i]);
 			}
+			diaryEntry.set("shared_with", sharedWith);
 		}
 		diaryEntry.setACL(newACL);
-
-		diaryEntry.set("data", diary_entry.data);
 		diaryEntry.set("createdBy", currentUser);
+		diaryEntry.set("data", diary_entry.data);
 
 		diaryEntry.save(null,
 			{
@@ -222,23 +226,34 @@ var ServerRequests = {
 		var queryObject = new Parse.Query(DiaryEntry);
 		queryObject.get(diary_entry.id, {
 			success: function (diaryEntry) {
-				console.log("updateEntrySuccess");
+
 				// diaryEntry.set("title", diary_entry.title);
 				// diaryEntry.set("text", diary_entry.text);
 
-				diaryEntry.set("data", diary_entry.data);
+				// diaryEntry.set("data", diary_entry.data);
 
-				if (diary_entry.canvasImage) {
-					// diaryEntry.set("canvasImage", new Parse.File("canvas.png", {base64:diary_entry.canvasImage}));
-					diaryEntry.set("canvasImage", diary_entry.canvasImage);
-				}
+				// if (diary_entry.canvasImage) {
+				// 	// diaryEntry.set("canvasImage", new Parse.File("canvas.png", {base64:diary_entry.canvasImage}));
+				// 	diaryEntry.set("canvasImage", diary_entry.canvasImage);
+				// }
 
-				diaryEntry.save();
+				diaryEntry.save({data: diary_entry.data}, {
+					success: function(response){
+						console.log(diary_entry);
+						console.log(response);
 
-				console.log("Server requests updateEntry");
-				console.log(parseEntry(diaryEntry));
+						console.log("updateEntrySuccess");
+						if(cb) return cb(response);
+					},
+					error: function(response, error){
+						if(cb) return cb(error);
+					}
+				});
 
-				if (cb) cb(parseEntry(diaryEntry));
+				// console.log("Server requests updateEntry");
+				// console.log(parseEntry(diaryEntry));
+
+				// if (cb) cb(parseEntry(diaryEntry));
 			},
 			error: function (diaryEntry, error) {
 				console.log(error);
