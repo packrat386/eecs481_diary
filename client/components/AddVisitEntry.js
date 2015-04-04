@@ -53,7 +53,6 @@ var AddBasicEntry = React.createClass({
 		});
 
 		return (
-
 			<div> 
 			<h1>Who is visiting today?</h1>
 			{entryTypes}
