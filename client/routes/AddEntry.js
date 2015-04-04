@@ -28,8 +28,12 @@ var AddEntry = React.createClass({
 
 	render: function(){
 		var buttonStyle = {
-			paddingRight: 5
+			//paddingRight: 5
 		};
+		var containerStyle = {
+			padding: 35
+		};
+
 		var entryTypes = null;
 		if(CurrentUserStore.getUser().get("user_type") === "visitor"){
 			entryTypes = <AddEntryVisitor />
@@ -38,19 +42,21 @@ var AddEntry = React.createClass({
 				return (
 					<div className="col-md-3 col-sm-6 col-xs-12" key={entryType.name}>
 						<Router.Link to={ entryType.path }>
-							<button type="button" className="btn btn-default btn-lg">
-								<span style={buttonStyle} className={entryType.icon} aria-hidden="true"></span>
+							<button type="button" className="btn btn-square">
+								<div className="btn-square-text">
+								<div><span style={buttonStyle} className={entryType.icon} aria-hidden="true"></span></div>
 								{ entryType.name }
+									</div>
 							</button>
 						</Router.Link>
 					</div>
 				);
-			});			
+			});		
 		}
 
-
 		return (
-			<div className="container">
+
+			<div className="container" style={containerStyle}>
 			{ entryTypes }
 			</div>
 		);

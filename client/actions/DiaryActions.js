@@ -20,6 +20,21 @@ var DiaryActions = {
 			}
 		});
 	},
+	addDoodle: function(data, cb){
+		ServerRequests.addDoodle(data, function(result_data){
+			if(data){
+				AppDispatcher.handleAction({
+					actionType: DiaryConstants.DIARY_ADD,
+					data: result_data
+				});
+
+				if(cb) cb(result_data);
+			} else {
+				if(cb) cb(null);
+				console.log("Failed to add entry");
+			}
+		});
+	},
 
 	removeEntry: function(data, cb){
 		ServerRequests.removeEntry(data, function(response){
