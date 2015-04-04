@@ -24,39 +24,26 @@ var ServerRequests = {
 						console.log("Not logged in");
 
 
-					// if(user.attributes.user_type == "patient"){
-					// 	//Create a new case entry
-					// 	caseEntry.save(null, 
-					// 			{
-					// 				success: function (new_caseEntry) {
-					// 					console.log("Added entry");
+					if(user.attributes.user_type === "patient"){
+						//Create a new case entry
+						caseEntry.save({patient: Parse.User.current()}, 
+								{
+									success: function (new_caseEntry) {
+										console.log("Added entry");
 
-					// 						//Create and save relation
-					// 						var relation = caseEntry.relation("Patient");
-					// 						relation.add(user);
-
-					// 						new_caseEntry.save(null, 
-					// 							{ 
-					// 								success: function(response){
-					// 									console.log("Saved new case");
-					// 									if (cb) return cb(user);
-					// 								},
-					// 								error: function(response, error){
-					// 									if (cb) return cb(user);
-					// 								}
-					// 							}
-
-					// 						);										
-					// 				},
-					// 				error: function (entry, response) {
-					// 					console.log("Error adding");
-					// 					console.log(error);
-					// 					if (cb) return cb(response);
-					// 				}
-					// 			});
-					// } else {
-					if(cb) return cb(user);
-					// }
+											//Create and save relation
+											console.log("Saved new case");
+											if (cb) return cb(user);								
+									},
+									error: function (entry, response) {
+										console.log("Error adding");
+										console.log(error);
+										if (cb) return cb(response);
+									}
+								});
+					} else {
+						if(cb) return cb(user);
+					}
 
 				},
 				error: function (user, error) {
@@ -126,6 +113,8 @@ var ServerRequests = {
 		}
 		diaryEntry.setACL(newACL);
 		diaryEntry.set("createdBy", currentUser);
+		if(diary_entry.type)
+			diaryEntry.set("type", diary_entry.type);
 		diaryEntry.set("data", diary_entry.data);
 
 		diaryEntry.save(null,
@@ -265,10 +254,25 @@ var ServerRequests = {
 
 	getPatients: function(cb){
 		var currentUser = Parse.User.current();
-		var r = currentUser.relation("patients");
-		r.query().find({
-			success: function(patients){
-				console.log(patients);
+		var CaseObject = Parse.Object.extend("Case");
+
+		//Get Case First
+		// console.log(Parse.Query("Case"));
+		console.log(currentUser.get("user_type"));
+		var q = new Parse.Query(CaseObject).containedIn("visitor", [currentUser]);
+		q.find({
+			success: function(cases){
+
+				console.log("get patients");
+				var patients = [];
+
+				//Find all patients within the cases that you're in
+				for(var i = 0; i < cases.length; i++){
+					// var r = cases[0].relation()
+					patients.push(cases[i].get("patient"));
+					console.log(cases[i].get("patient"));
+				}
+
 				if(cb) cb(patients);
 			},
 			error: function(error){
@@ -301,29 +305,52 @@ var ServerRequests = {
 
 		console.log(userID);
 		var userObject = new Parse.Query(Parse.User).equalTo("objectId", userID);
+
 		userObject.find({
-			success: function(results){
+			success: function(userResults){
 
-				if(results.length > 0){
-					var relation = currentUser.relation("patients");
+				console.log(userResults);
+				if(userResults.length > 0){
 
-					// for(var i = 0; i < results.length; i++){
-					// 	//Create and save relation
-					relation.add(results[0]);	
-					// }
+					var Case = Parse.Object.extend("Case");
+					var caseObject = new Parse.Query(Case).equalTo("patient", userResults[0]);
+					caseObject.find({
+						success: function(caseResults){
+							if(caseResults && caseResults.length > 0){
+								console.log(caseResults);
+								var relation = caseResults[0].relation(currentUser.get("user_type"));
+								relation.add(currentUser);
 
-
-					currentUser.save(null, 
-							{ 
-								success: function(response){
-									if (cb) return cb(response);
-								},
-								error: function(response, error){
-									consolelog("patient save fail");
-									if (cb) return cb(error);
-								}
+								caseResults[0].save(null,
+									{
+										success: function(response){
+											if(cb) return cb(response);
+										},
+										error: function(response){
+											console.log(response);
+											if(cb) return cb(response);
+										}
+									}
+								)
 							}
-					);		
+
+						},
+						error: function(error){
+
+						}
+					});
+
+					// currentUser.save(null, 
+					// 		{ 
+					// 			success: function(response){
+					// 				if (cb) return cb(response);
+					// 			},
+					// 			error: function(response, error){
+					// 				consolelog("patient save fail");
+					// 				if (cb) return cb(error);
+					// 			}
+					// 		}
+					// );		
 
 				} else {
 					if(cb) cb(new Parse.Error("-1", "Could not follow user."));
@@ -341,21 +368,31 @@ var ServerRequests = {
 
 	deleteFromFollowingPatientList: function(patientsToDelete, cb){
 		var currentUser = Parse.User.current();
-		var relation = currentUser.relation("patients");
-		for(var i = 0; i < patientsToDelete.length; i++){
-			relation.remove(patientsToDelete[i]);
-		}
+		// var relation = currentUser.relation("patients");
+		// for(var i = 0; i < patientsToDelete.length; i++){
+		// 	relation.remove(patientsToDelete[i]);
+		// }
 
-		currentUser.save(null, 
-			{
-				success: function(response){
-					if(cb) return cb(response);
-				},
-				error: function(response, error){
-					if(cb) return cb(error);
-				}
-			}
-		)
+		var promise = Parse.Promise.as();
+		promise = promise.then(function(){
+			_.each(patientsToDelete, function(patient){
+				var promise2 = Parse.Promise.as();
+				promise2.then(function(){
+					
+					var CaseObject = Parse.Object.extend("Case");
+					var query = new Parse.Query(CaseObject).equalTo("patient", patient);
+					return query.find();
+				}).then(function(caseObj){
+
+					console.log(caseObj[0]);
+					var relation = caseObj[0].relation(currentUser.get("user_type"));
+					relation.remove(currentUser);
+					return caseObj[0].save();
+				});	
+			});
+		}).then(function(){
+			if(cb) cb(true);
+		});
 	},
 
 	getEntries: function (cb) {
@@ -384,7 +421,14 @@ var ServerRequests = {
 		var image_data = data.substring(str.indexOf(',') + 1);
 
 		console.log(image_data);
+	},
+
+	refreshUser: function(){
+		if(Parse.User.current()){
+			Parse.User.current().refresh();
+		}
 	}
+	
 };
 
 module.exports = ServerRequests;

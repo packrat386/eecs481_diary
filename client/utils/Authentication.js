@@ -8,6 +8,8 @@ var Authentication = {
 			if(!ServerRequests.loggedIn()){
 				Login.attemptedTransition = transition;
 				transition.redirect('/login');
+
+				ServerRequests.refreshUser();
 			}
 		}
 	}

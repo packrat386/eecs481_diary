@@ -113,7 +113,7 @@ var Settings = React.createClass({
 		} else if(CurrentUserStore.getUser().attributes.user_type === "visitor"){
 			patients = 
 				<span>
-					<h3>Patient Following</h3>
+					<h3>Patients Following</h3>
 					<CaseList />
 					<hr className="col-md-12"/>
 				</span>;	

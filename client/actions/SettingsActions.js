@@ -16,6 +16,7 @@ var SettingsActions = {
 
 		console.log("Toggle active");
 	},
+	
 	deletePatients: function(cb){
 		var patientsToDelete = CaseStore.getCases(true);
 
@@ -62,7 +63,7 @@ var SettingsActions = {
 		var currentUser = CurrentUserStore.getUser();
 		ServerRequests.getPatients(function(response){
 			if(response instanceof Parse.Error){
-				if(cb) return cb(error);
+				if(cb) return cb(response);
 			} else {
 				AppDispatcher.handleAction({
 					actionType: SettingsConstants.LOAD_PATIENTS,

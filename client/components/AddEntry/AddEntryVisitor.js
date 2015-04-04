@@ -16,7 +16,8 @@ var AddEntryVisitor = React.createClass({
 			data: null,
 			callbackList: [],
 			patientList: null,
-			shareWith: {}
+			shareWith: {},
+			type: "text"
 		}
 	},
 
@@ -69,6 +70,7 @@ var AddEntryVisitor = React.createClass({
 
 		DiaryActions.addEntry({
 			ACL: shareArray,
+			type: this.state.type,
 			data: dataObj.data
 		}, function(response){
 			if(response){

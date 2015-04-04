@@ -81,6 +81,17 @@ var EntryTextView = React.createClass({
 				<form className="form-horizontal">
 					{buttons}
 					<div className="form-group">
+						<label className="col-md-2 control-label">Author</label>
+						<div className="col-md-6">
+							<input
+								className="form-control"
+								value={this.state.entry.get("createdBy").id}
+								readOnly="true"
+							/>
+						</div>
+					</div>
+
+					<div className="form-group">
 						<label className="col-md-2 control-label">Updated</label>
 						<div className="col-md-6">
 							<input
@@ -163,6 +174,7 @@ var EntryTextView = React.createClass({
 				id: this.state.entry.id,
 				data: this.state.entry.get("data")
 			};
+		
 		if(this.state.canvasFunc){
 			curData.data["canvasImage"] = this.state.canvasFunc();
 
@@ -192,26 +204,6 @@ var EntryTextView = React.createClass({
 			DiaryActions.removeEntry(this.state.entry);
 		} 
 	},
-
-	// _onTitleChange: function(event){
-	// 	console.log("onTitleChange");
-	// 	this.setState({
-	// 		entry:_.extend({}, this.state.entry, {
-	// 			title: event.target.value,
-	// 			edited: true
-	// 		})
-	// 	});
-	// },
-
-	// _onEntryChange: function(event){
-	// 	console.log("onEntryChange");
-	// 	this.setState({
-	// 		entry:_.extend({}, this.state.entry, {
-	// 			text: event.target.value,
-	// 			edited: true
-	// 		})
-	// 	});
-	// },
 
 	_onEditClick: function(event){
 		event.preventDefault();

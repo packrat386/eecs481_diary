@@ -70,7 +70,6 @@ var DiaryActions = {
 	},
 
 	updateEntry: function(entry, cb){
-		console.log(entry);
 		ServerRequests.updateEntry(entry, function(response){
 			if(response instanceof Parse.Error){
 				if(cb) cb(response);
