@@ -17,21 +17,36 @@ var AddDoodleEntry = React.createClass({
 	},
 	submitEntry: function(event){
 		event.preventDefault();
+		// var title = this.refs.title.getDOMNode().value;
+		// var drawing = this.state.canvasFunc();
+
+		// DiaryActions.addEntry({
+		// 	data: {
+		// 		type: "doodle",
+		// 		title: title,
+		// 		canvasImage: drawing
+		// 	}
+		// }, function(response){
+		// 	if(response){
+		// 		this.transitionTo('main');
+		// 	}
+		// }.bind(this));
+		// console.log(title + " " + drawing);
+	},
+
+	_getData: function(){
 		var title = this.refs.title.getDOMNode().value;
 		var drawing = this.state.canvasFunc();
+		return {
+			title: title,
+			canvasImage: drawing
+		};
+	},
 
-		DiaryActions.addEntry({
-			data: {
-				type: "doodle",
-				title: title,
-				canvasImage: drawing
-			}
-		}, function(response){
-			if(response){
-				this.transitionTo('main');
-			}
-		}.bind(this));
-		console.log(title + " " + drawing);
+	componentDidMount: function(){
+		if(this.props.registerCallback){
+			this.props.registerCallback(this._getData);
+		}
 	},
 
 	render: function(){
@@ -40,9 +55,6 @@ var AddDoodleEntry = React.createClass({
 				<label className="col-sm-1 control-label">Title</label>
 				<div className="col-sm-8">
 					<input ref="title" type="title" className="form-control"/>
-				</div>
-				<div className="col-sm-offset-1 col-sm-2">
-					<button type="submit" className="btn btn-primary">Create Entry</button>
 				</div>
 			</div>
 		);

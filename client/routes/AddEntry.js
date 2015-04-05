@@ -10,6 +10,8 @@ var AddMoodEntry = require('../components/AddMoodEntry');
 var AddBasicEntry = require('../components/AddBasicEntry');
 var AddDoodleEntry = require('../components/AddDoodleEntry');
 
+var DiaryActions = require('../actions/DiaryActions');
+
 
 function getEntryTypes() {
 	return [
@@ -20,30 +22,35 @@ function getEntryTypes() {
 	];
 }
 
-function getTypeClasses(){
+function getTypeClasses(cb){
 	return {
-			"text": <AddBasicEntry />,
-			"doodle": <AddDoodleEntry />,
-			"mood": <AddMoodEntry />,
-			"visit": <AddEntryVisitor />
+			"text": <AddBasicEntry registerCallback={cb}/>,
+			"doodle": <AddDoodleEntry registerCallback={cb}/>,
+			"mood": <AddMoodEntry registerCallback={cb}/>,
+			"visit": <AddEntryVisitor registerCallback={cb}/>
 	};
 	
 }
 
-
-
 var AddEntry = React.createClass({
-	mixins: [Authentication],
+	mixins: [Authentication, Router.Navigation],
 
 	componentDidMount: function(){
 		document.title = "ICU Diary | Add";
+	},
+
+	_registerCallback: function(func){
+		this.setState({
+			getData: func
+		});
 	},
 
 	getInitialState: function(){
 		return { 
 			types: getEntryTypes(),
 			currentType: null,
-			typeClass: getTypeClasses()
+			typeClass: getTypeClasses(this._registerCallback),
+			getData: null
 		};
 	},
 
@@ -53,6 +60,24 @@ var AddEntry = React.createClass({
 		this.setState({
 			currentType: event.currentTarget.value
 		});
+	},
+
+	_submitEntry: function(event){
+		event.preventDefault();
+		if(!this.state.getData){
+			console.log("No callback registered").
+			return;
+		}
+
+		DiaryActions.addEntry({
+			type: this.state.currentType,
+			data: this.state.getData()
+		}, function(response){
+			if(response){
+				this.transitionTo('main');
+			}
+		}.bind(this));
+		console.log(title + " " + text);
 	},
 
 	render: function(){
@@ -100,7 +125,7 @@ var AddEntry = React.createClass({
 						<h1>  </h1>
 						{mainView}
 
-						<button type="button" className="btn btn-block btn-lg btn-primary">Done</button>
+						<button type="button" className="btn btn-block btn-lg btn-primary" onClick={this._submitEntry}>Done</button>
 					</div>
 				</div>
 

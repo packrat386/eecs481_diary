@@ -10,6 +10,8 @@ var UpdateEmail = require('../components/Settings/UpdateEmail');
 var UpdatePassword = require('../components/Settings/UpdatePassword');
 var CaseList = require('../components/Settings/CaseList');
 
+var SettingsActions = require('../actions/SettingsActions');
+
 var Settings = React.createClass({
 	mixins: [Authentication],
 
@@ -23,6 +25,13 @@ var Settings = React.createClass({
 	componentDidMount: function(){
 		document.title = "ICU Diary | Settings";
 
+		SettingsActions.updatePatients(function(response){
+			// if(response){
+			// 	this.setState({
+			// 		caseList: response
+			// 	});
+			// }
+		});
 	},
 
 	changePassword: function(){

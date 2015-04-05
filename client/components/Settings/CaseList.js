@@ -17,14 +17,6 @@ var CaseList =  React.createClass({
 	componentDidMount: function() {
 		CaseStore.addChangeListener(this._onChange);
 		CaseStore.addChangeListener(this._onCurrentUserChange);
-
-		SettingsActions.updatePatients(function(response){
-			if(response){
-				this.setState({
-					caseList: response
-				});
-			}
-		}.bind(this));
 	},
 
 	componentWillUnmount: function() {
