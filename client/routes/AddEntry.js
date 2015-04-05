@@ -5,6 +5,10 @@ var AddBasicEntry = require('../components/AddBasicEntry');
 var Authentication = require('../utils/Authentication');
 var CurrentUserStore = require('../stores/CurrentUserStore');
 var AddEntryVisitor = require('../components/AddEntry/AddEntryVisitor');
+var AddMoodEntry = require('../components/AddMoodEntry');
+var AddBasicEntry = require('../components/AddBasicEntry');
+
+
 
 function getEntryTypes() {
 	return [
@@ -65,6 +69,8 @@ var AddEntry = React.createClass({
 						<h1 className="text-center"> Main Function Area </h1>
 						<h1>  </h1>
 						<h1>  </h1>
+						<AddBasicEntry> </AddBasicEntry>
+
 						<button type="button" className="btn btn-block btn-lg btn-primary">Done</button>
 					</div>
 				</div>

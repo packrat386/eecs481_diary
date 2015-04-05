@@ -38,7 +38,7 @@ var AddMoodEntry = React.createClass({
 					<label className="col-sm-1 control-label">Title</label>
 					<div className="col-sm-10">
 						<input ref="title" type="title" className="form-control"/>
-					</div>
+						</div>
 				</div>
 
 				<div className="form-group">
@@ -52,6 +52,10 @@ var AddMoodEntry = React.createClass({
 					<div className="col-sm-offset-1 col-sm-10">
 						<button type="submit" className="btn btn-primary">Create Entry</button>
 					</div>
+				</div>
+
+				<div>
+					<img src="../client/images/Slice-1.png"> </img>
 				</div>
 			</form>
 		);
