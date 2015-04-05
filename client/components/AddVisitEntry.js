@@ -67,8 +67,6 @@ var AddBasicEntry = React.createClass({
 				<button type="button" className="btn">
 				 Done
 				</button>
-
-
 			</form>
 			</div>
 
