@@ -52,7 +52,7 @@ var CaseList =  React.createClass({
 		console.log(this.refs.new_patient.getDOMNode().value);
 		if(this.refs.new_patient.getDOMNode().value == ""){
 			this.setState({
-				message: 
+				message:
 					{
 						className: "alert alert-danger",
 						message: "Can't add blank patient!"
@@ -65,7 +65,7 @@ var CaseList =  React.createClass({
 
 			if(response instanceof Parse.Error){
 				return this.setState({
-					message: 
+					message:
 						{
 							className: "alert alert-danger",
 							message: response.message
@@ -73,7 +73,7 @@ var CaseList =  React.createClass({
 				});
 			} else {
 				console.log("Added");
-				this.refs.new_patient.getDOMNode().value = "";	
+				this.refs.new_patient.getDOMNode().value = "";
 			}
 
 
@@ -110,13 +110,14 @@ var CaseList =  React.createClass({
 	render: function(){
 		//Pass down each patient into the CaseListItem
 		var CaseListItems = this.state.caseList.map(function(patientRef){
-					return (<CaseListItem patient={patientRef} key={patientRef.id}/>);
+					var patientInfo = patientRef;
+					return (<CaseListItem patient={patientInfo} key={patientInfo.id}/>);
 				});
 
 		//Display message if it exists
 		var messageComponent = null;
 		if(this.state.message){
-			messageComponent = 
+			messageComponent =
 				(<div className={this.state.message.className}>
 					{this.state.message.message}
 				</div>);

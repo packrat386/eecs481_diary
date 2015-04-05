@@ -18,7 +18,7 @@ var CaseListItem =  React.createClass({
 
 		return (
 			<a href="#" className={classString} onClick={this._onClick}>
-				{this.props.patient.id}
+				{this.props.patient.attributes.username} ({this.props.patient.id})
 			</a>
 		);
 	}
