@@ -3,6 +3,8 @@ var DiaryConstants = require('../constants/DiaryConstants');
 var _ = require('underscore');
 var EventEmitter = require('events').EventEmitter;
 
+var moment = require('moment');
+
 
 var _diary_entries = [];
 
@@ -77,6 +79,49 @@ var DiaryEntryStore = _.extend({}, EventEmitter.prototype, {
 			}
 		}
 		return false;
+	},
+
+	getDays: function(){
+		var days = {};
+		for(var i = 0; i < _diary_entries.length; i++){
+			var mom = moment(_diary_entries[i].createdAt, "ddd MMM DD YYYY hh:mm:ss");
+			var str = mom.format("MM-DD-YYYY");
+			if(!(str in days)){
+				days[str] = true;
+			}
+		}
+
+		return Object.keys(days);
+	},
+
+	//Format MM-DD-YYYY ex. 12-25-1995
+	//Dictionary returns date: [entries]
+	getDateEntryDictionary: function(){
+		var dayDict = {};
+		for(var i = 0; i < _diary_entries.length; i++){
+			var mom = moment(_diary_entries[i].createdAt, "ddd MMM DD YYYY hh:mm:ss");
+			var str = mom.format("MM-DD-YYYY");
+			if(!(str in daysDict)){
+				daysDict[str] = [];
+			} 
+			daysDict[str].push(_diary_entries[i]);
+		}
+
+		return daysDict;
+	},
+
+	//Given a string ofo MM-DD-YYYY format, return a list of elements on that day
+	getEntriesOnDay: function(day_str){
+		var moment_obj = moment(day_str, "MM-DD-YYYY");
+		var entries = [];
+		for(var i = 0; i < _diary_entries.length; i++){
+			var mom = moment(_diary_entries[i].createdAt, "ddd MMM DD YYYY hh:mm:ss");
+			if(moment_obj.isSame(mom, 'day')){
+				entries.push(_diary_entries[i]);
+			}
+		}
+
+		return entries;
 	}
 });
 

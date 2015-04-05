@@ -6,8 +6,6 @@ var Graffiti = require('./Graffiti');
 
 
 var AddBasicEntry = React.createClass({
-	mixins: [Router.Navigation],
-
 
 	submitEntry: function(event){
 		event.preventDefault();

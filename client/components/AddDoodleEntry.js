@@ -7,7 +7,6 @@ var Authentication = require('../utils/Authentication');
 
 
 var AddDoodleEntry = React.createClass({
-	mixins: [Router.Navigation],
 
 	getInitialState: function(){
 		return {

@@ -8,25 +8,8 @@ var Slider = require("./Slider");
 
 var AddMoodEntry = React.createClass({
 
-	getInitialState: function() {
-	    return {
-	      value: 5
-	    };
-  	},
-
-  	increment: function(event) {
-	    this.setState({
-	      value: this.state.value + 1
-	    });
-  	},
-
-	didChange: function(event) {
-		this.setState({
-		  value: event.value
-	},
-
 	componentDidMount: function(){
-		console.log("stuff");
+		console.log("Mood mounted");
 		// console.log($(this.refs.ex1.getDOMNode()).slider());
 		// $(this.refs.feelingslider.getDOMNode()).slider();
 
@@ -67,11 +50,10 @@ var AddMoodEntry = React.createClass({
 
 		return (
 			<div>
-				<div style={{position: "relative"}}>
+				<div>
 					<p className="text-center">
 						<img src="/images/Slice-1.png"> </img>
 					</p>
-					<Slider min={0} max={10} step={1} value={this.state.value} toolTip={true} onSlide={this.didChange}/>
 
 				</div>
 			 	<button onClick={this.increment}>Increment</button>

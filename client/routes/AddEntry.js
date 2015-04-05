@@ -85,7 +85,7 @@ var AddEntry = React.createClass({
 			//paddingRight: 5
 		};
 		var containerStyle = {
-			// padding: 35
+			paddingBottom: '12px'
 		};
 
 		var entryTypes = null;
@@ -104,32 +104,32 @@ var AddEntry = React.createClass({
 						</button>
 					</div>
 				);
-			}.bind(this));		
+			}.bind(this));	
 		}
 
 		var mainView = null;
 		if(this.state.currentType){
 			console.log(this.state.currentType);
-			mainView = this.state.typeClass[this.state.currentType];
+			mainView = 
+				<span>
+					<br />
+					{this.state.typeClass[this.state.currentType]}
+					<br />
+					<button type="button" className="btn btn-block btn-lg btn-primary" onClick={this._submitEntry}>Done</button>
+				</span>;
 		}
 
 		return (
 
-			<div className="container" style={containerStyle}>
-			{ entryTypes }
-				<div className="row clearfix">
-					<div className="col-md-12 column" >
-						<h1> </h1>
-						<h1 className="text-center"> Main Function Area </h1>
-						<h1>  </h1>
-						<h1>  </h1>
-						{mainView}
-
-						<button type="button" className="btn btn-block btn-lg btn-primary" onClick={this._submitEntry}>Done</button>
-					</div>
+			<div className="container">
+				<div className="row">
+					{ entryTypes }
 				</div>
 
-
+				<div className="row">
+					{mainView}
+					
+				</div>
 			</div>
 		);
 	}
