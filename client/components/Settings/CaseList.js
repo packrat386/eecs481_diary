@@ -70,6 +70,7 @@ var CaseList =  React.createClass({
 						}
 				});
 			} else {
+				console.log("Added");
 				this.refs.new_patient.getDOMNode().value = "";	
 			}
 
@@ -119,17 +120,19 @@ var CaseList =  React.createClass({
 				</div>);
 		}
 
+		var zeroSelected = CaseStore.numCases() === 0 ? true : false;
+
 		return (
 			<span>
 				{messageComponent}
-				<div className="list-group">
+				<div className="list-group" style={{display: "table"}}>
 					{CaseListItems}
 					<form onSubmit={this._newPatient}>
 						<input ref="new_patient" placeholder="New Patient ID" className="list-group-item" />
 					</form>
 				</div>
 				<button className="btn btn-lg btn-primary" ref="button_add" onClick={this._newPatient}>Add Patient</button><br/>
-				<button className="btn btn-lg btn-danger" ref="button_delete" onClick={this._deleteSelected}>Delete Selected Patients</button>
+				<button className="btn btn-lg btn-danger" ref="button_delete" onClick={this._deleteSelected} disabled={zeroSelected}>Delete Selected Patients</button>
 			</span>
 		);
 	}

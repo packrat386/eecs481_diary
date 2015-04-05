@@ -81,12 +81,13 @@ var AddEntryVisitor = React.createClass({
 
 	_onShareClick: function(event){
 		event.preventDefault();
-		console.log(event.target);
+		console.log($(event.target).attr("value"));
+		// $(event.target).toggleClass("active");
 		var tempShare = this.state.shareWith;
-		if(!tempShare[event.target.value]){
-			tempShare[event.target.value] = true;
+		if(!tempShare[$(event.target).attr("value")]){
+			tempShare[$(event.target).attr("value")] = true;
 		} else {
-			delete tempShare[event.target.value];
+			delete tempShare[$(event.target).attr("value")];
 		}
 
 		this.setState({
@@ -99,23 +100,28 @@ var AddEntryVisitor = React.createClass({
 		var shareWith = null;
 		if(this.state.patientList){
 
-				shareWith = this.state.patientList.map(function(patientRef){
+				shareWithInner = this.state.patientList.map(function(patientRef){
 					
 					var className = "list-group-item";
 					if(this.state.shareWith[patientRef.id]){
 						className += " active";
 					}
 					return (
-						<button className={className}
+						<a className={className}
 							key={patientRef.id} 
 							onClick={this._onShareClick} 
 							value={patientRef.id}
-							ref={patientRef.id}>
+							ref={patientRef.id}
+							>
 							
 							{patientRef.id}
-						</button>
+						</a>
 						);
 				}.bind(this));
+
+				shareWith = <div className="list-group" style={{display: "table"}}>
+				{shareWithInner}
+				</div>;
 		}
 
 		return (
