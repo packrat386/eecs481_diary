@@ -11,6 +11,7 @@ var CurrentUserStore = require ('../stores/CurrentUserStore');
 var Parse = require('../utils/ParseInit');
 
 var PostViewer = React.createClass({
+
     render: function(){
         return (
             <div className="container">

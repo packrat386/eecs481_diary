@@ -3,13 +3,17 @@ var Router = require('react-router');
 var ServerRequests = require('../utils/ServerRequests');
 var DiaryActions = require('../actions/DiaryActions');
 var Graffiti = require('./Graffiti');
+var Slider = require("bootstrap-slider");
 
 
 var AddMoodEntry = React.createClass({
 	mixins: [Router.Navigation],
 
-
-
+	componentDidMount: function(){
+		$(this.refs.feelingslider.getDOMNode()).slider({
+			
+		});
+	},
 
 	submitEntry: function(event){
 		event.preventDefault();
@@ -30,6 +34,7 @@ var AddMoodEntry = React.createClass({
 	},
 
 	render: function(){
+
 
 		return (
 			<form className="form-horizontal" onSubmit={this.submitEntry}>
@@ -54,9 +59,11 @@ var AddMoodEntry = React.createClass({
 					</div>
 				</div>
 
-				<div>
+				<input ref="feelingslider">
+					<p className="text-center">
 					<img src="/images/Slice-1.png"> </img>
-				</div>
+					</p>
+				</input>
 			</form>
 		);
 	}
