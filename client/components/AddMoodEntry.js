@@ -23,7 +23,6 @@ var AddMoodEntry = React.createClass({
 	didChange: function(event) {
 		this.setState({
 		  value: event.value
-		});
 	},
 
 	componentDidMount: function(){
