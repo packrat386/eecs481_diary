@@ -10,6 +10,7 @@
     "express": "^4.10.4",
     "less-middleware": "^1.0.4",
     "nunjucks": "^1.1.0",
+    "bootstrap-slider":"^4.7.3",
     "react": "^0.12.2",
     "react-router": "^0.11.4",
     "reactify": "^0.17.1",
@@ -18,7 +19,6 @@
     "flux": "^2.0.0",
     "react-textarea-autosize": "^1.1.0",
     "moment": "^2.9.0",
-    "bootstrap-slider":"^4.7.3",
     "jquery":"^1.1.1",
     "classnames": "^1.2.0"
   },

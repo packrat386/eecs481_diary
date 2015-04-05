@@ -96,7 +96,7 @@ var AddEntry = React.createClass({
 			entryTypes = this.state.types.map(function (entryType) {
 				return (
 					<div className="col-md-3 col-sm-6 col-xs-12" key={entryType.name}>
-						<button type="button" value={entryType.type} className="btn btn-square" onClick={this._setType}>
+						<button value={entryType.type} className="btn btn-square" onClick={this._setType}>
 							<div className="btn-square-text">
 								<div><span style={buttonStyle} className={entryType.icon} aria-hidden="true"></span></div>
 								{ entryType.name }

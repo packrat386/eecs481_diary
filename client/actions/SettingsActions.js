@@ -6,7 +6,6 @@ var Parse = require('../utils/ParseInit');
 var CurrentUserStore = require('../stores/CurrentUserStore');
 var CaseStore = require('../stores/CaseStore');
 
-
 var SettingsActions = {
 	toggleActive: function(patient){
 		AppDispatcher.handleAction({
