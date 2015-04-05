@@ -48,16 +48,16 @@ var PageNav = React.createClass({
 			extra_nav.push(<li role="presentation" key="main" width="90"> <Router.Link to="main">Old Entries</Router.Link> </li>);
 			extra_nav.push(<li role="presentation" key="add"> <Router.Link to="add">Write  New Entry</Router.Link> </li>);
 			extra_nav.push(<li role="presentation" key="settings"> <Router.Link to="settings">Settings</Router.Link> </li>);
-			extra_nav.push(<li role="presentation" key="logout"><img src="/images/Slice-3.png"> </img> <Router.Link to="logout">Logout</Router.Link>
+			extra_nav.push(<li role="presentation" key="logout"> <Router.Link to="logout"><img src="/images/Slice-3.png"> </img> <br></br> Logout</Router.Link>
 
 			</li>);
 
 		}
 		return (
 			<ul className="nav nav-pills nav-justified" id="nav-bar">
-				<li role="presentation" >
-					<img src="/images/Slice-2.png"> </img>
-					<Router.Link to="home">Home</Router.Link>
+				<li role="presentation"  >
+					<Router.Link to="home"><img src="/images/Slice-2.png"> </img>
+						<br></br>Home</Router.Link>
 				</li>
 				<li role="presentation">
 					<Router.Link to="about">About</Router.Link>
