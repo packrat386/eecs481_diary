@@ -310,7 +310,7 @@ var ServerRequests = {
 			success: function(userResults){
 
 				console.log(userResults);
-				if(userResults.length > 0){
+				if(userResults.length > 0 && userResults[0].get("user_type") === "patient"){
 
 					var Case = Parse.Object.extend("Case");
 					var caseObject = new Parse.Query(Case).equalTo("patient", userResults[0]);
@@ -336,27 +336,20 @@ var ServerRequests = {
 
 						},
 						error: function(error){
-
+							if(cb) return cb(new Parse.Error("-1", "Could not save case."));
 						}
 					});
 
-					// currentUser.save(null, 
-					// 		{ 
-					// 			success: function(response){
-					// 				if (cb) return cb(response);
-					// 			},
-					// 			error: function(response, error){
-					// 				consolelog("patient save fail");
-					// 				if (cb) return cb(error);
-					// 			}
-					// 		}
-					// );		
-
 				} else {
-					if(cb) cb(new Parse.Error("-1", "Could not follow user."));
+					var errorMessage = "Could not follow user.";
+					if(userResults.length == 0){
+						errorMessage = "Could not find user."
+					} else if (userResults[0].get("user_type") === "patient"){
+						errorMessage = "User is not a patient.";
+					}
+					if(cb) return cb(new Parse.Error("-1", errorMessage));
 				}
 
-				// if (cb) cb(results);
 			},
 
 			error: function(error){

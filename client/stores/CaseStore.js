@@ -68,7 +68,7 @@ var CaseStore = _.extend({}, EventEmitter.prototype, {
 	},
 
 	numCases: function(){
-		return _case_store.length();
+		return Object.keys(_case_store).length;
 	}
 });
 
