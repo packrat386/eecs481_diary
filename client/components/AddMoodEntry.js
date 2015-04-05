@@ -55,7 +55,7 @@ var AddMoodEntry = React.createClass({
 				</div>
 
 				<div>
-					<img src="../client/images/Slice-1.png"> </img>
+					<img src="/images/Slice-1.png"> </img>
 				</div>
 			</form>
 		);

@@ -5,6 +5,7 @@ var DiaryEntryStore = require('../stores/DiaryEntryStore');
 var DiaryActions = require('../actions/DiaryActions');
 var EntryTextView = require('./EntryTextView');
 var _ = require('underscore');
+var PostViewer = require('./PostViewer');
 
 function reverseEntries(entries){
 	return Array.prototype.slice.call(entries).reverse();
@@ -95,6 +96,8 @@ var ListView = React.createClass({
 				<div className="col-xs-12 col-sm-12 col-md-8">
 					<EntryTextView initialEntry={this.state.currentSelected}/>
 				</div>
+
+				<PostViewer > </PostViewer>
 			</div>
 
 		);
