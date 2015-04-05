@@ -35,6 +35,7 @@ var AddEntry = React.createClass({
 		};
 
 		var entryTypes = null;
+
 		if(CurrentUserStore.getUser().get("user_type") === "visitor"){
 			entryTypes = <AddEntryVisitor />
 		} else {
@@ -58,6 +59,17 @@ var AddEntry = React.createClass({
 
 			<div className="container" style={containerStyle}>
 			{ entryTypes }
+				<div className="row clearfix">
+					<div className="col-md-12 column" >
+						<h1> </h1>
+						<h1 className="text-center"> Main Function Area </h1>
+						<h1>  </h1>
+						<h1>  </h1>
+						<button type="button" className="btn btn-block btn-lg btn-primary">Done</button>
+					</div>
+				</div>
+
+
 			</div>
 		);
 	}
