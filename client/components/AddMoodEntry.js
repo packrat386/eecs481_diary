@@ -11,7 +11,7 @@ var AddMoodEntry = React.createClass({
 
 	componentDidMount: function(){
 		$(this.refs.feelingslider.getDOMNode()).slider({
-			
+
 		});
 	},
 

@@ -29,11 +29,44 @@ var PostViewer = React.createClass({
                         <p className="text-left">
                             You had two visitors: <br> </br>
                             test
+                            <br> </br>
+                            <img alt="140x140" src="http://lorempixel.com/140/140/" className="img-circle"></img> <br></br>
+                            <br> </br>
+                            test
+                            <br> </br>
                             <img alt="140x140" src="http://lorempixel.com/140/140/" className="img-circle"></img> <br></br>
                         </p>
                     </div>
                 </div>
+
+                <div className="col-md-4 column">
+                    <div className="row clearfix">
+                        <div className="col-md-12 column">
+                            <p>
+                                On Wednesday, April 2nd, you were in a great mood!.
+                            </p>
+                        </div>
+                    </div>
+                    <div className="row clearfix">
+                        <div className="col-md-12 column">
+                            <p className="text-center">
+                                You drew this:
+                                <img alt="140x140" src="http://lorempixel.com/140/140/" className="img-square"></img> <br></br>
+
+                            </p>
+                            </div>
+                        </div>
+                    </div>
+                <div className="col-md-4 column">
+                    <p>
+                        <img alt="500x500" src="http://lorempixel.com/500/500/" className="img-square"></img> <br></br>
+                    </p>
+                </div>
+
+
             </div>
+
+
         );
     }
 });
