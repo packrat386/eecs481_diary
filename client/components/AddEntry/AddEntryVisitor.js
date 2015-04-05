@@ -67,7 +67,6 @@ var AddEntryVisitor = React.createClass({
 			dataObj = _.extend({}, dataObj, this.state.callbackList[i]());
 		}
 
-
 		DiaryActions.addEntry({
 			ACL: shareArray,
 			type: this.state.type,
