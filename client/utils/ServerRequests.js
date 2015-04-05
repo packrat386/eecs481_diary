@@ -26,14 +26,14 @@ var ServerRequests = {
 
 					if(user.attributes.user_type === "patient"){
 						//Create a new case entry
-						caseEntry.save({patient: Parse.User.current()}, 
+						caseEntry.save({patient: Parse.User.current()},
 								{
 									success: function (new_caseEntry) {
 										console.log("Added entry");
 
 											//Create and save relation
 											console.log("Saved new case");
-											if (cb) return cb(user);								
+											if (cb) return cb(user);
 									},
 									error: function (entry, response) {
 										console.log("Error adding");
@@ -258,8 +258,16 @@ var ServerRequests = {
 
 		//Get Case First
 		// console.log(Parse.Query("Case"));
-		console.log(currentUser.get("user_type"));
-		var q = new Parse.Query(CaseObject).containedIn("visitor", [currentUser]);
+		var userType = currentUser.get("user_type");
+		if (userType){
+			console.log("User is type: " + userType);
+		}
+		else{
+			console.log("Cannot find user type, setting to default type of \"visitor\"");
+			userType = "visitor";
+		}
+		var q = new Parse.Query(CaseObject).containedIn(userType, [currentUser]);
+		q.include("patient");
 		q.find({
 			success: function(cases){
 
@@ -268,9 +276,9 @@ var ServerRequests = {
 
 				//Find all patients within the cases that you're in
 				for(var i = 0; i < cases.length; i++){
-					// var r = cases[0].relation()
-					patients.push(cases[i].get("patient"));
-					console.log(cases[i].get("patient"));
+					var patient = cases[i].get("patient");
+					patients.push(patient);
+					console.log("Patient " + i + 1 + ": "+patient);
 				}
 
 				if(cb) cb(patients);
@@ -368,7 +376,7 @@ var ServerRequests = {
 			_.each(patientsToDelete, function(patient){
 				var promise2 = Parse.Promise.as();
 				promise2.then(function(){
-					
+
 					var CaseObject = Parse.Object.extend("Case");
 					var query = new Parse.Query(CaseObject).equalTo("patient", patient);
 					return query.find();
@@ -378,7 +386,7 @@ var ServerRequests = {
 					var relation = caseObj[0].relation(currentUser.get("user_type"));
 					relation.remove(currentUser);
 					return caseObj[0].save();
-				});	
+				});
 			});
 
 			var promise3 = Parse.Promise.as();
@@ -421,7 +429,7 @@ var ServerRequests = {
 			Parse.User.current().refresh();
 		}
 	}
-	
+
 };
 
 module.exports = ServerRequests;

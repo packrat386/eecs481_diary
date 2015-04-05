@@ -40,7 +40,7 @@ var DiaryActions = {
 		ServerRequests.removeEntry(data, function(response){
 			if(response){
 				AppDispatcher.handleAction({
-					actionType: DiaryConstants.DIARY_REMOVE,
+					actionType: DiaryConstants.DIARY_DELETE,
 					data: data
 				});
 
