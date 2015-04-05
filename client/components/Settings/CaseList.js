@@ -60,7 +60,9 @@ var CaseList =  React.createClass({
 			})
 			return;
 		}
+		console.log("Add patient action");
 		SettingsActions.addPatient(this.refs.new_patient.getDOMNode().value, function(response){
+
 			if(response instanceof Parse.Error){
 				return this.setState({
 					message: 

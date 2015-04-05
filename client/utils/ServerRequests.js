@@ -361,11 +361,8 @@ var ServerRequests = {
 
 	deleteFromFollowingPatientList: function(patientsToDelete, cb){
 		var currentUser = Parse.User.current();
-		// var relation = currentUser.relation("patients");
-		// for(var i = 0; i < patientsToDelete.length; i++){
-		// 	relation.remove(patientsToDelete[i]);
-		// }
 
+		//Promises make me cry
 		var promise = Parse.Promise.as();
 		promise = promise.then(function(){
 			_.each(patientsToDelete, function(patient){
@@ -383,6 +380,9 @@ var ServerRequests = {
 					return caseObj[0].save();
 				});	
 			});
+
+			var promise3 = Parse.Promise.as();
+			return promise3;
 		}).then(function(){
 			if(cb) cb(true);
 		});

@@ -26,14 +26,14 @@ var Header = React.createClass({
 				user_type = CurrentUserStore.getUser().get("user_type").capitalizeFirstLetter();
 			}
 			user_header = (
-
-				<p><b>{CurrentUserStore.getUser().attributes.username}'s ICU Diary</b> ({user_type})</p>
+				<p>Logged in as <b>{CurrentUserStore.getUser().attributes.username}</b> ({user_type})</p>
 			);
 		}
 
 		return (
 			<div className="page-header" id="header">
-				{user_header} <h3></h3>
+				<h1>ICU Diary</h1>
+				{user_header}
 			</div>
 		);
 	}
@@ -45,8 +45,8 @@ var PageNav = React.createClass({
 		if(!ServerRequests.loggedIn()){
 			extra_nav.push(<li role="presentation" key="login"> <Router.Link to="login">Login/Create Account</Router.Link> </li>);
 		} else {
-			extra_nav.push(<li class="active" role="presentation" key="main"> <Router.Link to="main">Old Entries</Router.Link> </li>);
-			extra_nav.push(<li role="presentation" key="add"> <Router.Link to="add">Write New Entry</Router.Link> </li>);
+			extra_nav.push(<li role="presentation" key="main"> <Router.Link to="main">View Entries</Router.Link> </li>);
+			extra_nav.push(<li role="presentation" key="add"> <Router.Link to="add">Write a New Entry</Router.Link> </li>);
 			extra_nav.push(<li role="presentation" key="settings"> <Router.Link to="settings">Settings</Router.Link> </li>);
 			extra_nav.push(<li role="presentation" key="logout"> <Router.Link to="logout">Logout</Router.Link> </li>);
 
@@ -57,6 +57,7 @@ var PageNav = React.createClass({
 					<Router.Link to="home">Home</Router.Link>
 				</li>
 				<li role="presentation">
+					<Router.Link to="about">About</Router.Link>
 				</li>
 				{extra_nav}
 			</ul>
@@ -64,6 +65,7 @@ var PageNav = React.createClass({
 	}
 });
 
+//Utility method, should probably be moved to another utils class
 String.prototype.capitalizeFirstLetter = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
 }

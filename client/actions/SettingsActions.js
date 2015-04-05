@@ -16,7 +16,7 @@ var SettingsActions = {
 
 		console.log("Toggle active");
 	},
-	
+
 	deletePatients: function(cb){
 		var patientsToDelete = CaseStore.getCases(true);
 
@@ -54,6 +54,7 @@ var SettingsActions = {
 				console.log("AddPatient success");
 
 				this.updatePatients();
+				if(cb) return cb(true);
 			}	
 		}.bind(this));
 
