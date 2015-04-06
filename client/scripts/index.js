@@ -45,8 +45,8 @@ var PageNav = React.createClass({
 		if(!ServerRequests.loggedIn()){
 			extra_nav.push(<li role="presentation" key="login"> <Router.Link to="login">Login/Create Account</Router.Link> </li>);
 		} else {
-			extra_nav.push(<li role="presentation" key="main" width="90"> <Router.Link to="main">Old Entries</Router.Link> </li>);
-			extra_nav.push(<li role="presentation" key="add"> <Router.Link to="add">Write  New Entry</Router.Link> </li>);
+			extra_nav.push(<li className="active" role="presentation" key="main" width="90"> <Router.Link to="main">Old Entries</Router.Link> </li>);
+			extra_nav.push(<li className="active" role="presentation" key="add"> <Router.Link to="add">Write  New Entry</Router.Link> </li>);
 			extra_nav.push(<li role="presentation" key="settings"> <Router.Link to="settings">Settings</Router.Link> </li>);
 			extra_nav.push(<li role="presentation" key="logout"> <Router.Link to="logout"><img src="/images/Slice-3.png"> </img> <br></br> Logout</Router.Link>
 
