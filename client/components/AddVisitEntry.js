@@ -34,7 +34,7 @@ var AddBasicEntry = React.createClass({
 			}
 		}, function(response){
 			if(response){
-				this.transitionTo('main');
+				this.transitionTo('list');
 			}
 		}.bind(this));
 		console.log(title + " " + text);

@@ -42,7 +42,6 @@ var AddMoodEntry = React.createClass({
 	_setMood: function(event){
 		event.preventDefault();
 		var value = event.target.value;
-		console.log(value);
 
 		this.setState({
 			value: value

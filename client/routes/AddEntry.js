@@ -76,7 +76,7 @@ var AddEntry = React.createClass({
 		var newEntry = _.extend({}, {type: this.state.currentType}, this.state.getData());
 		DiaryActions.addEntry(newEntry, function(response){
 			if(response){
-				this.transitionTo('main');
+				this.transitionTo('list');
 			}
 		}.bind(this));
 	},

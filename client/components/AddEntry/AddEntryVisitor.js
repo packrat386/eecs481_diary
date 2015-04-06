@@ -101,7 +101,7 @@ var AddEntryVisitor = React.createClass({
 			data: dataObj.data
 		}, function(response){
 			if(response){
-				this.transitionTo('main');
+				this.transitionTo('list');
 			}
 		}.bind(this));
 	},
@@ -164,7 +164,7 @@ var AddEntryVisitor = React.createClass({
 		visitorList = (<VisitorList registerCallback={this.addToCallbackList}/>);
 
 		var initialTitle = "Visit on " + moment().format("MM-DD-YYYY");
-		
+
 		return (
 			<span>
 				<h3>Add Post</h3> 
