@@ -5,6 +5,7 @@ var GraffitiCom = require('../components/Graffiti');
 var DiaryActions = require('../actions/DiaryActions');
 var Authentication = require('../utils/Authentication');
 
+var moment = require('moment');
 
 var AddDoodleEntry = React.createClass({
 
@@ -49,11 +50,18 @@ var AddDoodleEntry = React.createClass({
 	},
 
 	render: function(){
+		var initialString = "Doodle on " + moment().format("MM-DD-YYYY");
+
 		var buttons = (
 			<div className="form-group">
 				<label className="col-sm-1 control-label">Title</label>
 				<div className="col-sm-8">
-					<input ref="title" type="title" className="form-control"/>
+					<input 
+						ref="title" 
+						type="title" 
+						className="form-control"
+						defaultValue={initialString}
+						/>
 				</div>
 			</div>
 		);

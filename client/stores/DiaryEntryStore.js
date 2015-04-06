@@ -36,6 +36,7 @@ function clearStore(){
 }
 
 function removeEntry(entry_id){
+	console.log('remove');
 	_diary_entries = _diary_entries.filter(function( obj ) {
     	return obj.id !== entry_id;
 	});
@@ -135,7 +136,7 @@ AppDispatcher.register(function(payload) {
 			DiaryEntryStore.emitChange();
 			break;
 
-		case DiaryConstants.DIARY_REMOVE:
+		case DiaryConstants.DIARY_DELETE:
 			removeEntry(action.data.id);
 			DiaryEntryStore.emitChange();
 			break;

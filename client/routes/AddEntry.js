@@ -77,7 +77,6 @@ var AddEntry = React.createClass({
 				this.transitionTo('main');
 			}
 		}.bind(this));
-		console.log(title + " " + text);
 	},
 
 	render: function(){

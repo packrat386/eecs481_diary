@@ -46,6 +46,7 @@ var PageNav = React.createClass({
 			extra_nav.push(<li role="presentation" key="login"> <Router.Link to="login">Login/Create Account</Router.Link> </li>);
 		} else {
 			extra_nav.push(<li role="presentation" key="main" width="90"> <Router.Link to="main">Old Entries</Router.Link> </li>);
+			extra_nav.push(<li role="presentation" key="list"> <Router.Link to="list">List</Router.Link> </li>);
 			extra_nav.push(<li role="presentation" key="add"> <Router.Link to="add">Write  New Entry</Router.Link> </li>);
 			extra_nav.push(<li role="presentation" key="settings"> <Router.Link to="settings">Settings</Router.Link> </li>);
 			extra_nav.push(<li role="presentation" key="logout"> <Router.Link to="logout"><img src="/images/Slice-3.png"> </img> <br></br> Logout</Router.Link>
@@ -97,7 +98,8 @@ var routes = {
 	AddDoodleEntry: require('../routes/AddDoodleEntry'),
 	AddMoodEntry: require('../routes/AddMoodEntry'),
 	AddVisitEntry: require('../routes/AddVisitEntry'),
-	Settings: require('../routes/Settings')
+	Settings: require('../routes/Settings'),
+	List: require('../routes/List')
 };
 
 
@@ -110,6 +112,7 @@ var routes = (
 		<Router.Route name="logout" path="/logout" handler={routes.Logout}/>
 		<Router.Route name="main" path="/main" handler={routes.Main}/>
 		<Router.Route name="settings" path="/settings" handler={routes.Settings}/>
+		<Router.Route name="list" path="/list" handler={routes.List}/>
 
 		<Router.Route name="add" path="/add" handler={routes.AddEntry}/>
 		<Router.Route name="addText" path="/add/text" handler={routes.AddBasicEntry}/>

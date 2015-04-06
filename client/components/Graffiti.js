@@ -33,6 +33,12 @@ var Graffiti = React.createClass({
 		return canvas.sketch().actions;
 	},
 
+	registerCallback: function(){
+		return {
+			canvasImage: this.getImage()
+		}
+	},
+
 	drawImage: function(actions){
 		//Draws all the actions onto the canvas
 		var canvas = $(this.refs.sketcher.getDOMNode());
@@ -63,6 +69,8 @@ var Graffiti = React.createClass({
 		//Register function with parent to return image when needed
 		if(this.props.registerCanvas){
 			this.props.registerCanvas(this.getImage);
+		} else if(this.props.registerCallback){
+			this.props.registerCallback(this.registerCallback);
 		}
 
 		//Initial disable drawing on the graffiti
@@ -86,7 +94,7 @@ var Graffiti = React.createClass({
 		// }
 
 		//Only allows drawing when edit is false
-		if(this.props.readOnly == true){
+		if(this.props.readOnly == true || this.props.edit === false){
 			this.disableDrawing();
 		} else {
 			this.enableDrawing();
@@ -101,7 +109,7 @@ var Graffiti = React.createClass({
 		};
 
 		var tools = null;
-		if(this.props.readOnly === false){
+		if(this.props.readOnly === false || this.props.edit === true){
 			tools = (<div ref="tools">
 				<a className="btn btn-default" href="#tools_sketch" data-tool="marker" data-color="#000">Draw</a>
 				<a className="btn btn-default" href="#tools_sketch" data-color="#fff" style={{background: "#fff"}}>Erase</a>
