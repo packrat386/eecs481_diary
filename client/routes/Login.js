@@ -4,6 +4,9 @@ var DiaryActions = require('../actions/DiaryActions');
 var ServerRequests = require('../utils/ServerRequests');
 var Parse = require('../utils/ParseInit');
 
+var ButtonGroup = require('react-bootstrap').ButtonGroup;
+var Button = require('react-bootstrap').Button;
+
 function getUserTypes() {
 	return [
 		"patient",
@@ -24,6 +27,7 @@ var Login = React.createClass({
 		return {
 			signinMessage: null,
 			signupMessage: null,
+			signupType: null,
 			userTypes: getUserTypes()
 		};
 	},
@@ -56,6 +60,14 @@ var Login = React.createClass({
 		}.bind(this));
 	},
 
+	_setType: function(event){
+		event.preventDefault();
+		this.setState({
+			signupType: event.currentTarget.value
+		});
+		console.log(event.currentTarget);
+	},
+
 	handleSignup: function(event){
 		event.preventDefault();
 		var username = this.refs.username1.getDOMNode().value;
@@ -67,10 +79,7 @@ var Login = React.createClass({
 			return;
 		}
 
-		var user_type = $("input:radio:checked").val();
-		console.log($("input:radio:checked").val());
-
-		if(!user_type){
+		if(!this.state.signupType){
 			this.setState({signupMessage: "Pick a user type!"});
 			return;
 		}
@@ -79,7 +88,7 @@ var Login = React.createClass({
 		DiaryActions.createUser({
 			username: username, 
 			password: password, 
-			user_type: user_type
+			user_type: this.state.signupType
 		}, function(response){
 			if(response instanceof Parse.Error){	
 				this.setState({signupMessage: response.message.capitalizeFirstLetter()});
@@ -119,14 +128,15 @@ var Login = React.createClass({
 		}
 
 		radioButtonComponent = this.state.userTypes.map(function(userType){
+			className = null;
+			if(this.state.signupType == userType){
+				className="active"
+			}
 			return (
-                <label className="btn btn-default">
-	                    <input type="radio" id="q1" name="user_type" key={userType} value={userType}/> {userType.capitalizeFirstLetter()}
-                </label> 
-
+                <Button key={userType} value={userType} className={className} onClick={this._setType}>{userType.capitalizeFirstLetter()}</Button>
             );
 
-		});
+		}.bind(this));
 
 		var input_className = "form-control";
 		var button_className = "btn btn-lg btn-primary";
@@ -157,9 +167,9 @@ var Login = React.createClass({
 			   
 			       		<label><input className={input_className} type="password" ref="pass1_confirm" placeholder="Confirm"/></label><br/>
 			   
-				        <div className="btn-group" data-toggle="buttons">
+				        <ButtonGroup>
 				        	{radioButtonComponent}
-				        </div> <br/>
+				        </ButtonGroup>
 				    
 			        	<button className={button_className} type="submit">Create Account</button><br/>
 						
