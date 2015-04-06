@@ -38,8 +38,10 @@ var AddDoodleEntry = React.createClass({
 		var title = this.refs.title.getDOMNode().value;
 		var drawing = this.state.canvasFunc();
 		return {
-			title: title,
-			canvasImage: drawing
+			data: {
+				title: title,
+				canvasImage: drawing				
+			}
 		};
 	},
 

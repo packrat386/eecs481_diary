@@ -152,16 +152,15 @@ var GeneralPanel =  React.createClass({
 		var mainView = null;
 		if(this.state.classLookup[this.props.entry.get("type")]){
 			var ClassType = this.state.classLookup[this.props.entry.get("type")];
-			mainView = (<
-				ClassType
+			mainView = (<ClassType
 				entry={this.props.entry}
 				edit={this.state.edit}
 				registerCallback={this._registerCallback}
-				/>);
+			/>);
 		}	
 
 		return (
-			<div className="panel panel-default">
+			<div className="panel panel-default" id={this.props.entry.id}>
 				<div className="panel-heading"> 
 					<p><b>Author: {this.props.entry.get("createdBy").id}</b></p>
 					{editedTime}

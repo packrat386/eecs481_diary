@@ -2,7 +2,6 @@ var React = require('react');
 var Parse = require('../../utils/ParseInit');
 
 function getImageSource(value){
-	console.log("/images/pain-"+value+".png");
 	return "/images/pain-"+value+".png";
 }
 
@@ -33,7 +32,7 @@ var MoodPanel =  React.createClass({
 			};		
 		}
 	},
-	
+
 	_setMood: function(event){
 		event.preventDefault();
 		var value = event.target.value;

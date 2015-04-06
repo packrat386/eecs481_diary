@@ -7,7 +7,6 @@ var Graffiti = require('./Graffiti');
 var Slider = require("./Slider");
 
 function getImageSource(value){
-	console.log("/images/pain-"+value+".png");
 	return "/images/pain-"+value+".png";
 }
 
@@ -27,7 +26,9 @@ var AddMoodEntry = React.createClass({
 			return null;
 		} else {
 			return {
-				value: this.state.value
+				data: {
+					value: this.state.value	
+				}
 			};		
 		}
 	},
@@ -62,7 +63,6 @@ var AddMoodEntry = React.createClass({
 
 		var moodComponents = painList.map(function(pain){
 			var style = pain == this.state.value ? selectedStyle : unselectedStyle;
-			console.log(this.state.value + " " + pain);
 			return (<input 
 				type="image" 
 				className=".col-md-3"
@@ -73,8 +73,6 @@ var AddMoodEntry = React.createClass({
 				onClick={this._setMood} 
 			/>);
 		}.bind(this));
-
-		console.log(moodComponents);
 
 		return (
 
