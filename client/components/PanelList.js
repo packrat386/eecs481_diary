@@ -3,6 +3,8 @@ var GeneralPanel = require('./PanelViews/GeneralPanel');
 
 var types = ["text", "doodle", "visit", "mood"];
 
+var CurrentUserStore = require('../stores/CurrentUserStore');
+
 var DropdownButton = require('react-bootstrap').DropdownButton;
 var MenuItem = require('react-bootstrap').MenuItem;
 var Button = require('react-bootstrap').Button;
@@ -11,54 +13,105 @@ var PanelList =  React.createClass({
 
 	getInitialState: function(){
 		return {
-			typeFilter: null
+			typeFilter: null,
+			authorFilter: null
 		}
 	},
 
-	_testClick: function(selectedKey){
+	_inFilter: function(entry){
+		if(this.state.typeFilter 
+			&& this.state.typeFilter !== entry.get("type")){
+			return false;
+		} else if(this.state.authorFilter &&
+			(
+				(this.state.authorFilter === "me" && (entry.get("createdBy").id != CurrentUserStore.getUser().id))
+				|| 
+				(this.state.authorFilter === "others" && entry.get("createdBy").id == CurrentUserStore.getUser().id))){
+			return false;
+		}
+
+
+		return true;
+	},
+
+	_hasFilter: function(){
+		if(this.state.typeFilter ||
+			this.state.authorFilter){
+			return true;
+		}
+
+		return false;
+	},
+
+	_changeTypeFilter: function(selectedKey){
 		console.log(selectedKey);
 		this.setState({
 			typeFilter: selectedKey
 		});
 	},
 
-	_cancelFilter: function(){
+	_changeAuthorFilter: function(selectedKey){
 		this.setState({
-			typeFilter: null
-		});
+			authorFilter: selectedKey
+		})
+	},
+
+	_cancelFilter: function(){
+		var newObj = {};
+		for(key in this.state){
+			this.state[key] = null;
+		}
+
+		this.setState(newObj);
 	},
 
 	render: function(){
 
-		var entries = this.props.entries.map(function(entry){
-			if(!this.state.typeFilter || (this.state.typeFilter && this.state.typeFilter === entry.get("type")))
-			{
+		var filteredEntries = this.props.entries.map(function(entry){
+			if(this._inFilter(entry)){
+				return entry;
+			}
+		}.bind(this));
+
+		var entries = filteredEntries.map(function(entry){
+			if(entry){
 				return <GeneralPanel key={entry.id} entry={entry} />;	
 			}
 
 		}.bind(this));
 
-		var filterMessage = null;
+		var filterMessages = [];
 		if(this.state.typeFilter){
-			filterMessage = (
-				<span>
-					<p>Type: {this.state.typeFilter.capitalizeFirstLetter()} </p>
-					<Button bsStyle='default lg' onClick={this._cancelFilter}>Cancel Filter</Button>
-				</span>
-			);
+			filterMessages.push(<p key="type">Type: {this.state.typeFilter.capitalizeFirstLetter()} </p>);
+		}
+		if(this.state.authorFilter){
+			filterMessages.push(<p key="author">Author: {this.state.authorFilter.capitalizeFirstLetter()}</p>);
 		}
 
-		var dropdowns = types.map(function(item){
+		if(this._hasFilter()){
+			filterMessages.push(<Button bsStyle='primary' key="btn" onClick={this._cancelFilter}>Cancel Filter</Button>);
+		}
+
+
+		var typeDropdowns = types.map(function(item){
 			return <MenuItem eventKey={item} key={item}>{item.capitalizeFirstLetter()}</MenuItem>
+		});
+
+		var author_types = ["me", "others"]
+		var authorDropdowns = author_types.map(function(type){
+			return <MenuItem eventKey={type} key={type}>{type.capitalizeFirstLetter()}</MenuItem>
 		});
 
 		return (
 			<div>
 	
-				<DropdownButton title='Filter By' onSelect={this._testClick}>
-				{dropdowns}
+				<DropdownButton title='Post Type Filter' onSelect={this._changeTypeFilter}>
+					{typeDropdowns}
 				</DropdownButton>
-				{filterMessage}
+				<DropdownButton title='Author Filter' onSelect={this._changeAuthorFilter}>
+					{authorDropdowns}
+				</DropdownButton>
+				{filterMessages}
 				{entries} 
 			</div>
 			);
