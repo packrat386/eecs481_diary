@@ -6,57 +6,81 @@ var Graffiti = require('./Graffiti');
 
 var Slider = require("./Slider");
 
+function getImageSource(value){
+	console.log("/images/pain-"+value+".png");
+	return "/images/pain-"+value+".png";
+}
+
+var painList = [0, 2, 4, 8, 10];
+
 var AddMoodEntry = React.createClass({
 
 	componentDidMount: function(){
 		console.log("Mood mounted");
-		// console.log($(this.refs.ex1.getDOMNode()).slider());
-		// $(this.refs.feelingslider.getDOMNode()).slider();
-
-		// var mySlider = new BootstrapSlider(this.refs.ex1.getDOMNode(),{
-		// 	formatter: function(value) {
-		// 		return 'Current value: ' + value;
-		// 	},
-		// 	id: "ex1Slider",
-		// 	min: 0,
-		// 	max: 20,
-		// 	step: 1,
-		// 	value: 14
-		// });
-
-		// console.log(mySlider);
+		if(this.props.registerCallback){
+			this.props.registerCallback(this._getData);
+		}
 	},
 
-	// submitEntry: function(event){
-	// 	event.preventDefault();
-	// 	var title = this.refs.title.getDOMNode().value;
-	// 	var text = this.refs.text.getDOMNode().value;
+	_getData: function(){
+		if(this.state.value === null){
+			return null;
+		} else {
+			return {
+				value: this.state.value
+			};		
+		}
+	},
 
-	// 	DiaryActions.addEntry({
-	// 		data: {
-	// 			title: title,
-	// 			text: text
-	// 		}
-	// 	}, function(response){
-	// 		if(response){
-	// 			this.transitionTo('main');
-	// 		}
-	// 	}.bind(this));
-	// 	console.log(title + " " + text);
-	// },
+	getInitialState: function(){
+		return {
+			value: null
+		}
+	},
+
+	_setMood: function(event){
+		event.preventDefault();
+		var value = event.target.value;
+		console.log(value);
+
+		this.setState({
+			value: value
+		});
+	},
 
 	render: function(){
 
+		var selectedStyle = {
+			height: "250px",
+			borderStyle: "solid",
+			borderColor: "black"
+		};
+		var unselectedStyle = {
+			height: "250px",
+			borderStyle: "none"
+		};
+
+		var moodComponents = painList.map(function(pain){
+			var style = pain == this.state.value ? selectedStyle : unselectedStyle;
+			console.log(this.state.value + " " + pain);
+			return (<input 
+				type="image" 
+				className=".col-md-3"
+				style={style}
+				key={pain}
+				src={getImageSource(pain)}
+				value={pain}
+				onClick={this._setMood} 
+			/>);
+		}.bind(this));
+
+		console.log(moodComponents);
 
 		return (
-			<div>
-				<div>
-					<p className="text-center">
-						<img src="/images/Slice-1.png"> </img>
-					</p>
 
-				</div>
-			 	<button onClick={this.increment}>Increment</button>
+			<div>
+				<h3> How do you feel?</h3><br/>
+				{moodComponents}
 			</div>
 		);
 	}

@@ -44,9 +44,9 @@ var DiaryActions = {
 					data: data
 				});
 
-				if(cb) cb(true);
+				if(cb) return cb(true);
 			} else {
-				if(cb) cb(false);
+				if(cb) return cb(false);
 			}
 		})
 	},

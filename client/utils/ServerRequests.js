@@ -196,11 +196,11 @@ var ServerRequests = {
 				entry.destroy({
 					success: function (deleted_entry) {
 						console.log(deleted_entry);
-						if (cb) cb(true);
+						if (cb) return cb(true);
 					},
 					error: function (deleted_entry, error) {
 						console.log(error);
-						if (cb) cb(false);
+						if (cb) return cb(false);
 					}
 				})
 			},
