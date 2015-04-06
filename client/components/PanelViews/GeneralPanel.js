@@ -5,13 +5,15 @@ var DiaryActions = require('../../actions/DiaryActions');
 
 var TextPanel = require('./TextPanel');
 var DoodlePanel = require('./DoodlePanel');
+var MoodPanel = require('./MoodPanel');
 var moment = require('moment');
 var _ = require('underscore');
 
-function classLookupFunc(entry, edit, cb){
+function classLookupFunc(){
 	return {
 		text: TextPanel,
-		doodle: DoodlePanel
+		doodle: DoodlePanel,
+		mood: MoodPanel
 	};
 }
 

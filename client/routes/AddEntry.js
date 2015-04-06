@@ -60,12 +60,14 @@ var AddEntry = React.createClass({
 		this.setState({
 			currentType: event.currentTarget.value
 		});
+
+		$("#main")[0].scrollIntoView();
 	},
 
 	_submitEntry: function(event){
 		event.preventDefault();
-		if(!this.state.getData){
-			console.log("No callback registered").
+		if(!this.state.getData || this.state.getData() === null){
+			console.log("No callback registered");
 			return;
 		}
 
@@ -125,7 +127,7 @@ var AddEntry = React.createClass({
 					{ entryTypes }
 				</div>
 
-				<div className="row" id="main">
+				<div className="row" ref="main" id="main">
 					{mainView}
 				</div>
 			</div>
