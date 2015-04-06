@@ -58,9 +58,6 @@ var TextPanel =  React.createClass({
 			);
 		}
 
-
-
-
 		return (<div>
 			{view}
 			</div>);

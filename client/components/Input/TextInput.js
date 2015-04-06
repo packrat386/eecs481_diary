@@ -44,7 +44,7 @@ var TextInput = React.createClass({
 				<div className="form-group">
 					<label className="col-sm-1 control-label">Title</label>
 					<div className="col-sm-11">
-						<input ref="title" type="title" className="form-control"/>
+						<input ref="title" type="title" className="form-control" defaultValue={this.props.initialTitle}/>
 					</div>
 				</div>
 

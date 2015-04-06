@@ -91,7 +91,10 @@ var AddEntry = React.createClass({
 		var entryTypes = null;
 
 		if(CurrentUserStore.getUser().get("user_type") === "visitor"){
-			entryTypes = <AddEntryVisitor registerCallback={this._registerCallback}/>
+			entryTypes = (<span>
+				<AddEntryVisitor registerCallback={this._registerCallback}/>
+				<button type="button" className="btn btn-block btn-lg btn-primary" onClick={this._submitEntry}>Done</button>
+				</span>);
 		} else {
 			entryTypes = this.state.types.map(function (entryType) {
 				return (
