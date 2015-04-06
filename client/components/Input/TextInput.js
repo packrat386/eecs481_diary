@@ -23,10 +23,13 @@ var TextInput = React.createClass({
 	// },
 
 	_getData: function(){
+		var titleNode = this.refs.title.getDOMNode().value;
+		var textNode = this.refs.text.getDOMNode().value;
+		console.log("Entry Text: " + titleNode + " - " + textNode);
 		return {
 			data: {
 				title: this.refs.title.getDOMNode().value,
-				text: this.refs.text.getDOMNode().value			
+				text: this.refs.text.getDOMNode().value
 			}
 
 		}

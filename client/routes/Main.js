@@ -2,7 +2,9 @@ var React = require('react');
 var Router = require('react-router');
 var ServerRequests = require('../utils/ServerRequests');
 var Authentication = require('../utils/Authentication');
+var CurrentUserStore = require('../stores/CurrentUserStore');
 
+var PatientList = require('../components/staff/PatientList');
 var ListView = require('../components/ListView');
 
 var Main = React.createClass({
@@ -10,17 +12,27 @@ var Main = React.createClass({
 
 	componentDidMount: function(){
 		document.title = "ICU Diary | View All";
-
-		//Scroll Test
-		// $('html,body').animate({
-  // 			scrollTop: $("#nav-bar").offset().top
-		// });
 	},
 
 	render: function(){
+		var component = <ListView />;
+		if(CurrentUserStore.getUser().attributes.user_type === "staff"){
+			component =
+				<span>
+					<h3>Patient List</h3>
+					<PatientList />
+				</span>;
+		} else if(CurrentUserStore.getUser().attributes.user_type === "visitor"){
+			component =
+				<span>
+					<h3>Patients Following</h3>
+					<PatientList />
+					<hr className="col-md-12"/>
+				</span>;
+		}
 		return (
 			<div className="container">
-				<ListView />
+				{component}
 			</div>
 		);
 	}

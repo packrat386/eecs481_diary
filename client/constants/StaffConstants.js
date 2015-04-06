@@ -2,8 +2,6 @@ var keyMirror = require('react/lib/keyMirror');
 
 // Define action constants
 module.exports = keyMirror({
-	TOGGLE_ACTIVE: null,
-	DELETE_PATIENTS: null,
-	ADD_PATIENT: null,
-	LOAD_PATIENTS: null
+	SELECT_ACTIVE: null,
+	LOAD_PATIENT_ENTRIES: null
 });

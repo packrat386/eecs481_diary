@@ -49,7 +49,7 @@ var CaseList =  React.createClass({
 						className: "alert alert-danger",
 						message: "Can't add blank patient!"
 					}
-			})
+			});
 			return;
 		}
 		console.log("Add patient action");

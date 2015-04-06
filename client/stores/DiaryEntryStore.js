@@ -11,12 +11,9 @@ var _diary_entries = [];
 function addEntry(data){
 	console.log(data);
 	if(data.constructor === Array){
-		// for(var i = 0; i < data.length; i++){
-		// 	_diary_entries[data[i].id] = data[i];	
-		// }
 		_diary_entries = data;
 	} else {
-		_diary_entries.push(data);	
+		_diary_entries.push(data);
 	}
 
 }

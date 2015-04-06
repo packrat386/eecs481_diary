@@ -6,6 +6,7 @@ var Authentication = require('../utils/Authentication');
 var CurrentUserStore = require('../stores/CurrentUserStore');
 
 var AddEntryVisitor = require('../components/AddEntry/AddEntryVisitor');
+var AddEntryStaff = require('../components/AddEntry/AddEntryStaff');
 var AddMoodEntry = require('../components/AddMoodEntry');
 var AddBasicEntry = require('../components/AddBasicEntry');
 var AddDoodleEntry = require('../components/AddDoodleEntry');
@@ -30,7 +31,7 @@ function getTypeClasses(cb){
 			"mood": <AddMoodEntry registerCallback={cb}/>,
 			"visit": <AddEntryVisitor registerCallback={cb}/>
 	};
-	
+
 }
 
 var AddEntry = React.createClass({
@@ -47,7 +48,7 @@ var AddEntry = React.createClass({
 	},
 
 	getInitialState: function(){
-		return { 
+		return {
 			types: getEntryTypes(),
 			currentType: null,
 			typeClass: getTypeClasses(this._registerCallback),
@@ -72,7 +73,7 @@ var AddEntry = React.createClass({
 			return;
 		}
 
-		var newEntry = _.extend({}, {type: this.state.currentType}, this.state.getData())
+		var newEntry = _.extend({}, {type: this.state.currentType}, this.state.getData());
 		DiaryActions.addEntry(newEntry, function(response){
 			if(response){
 				this.transitionTo('main');
@@ -95,6 +96,12 @@ var AddEntry = React.createClass({
 				<AddEntryVisitor registerCallback={this._registerCallback}/>
 				<button type="button" className="btn btn-block btn-lg btn-primary" onClick={this._submitEntry}>Done</button>
 				</span>);
+		}
+		else if(CurrentUserStore.getUser().get("user_type") === "staff"){
+			entryTypes = (<span>
+				<AddEntryStaff registerCallback={this._registerCallback}/>
+				<button type="button" className="btn btn-block btn-lg btn-primary" onClick={this._submitEntry}>Done</button>
+				</span>);
 		} else {
 			entryTypes = this.state.types.map(function (entryType) {
 				return (
@@ -107,13 +114,13 @@ var AddEntry = React.createClass({
 						</button>
 					</div>
 				);
-			}.bind(this));	
+			}.bind(this));
 		}
 
 		var mainView = null;
 		if(this.state.currentType){
 			console.log(this.state.currentType);
-			mainView = 
+			mainView =
 				<span>
 					<br />
 					{this.state.typeClass[this.state.currentType]}

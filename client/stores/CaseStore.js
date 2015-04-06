@@ -1,14 +1,23 @@
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var SettingsConstants = require('../constants/SettingsConstants');
+var StaffConstants = require('../constants/StaffConstants');
 var _ = require('underscore');
 var EventEmitter = require('events').EventEmitter;
 
 var _case_store = {};
 var _selected = {};
+var _patient_entries = {};
+var _last_selected = null;
 
 function toggleActive(patient){
-
 	_selected[patient.id] = !_selected[patient.id];
+	if(_selected[patient.id]){
+		_last_selected = patient.id;
+	}
+	else{
+		_last_selected = null;
+	}
+
 }
 
 function loadPatients(array){
@@ -17,6 +26,12 @@ function loadPatients(array){
 		_case_store[array[i].id] = array[i];
 		_selected[array[i].id] = false;
 	}
+}
+
+function loadPatientEntries(data){
+	var id = data.id;
+	var entries = data.entries;
+	_patient_entries[id] = entries;
 }
 
 function addPatient(patient){
@@ -31,6 +46,15 @@ function deleteSelected(){
 			delete _selected[key];
 		}
 	}
+}
+
+function selectCase(patient){
+	for(key in _selected){
+		if(_selected[key] === true){
+			toggleActive(_case_store[key]);
+		}
+	}
+	toggleActive(patient);
 }
 
 var CaseStore = _.extend({}, EventEmitter.prototype, {
@@ -69,6 +93,13 @@ var CaseStore = _.extend({}, EventEmitter.prototype, {
 
 	numCases: function(){
 		return Object.keys(_case_store).length;
+	},
+	getLastSelected: function(){
+		return _last_selected;
+	},
+
+	getEntries: function(id){
+		return _patient_entries[id];
 	}
 });
 
@@ -94,6 +125,15 @@ AppDispatcher.register(function(payload) {
 
 		case SettingsConstants.LOAD_PATIENTS:
 			loadPatients(action.data);
+			CaseStore.emitChange();
+			break;
+
+		case StaffConstants.SELECT_ACTIVE:
+			selectCase(action.data);
+			CaseStore.emitChange();
+			break;
+		case StaffConstants.LOAD_PATIENT_ENTRIES:
+			loadPatientEntries(action.data);
 			CaseStore.emitChange();
 			break;
 

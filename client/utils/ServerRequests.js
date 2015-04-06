@@ -110,18 +110,23 @@ var ServerRequests = {
 			}
 			diaryEntry.set("shared_with", sharedWith);
 		}
-		
+
 		diaryEntry.setACL(newACL);
 		diaryEntry.set("createdBy", currentUser);
-		if(diary_entry.type)
-			diaryEntry.set("type", diary_entry.type);
 
+		// default type of diary entry is text
+		if(diary_entry.type) {
+			diaryEntry.set("type", diary_entry.type);
+		}
+		else{
+			diaryEntry.set("type", "text");
+		}
 		//Check if large photo exists
 		if("photo" in diary_entry.data && diary_entry.data["photo"] !== null){
 		    var parseFile = new Parse.File(
-		    	"visit.png", 
+		    	"visit.png",
 				{
-					base64: 
+					base64:
 					diary_entry.data["photo"].replace(/^data:image\/(png|jpeg);base64,/, "")
 				});
 			diaryEntry.set("photo", parseFile);
@@ -292,13 +297,13 @@ var ServerRequests = {
 							success: function(users){
 								console.log(users);
 								if(cb) return cb(users);
-							}, 
+							},
 							error: function(error){
 								if(cb) return cb(error);
 							}
 						})
 					}
-				},	
+				},
 				error: function(error){
 					if(cb) return cb(error);
 				}
@@ -324,7 +329,7 @@ var ServerRequests = {
 				error: function(error){
 					if(cb) cb(error);
 				}
-			});			
+			});
 		}
 
 
@@ -438,6 +443,28 @@ var ServerRequests = {
 	},
 
 	getEntries: function (cb) {
+		console.log("getEntries");
+		var DiaryEntry = Parse.Object.extend("DiaryEntry");
+		var queryObject = new Parse.Query(DiaryEntry);
+		queryObject.ascending("createdAt");
+		queryObject.find({
+			success: function (results) {
+				console.log(results);
+				if (cb) {
+					entries = [];
+					for (var i = 0; i < results.length; i++) {
+						entries.push(parseEntry(results[i]));
+					}
+					cb(entries);
+				}
+			},
+			error: function (error) {
+				console.log(error);
+			}
+		})
+	},
+
+	getPatientEntries: function (patientId, cb) {
 		console.log("getEntries");
 		var DiaryEntry = Parse.Object.extend("DiaryEntry");
 		var queryObject = new Parse.Query(DiaryEntry);
