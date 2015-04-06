@@ -12,6 +12,7 @@ var AddDoodleEntry = require('../components/AddDoodleEntry');
 
 var DiaryActions = require('../actions/DiaryActions');
 
+var _ = require('underscore');
 
 function getEntryTypes() {
 	return [
@@ -71,10 +72,8 @@ var AddEntry = React.createClass({
 			return;
 		}
 
-		DiaryActions.addEntry({
-			type: this.state.currentType,
-			data: this.state.getData()
-		}, function(response){
+		var newEntry = _.extend({}, {type: this.state.currentType}, this.state.getData())
+		DiaryActions.addEntry(newEntry, function(response){
 			if(response){
 				this.transitionTo('main');
 			}
@@ -92,7 +91,7 @@ var AddEntry = React.createClass({
 		var entryTypes = null;
 
 		if(CurrentUserStore.getUser().get("user_type") === "visitor"){
-			entryTypes = <AddEntryVisitor />
+			entryTypes = <AddEntryVisitor registerCallback={this._registerCallback}/>
 		} else {
 			entryTypes = this.state.types.map(function (entryType) {
 				return (

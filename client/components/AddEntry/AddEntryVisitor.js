@@ -3,9 +3,12 @@ var Router = require('react-router');
 var DiaryActions = require('../../actions/DiaryActions');
 var _ = require('underscore');
 var TextInput = require('../Input/TextInput');
+var VisitorList = require('../Input/VisitorList');
+var TakeImage = require('./TakeImage');
 
 var CaseStore = require('../../stores/CaseStore');
 var SettingsActions = require('../../actions/SettingsActions');
+var CurrentUserStore = require('../../stores/CurrentUserStore');
 
 
 var AddEntryVisitor = React.createClass({
@@ -23,6 +26,9 @@ var AddEntryVisitor = React.createClass({
 
 	componentDidMount: function() {
 		CaseStore.addChangeListener(this._onChange);
+		if(this.props.registerCallback){
+			this.props.registerCallback(this._getData);
+		}
 
 		SettingsActions.updatePatients(function(response){
 			if(response){
@@ -35,6 +41,25 @@ var AddEntryVisitor = React.createClass({
 
 	componentWillUnmount: function() {
 		CaseStore.removeChangeListener(this._onChange);
+	},
+
+	_getData: function(){
+		var shareArray = [];
+		for(key in this.state.shareWith){
+			if(this.state.shareWith[key]){
+				shareArray.push(key);
+			}
+		}
+
+		var dataObj = this.state.data;
+		//Go through each callback and merge with data
+		for(var i = 0; i < this.state.callbackList.length; i++){
+			dataObj = _.extend({}, dataObj, this.state.callbackList[i]());
+		}
+
+
+		console.log(_.extend({}, {ACL: shareArray}, dataObj));
+		return (_.extend({}, {ACL: shareArray}, dataObj));
 	},
 
 	_onChange: function(){
@@ -94,6 +119,10 @@ var AddEntryVisitor = React.createClass({
 		});
 	},
 
+	_uploadPicture: function(event){
+
+	},
+
 	render: function(){
 
 		var shareWith = null;
@@ -113,7 +142,7 @@ var AddEntryVisitor = React.createClass({
 							ref={patientRef.id}
 							>
 							
-							{patientRef.id}
+							{patientRef.getUsername()} ({patientRef.id})
 						</a>
 						);
 				}.bind(this));
@@ -123,13 +152,25 @@ var AddEntryVisitor = React.createClass({
 				</div>;
 		}
 
+		var text = "Share with";
+		var visitorList = null;
+		if(CurrentUserStore.getUser().get("user_type") === "patient"){
+			text = "Who's there?";
+			visitorList = (<VisitorList registerCallback={this.addToCallbackList}/>);
+		}
+
 		return (
 			<span>
 				<h3>Add Post</h3> 
-				<p><b>Share with</b></p>
-				{shareWith}
+				<p><b>{text}</b></p>
+				<div className="row">
+					{shareWith}
+				</div>
+				<div className="row">
+					{visitorList}
+				</div>
 				<TextInput registerCallback={this.addToCallbackList}/>
-				<button className="btn btn-lg btn-primary" onClick={this._submitEntry}>Submit</button>
+				<TakeImage registerCallback={this.addToCallbackList}/>
 			</span>
 		);
 	}

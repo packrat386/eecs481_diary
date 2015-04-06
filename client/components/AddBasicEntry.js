@@ -29,9 +29,11 @@ var AddBasicEntry = React.createClass({
 		var title = this.refs.title.getDOMNode().value;
 		var text = this.refs.text.getDOMNode().value;
 		return {
-			title: title,
-			text: text
-
+			data: 
+			{
+				title: title,
+				text: text
+			}
 		};
 	},
 
@@ -45,7 +47,6 @@ var AddBasicEntry = React.createClass({
 
 		return (
 			<form className="form-horizontal" onSubmit={this.submitEntry}>
-				<h3>Add Diary Entry</h3> 
 				<div className="form-group">
 					<label className="col-sm-1 control-label">Title</label>
 					<div className="col-sm-10">

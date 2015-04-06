@@ -98,7 +98,6 @@ var ServerRequests = {
 		var DiaryEntry = Parse.Object.extend("DiaryEntry");
 		var diaryEntry = new DiaryEntry();
 
-
 		//Create new ACL access
 		var newACL = new Parse.ACL(currentUser);
 		console.log(diary_entry);
@@ -115,6 +114,20 @@ var ServerRequests = {
 		diaryEntry.set("createdBy", currentUser);
 		if(diary_entry.type)
 			diaryEntry.set("type", diary_entry.type);
+
+		//Check if large photo exists
+		if("photo" in diary_entry.data){
+		    var parseFile = new Parse.File(
+		    	"visit.png", 
+				{
+					base64: 
+					diary_entry.data["photo"].replace(/^data:image\/(png|jpeg);base64,/, "")
+				});
+			diaryEntry.set("photo", parseFile);
+
+			delete diary_entry.data["photo"];
+		}
+
 		diaryEntry.set("data", diary_entry.data);
 
 		diaryEntry.save(null,
@@ -266,27 +279,54 @@ var ServerRequests = {
 			console.log("Cannot find user type, setting to default type of \"visitor\"");
 			userType = "visitor";
 		}
-		var q = new Parse.Query(CaseObject).containedIn(userType, [currentUser]);
-		q.include("patient");
-		q.find({
-			success: function(cases){
 
-				console.log("get patients");
-				var patients = [];
-
-				//Find all patients within the cases that you're in
-				for(var i = 0; i < cases.length; i++){
-					var patient = cases[i].get("patient");
-					patients.push(patient);
-					console.log("Patient " + i + 1 + ": "+patient);
+		//Patients only need to know visitors
+		if(userType === "patient"){
+			var q = new Parse.Query(CaseObject).equalTo("patient", currentUser);
+			q.find({
+				success: function(cases){
+					if(cases.length > 0){
+						var relation = cases[0].relation("visitor");
+						relation.query().find({
+							success: function(users){
+								console.log(users);
+								if(cb) return cb(users);
+							}, 
+							error: function(error){
+								if(cb) return cb(error);
+							}
+						})
+					}
+				},	
+				error: function(error){
+					if(cb) return cb(error);
 				}
+			})
+		} else {
+			var q = new Parse.Query(CaseObject).containedIn(userType, [currentUser]);
+			q.include("patient");
+			q.find({
+				success: function(cases){
 
-				if(cb) cb(patients);
-			},
-			error: function(error){
-				if(cb) cb(error);
-			}
-		});
+					console.log("get patients");
+					var patients = [];
+
+					//Find all patients within the cases that you're in
+					for(var i = 0; i < cases.length; i++){
+						var patient = cases[i].get("patient");
+						patients.push(patient);
+						console.log("Patient " + i + 1 + ": "+patient);
+					}
+
+					if(cb) cb(patients);
+				},
+				error: function(error){
+					if(cb) cb(error);
+				}
+			});			
+		}
+
+
 	},
 
 	updateCurrentUser: function(data, cb){

@@ -40,8 +40,7 @@ var TextInput = React.createClass({
 
 	render: function(){
 
-		return (
-			<span>
+		return (<span>
 				<div className="form-group">
 					<label className="col-sm-1 control-label">Title</label>
 					<div className="col-sm-11">
