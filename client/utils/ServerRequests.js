@@ -110,6 +110,7 @@ var ServerRequests = {
 			}
 			diaryEntry.set("shared_with", sharedWith);
 		}
+		
 		diaryEntry.setACL(newACL);
 		diaryEntry.set("createdBy", currentUser);
 		if(diary_entry.type)
