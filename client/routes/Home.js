@@ -9,9 +9,9 @@ var Home = React.createClass({
 	render: function() {
 		return (
 			<div className="jumbotron">
-			  <h1>EECS 481 ICU Diary</h1>
-			  <p> Create, edit, and view diary entries! </p>
-			  <p> <Router.Link className="btn btn-primary btn-lg" to="main">Try it out</Router.Link> </p>
+			  <h1 className= "text-center">EECS 481 ICU Diary</h1>
+			  <p className= "text-center"> Create, edit, and view diary entries! </p>
+			  <p className= "text-center"> <Router.Link className="btn btn-primary btn-lg" to="main">View Your Posts </Router.Link> </p>
 			</div>
 		);
 	}

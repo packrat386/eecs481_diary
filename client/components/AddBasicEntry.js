@@ -47,17 +47,18 @@ var AddBasicEntry = React.createClass({
 
 		return (
 			<form className="form-horizontal" onSubmit={this.submitEntry}>
+				<h1 className = "text-center"> Add a new text entry:</h1>
 				<div className="form-group">
-					<label className="col-sm-1 control-label">Title</label>
+					<label className="col-sm-1 control-label"></label>
 					<div className="col-sm-10">
-						<input ref="title" type="title" className="form-control"/>
+						<input placeholder="Title" ref="title" type="title" className="form-control"/>
 					</div>
 				</div>
 
 				<div className="form-group">
-					<label className="col-sm-1 control-label">Diary Text</label>
+					<label className="col-sm-1 control-label"></label>
 					<div className="col-sm-10">
-						<textarea ref="text" className="form-control" rows="4"></textarea>
+						<textarea placeholder="What did you do today?" ref="text" className="form-control" rows="4"></textarea>
 					</div>
 				</div>
 			</form>
