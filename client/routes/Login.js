@@ -50,7 +50,7 @@ var Login = React.createClass({
 					Login.attemptedTransition = null;
 					transition.retry();
 				} else {
-					this.transitionTo('/main');
+					this.transitionTo('/add');
 				}
 			}
 		}.bind(this));
@@ -89,7 +89,7 @@ var Login = React.createClass({
 					Login.attemptedTransition = null;
 					transition.retry();
 				} else {
-					this.transitionTo('/main');
+					this.transitionTo('/add');
 				}
 			}
 		}.bind(this));
@@ -97,7 +97,7 @@ var Login = React.createClass({
 
 	render: function(){
 		if(ServerRequests.loggedIn()){
-			this.transitionTo('/main');
+			this.transitionTo('/add');
 		}
 
 		//Create components for signin/signup error messages

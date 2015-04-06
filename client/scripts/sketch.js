@@ -96,7 +96,7 @@ var __slice = Array.prototype.slice;
       return this.redraw();
     };
     Sketch.prototype.onEvent = function(e) {
-      if (e.originalEvent && e.originalEvent.targetTouches) {
+      if (e.originalEvent && e.originalEvent.targetTouches && e.originalEvent.targetTouches[0]) {
         e.pageX = e.originalEvent.targetTouches[0].pageX;
         e.pageY = e.originalEvent.targetTouches[0].pageY;
       }
@@ -137,6 +137,7 @@ var __slice = Array.prototype.slice;
         case 'mouseout':
         case 'mouseleave':
         case 'touchend':
+          this.stopPainting();
         case 'touchcancel':
           this.stopPainting();
       }
