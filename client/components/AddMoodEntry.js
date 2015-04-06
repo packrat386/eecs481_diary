@@ -77,8 +77,10 @@ var AddMoodEntry = React.createClass({
 		return (
 
 			<div>
-				<h3> How do you feel?</h3><br/>
+				<h3 className="text-center"> How do you feel?</h3><br/>
+				<p className = "text-center">
 				{moodComponents}
+					</p>
 			</div>
 		);
 	}
