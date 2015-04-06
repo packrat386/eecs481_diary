@@ -6,6 +6,7 @@ var CurrentUserStore = require('../stores/CurrentUserStore');
 
 var PatientList = require('../components/staff/PatientList');
 var ListView = require('../components/ListView');
+var PatientEntryList = require('../components/staff/PatientEntryList');
 
 var Main = React.createClass({
 	mixins: [Authentication],
@@ -21,6 +22,7 @@ var Main = React.createClass({
 				<span>
 					<h3>Patient List</h3>
 					<PatientList />
+					<PatientEntryList />
 				</span>;
 		} else if(CurrentUserStore.getUser().attributes.user_type === "visitor"){
 			component =

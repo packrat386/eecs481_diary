@@ -89,9 +89,14 @@ var PatientList =  React.createClass({
 			<span>
 				{messageComponent}
 					<div className="list-group col-xs-12 col-sm-12 col-md-4" style={{display: "table"}}>
-						<input type="text" value={this.state.searchString} onChange={this.handleSearchChange} placeholder="Type here" />
-						{CaseListItems}
-					</div>					
+						<form className="form">
+							<div className="form-group">
+								<input type="text" className="form-control" value={this.state.searchString} onChange={this.handleSearchChange} placeholder="Type here to filter patients" />
+								{CaseListItems}
+							</div>
+
+						</form>
+					</div>
 			</span>
 		);
 	}

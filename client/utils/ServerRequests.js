@@ -321,7 +321,6 @@ var ServerRequests = {
 					for(var i = 0; i < cases.length; i++){
 						var patient = cases[i].get("patient");
 						patients.push(patient);
-						console.log("Patient " + i + 1 + ": "+patient);
 					}
 
 					if(cb) cb(patients);

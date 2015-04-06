@@ -91,16 +91,24 @@ var AddEntry = React.createClass({
 
 		var entryTypes = null;
 
+		var submitButton = (<div className="container">
+			<div className="col-xs-6 col-xs-offset-6 col-md-3 col-md-offset-9">
+				<button type="button" className="btn btn-block btn-lg btn-primary" onClick={this._submitEntry}>
+					Done
+				</button>
+			</div>
+		</div>);
+
 		if(CurrentUserStore.getUser().get("user_type") === "visitor"){
 			entryTypes = (<span>
 				<AddEntryVisitor registerCallback={this._registerCallback}/>
-				<button type="button" className="btn btn-block btn-lg btn-primary" onClick={this._submitEntry}>Done</button>
+				{submitButton}
 				</span>);
 		}
 		else if(CurrentUserStore.getUser().get("user_type") === "staff"){
 			entryTypes = (<span>
 				<AddEntryStaff registerCallback={this._registerCallback}/>
-				<button type="button" className="btn btn-block btn-lg btn-primary" onClick={this._submitEntry}>Done</button>
+				{submitButton}
 				</span>);
 		} else {
 			entryTypes = this.state.types.map(function (entryType) {
@@ -125,7 +133,7 @@ var AddEntry = React.createClass({
 					<br />
 					{this.state.typeClass[this.state.currentType]}
 					<br />
-					<button type="button" className="btn btn-block btn-lg btn-primary" onClick={this._submitEntry}>Done</button>
+					{submitButton}
 				</span>;
 		}
 

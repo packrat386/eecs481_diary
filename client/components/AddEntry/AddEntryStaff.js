@@ -126,14 +126,22 @@ var AddEntryStaff = React.createClass({
 
 		var initialTitle = "Staff Entry by " + CurrentUserStore.getUser().attributes.username + " on " + moment().format("MM-DD-YYYY");
 
+		var photoButtonStyle = {
+			paddingTop: '10px',
+			paddingLeft: '15px'
+		};
 		return (
 			<div className="container">
 				<PatientList />
 				<div className ="entry col-xs-12 col-sm-12 col-md-8">
 					<span>
 						<h3>{text}</h3>
-						<TextInput registerCallback={this.addToCallbackList} initialTitle={initialTitle}/>
-						<TakeImage registerCallback={this.addToCallbackList}/>
+						<div className="row">
+							<TextInput registerCallback={this.addToCallbackList} initialTitle={initialTitle}/>
+						</div>
+						<div className="row" style={photoButtonStyle}>
+							<TakeImage registerCallback={this.addToCallbackList}/>
+						</div>
 					</span>
 				</div>
 			</div>
