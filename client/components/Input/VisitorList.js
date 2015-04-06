@@ -6,7 +6,7 @@ var VisitorList = React.createClass({
 	_getData: function(){
 		return {
 			data: {
-				visitors: this.refs.list.getDOMNode().value.toLowerCase().split(",")
+				visitors: this.refs.list.getDOMNode().value.split(",")
 			}
 		}
 	},

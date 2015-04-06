@@ -116,7 +116,7 @@ var ServerRequests = {
 			diaryEntry.set("type", diary_entry.type);
 
 		//Check if large photo exists
-		if("photo" in diary_entry.data){
+		if("photo" in diary_entry.data && diary_entry.data["photo"] !== null){
 		    var parseFile = new Parse.File(
 		    	"visit.png", 
 				{

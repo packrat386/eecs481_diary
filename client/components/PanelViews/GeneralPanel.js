@@ -6,6 +6,7 @@ var DiaryActions = require('../../actions/DiaryActions');
 var TextPanel = require('./TextPanel');
 var DoodlePanel = require('./DoodlePanel');
 var MoodPanel = require('./MoodPanel');
+var VisitPanel = require('./VisitPanel');
 var moment = require('moment');
 var _ = require('underscore');
 
@@ -13,7 +14,8 @@ function classLookupFunc(){
 	return {
 		text: TextPanel,
 		doodle: DoodlePanel,
-		mood: MoodPanel
+		mood: MoodPanel,
+		visit: VisitPanel
 	};
 }
 
@@ -61,33 +63,6 @@ var GeneralPanel =  React.createClass({
 		} else {
 			console.log("lol");
 		}
-
-		// console.log('onUpdate');
-		// var curData = 
-		// 	{
-		// 		id: this.state.entry.id,
-		// 		data: this.state.entry.get("data")
-		// 	};
-		
-		// if(this.state.canvasFunc){
-		// 	curData.data["canvasImage"] = this.state.canvasFunc();
-
-		// }
-		// curData.data["title"] = this.refs.diary_title.getDOMNode().value;
-		// curData.data["text"] = this.refs.diary_text.getDOMNode().value;
-
-		// console.log(curData);
-
-		// DiaryActions.updateEntry(curData, function(response){
-		// 	if(!(response instanceof Parse.Error)){
-		// 		this.setState({
-		// 			entry: response,
-		// 			edited: false,
-		// 			readOnly: true
-		// 		});		
-		// 	}
-
-		// }.bind(this));
 	},
 
 	_onDelete: function(){

@@ -2,6 +2,8 @@ var React = require('react');
 var Router = require('react-router');
 var DiaryActions = require('../../actions/DiaryActions');
 var _ = require('underscore');
+var moment = require('moment');
+
 var TextInput = require('../Input/TextInput');
 var VisitorList = require('../Input/VisitorList');
 var TakeImage = require('./TakeImage');
@@ -20,7 +22,7 @@ var AddEntryVisitor = React.createClass({
 			callbackList: [],
 			patientList: null,
 			shareWith: {},
-			type: "text"
+			type: "visit"
 		}
 	},
 
@@ -54,12 +56,13 @@ var AddEntryVisitor = React.createClass({
 		var dataObj = this.state.data;
 		//Go through each callback and merge with data
 		for(var i = 0; i < this.state.callbackList.length; i++){
-			dataObj = _.extend({}, dataObj, this.state.callbackList[i]());
+			console.log(this.state.callbackList[i]());
+			dataObj = $.extend(true, {}, dataObj, this.state.callbackList[i]());
 		}
 
 
-		console.log(_.extend({}, {ACL: shareArray}, dataObj));
-		return (_.extend({}, {ACL: shareArray}, dataObj));
+		console.log(dataObj);
+		return (_.extend({}, {ACL: shareArray, type: this.state.type}, dataObj));
 	},
 
 	_onChange: function(){
@@ -105,21 +108,22 @@ var AddEntryVisitor = React.createClass({
 
 	_onShareClick: function(event){
 		event.preventDefault();
-		console.log($(event.target).attr("value"));
+		console.log($(event.currentTarget).attr("value"));
+
+		var id = $(event.currentTarget).attr("value");
 		// $(event.target).toggleClass("active");
-		var tempShare = this.state.shareWith;
-		if(!tempShare[$(event.target).attr("value")]){
-			tempShare[$(event.target).attr("value")] = true;
-		} else {
-			delete tempShare[$(event.target).attr("value")];
+		if(id){
+			var tempShare = this.state.shareWith;
+			if(!tempShare[id]){
+				tempShare[id] = true;
+			} else {
+				delete tempShare[id];
+			}
+
+			this.setState({
+				shareWith: tempShare
+			});
 		}
-
-		this.setState({
-			shareWith: tempShare
-		});
-	},
-
-	_uploadPicture: function(event){
 
 	},
 
@@ -156,9 +160,11 @@ var AddEntryVisitor = React.createClass({
 		var visitorList = null;
 		if(CurrentUserStore.getUser().get("user_type") === "patient"){
 			text = "Who's there?";
-			visitorList = (<VisitorList registerCallback={this.addToCallbackList}/>);
-		}
+		} 
+		visitorList = (<VisitorList registerCallback={this.addToCallbackList}/>);
 
+		var initialTitle = "Visit on " + moment().format("MM-DD-YYYY");
+		
 		return (
 			<span>
 				<h3>Add Post</h3> 
@@ -169,7 +175,7 @@ var AddEntryVisitor = React.createClass({
 				<div className="row">
 					{visitorList}
 				</div>
-				<TextInput registerCallback={this.addToCallbackList}/>
+				<TextInput registerCallback={this.addToCallbackList} initialTitle={initialTitle}/>
 				<TakeImage registerCallback={this.addToCallbackList}/>
 			</span>
 		);

@@ -51,23 +51,23 @@ var TakeImage = React.createClass({
                            navigator.webkitGetUserMedia ||
                            navigator.mozGetUserMedia ||
                            navigator.msGetUserMedia);
-		navigator.getMedia(
-		{
-		video: true,
-		audio: false
-		},
+			navigator.getMedia(
+			{
+			video: true,
+			audio: false
+			},
 		function(stream) {
-		if (navigator.mozGetUserMedia) {
-		  video.mozSrcObject = stream;
-		} else {
-		  var vendorURL = window.URL || window.webkitURL;
-		  video.src = vendorURL.createObjectURL(stream);
-		}
-		video.play();
-		},
-		function(err) {
-		console.log("An error occured! " + err);
-		}
+			if (navigator.mozGetUserMedia) {
+			  video.mozSrcObject = stream;
+			} else {
+			  var vendorURL = window.URL || window.webkitURL;
+			  video.src = vendorURL.createObjectURL(stream);
+			}
+			video.play();
+			},
+			function(err) {
+			console.log("An error occured! " + err);
+			}
 		);
 
 		this.clearphoto();
@@ -87,7 +87,7 @@ var TakeImage = React.createClass({
 
 	takepicture: function (event) {
 		event.preventDefault();
-		var canvas=this.refs.canvas.getDOMNode();
+		var canvas = this.refs.canvas.getDOMNode();
 		var video = this.refs.videoStream.getDOMNode();
 	    var photo = this.refs.photo.getDOMNode();
 
