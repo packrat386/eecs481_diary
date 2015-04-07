@@ -92,7 +92,7 @@ var AddEntry = React.createClass({
 		var entryTypes = null;
 
 		var submitButton = (<div className="container">
-			<div className="col-xs-6 col-xs-offset-6 col-md-3 col-md-offset-9">
+			<div className="col-xs-12 col-md-12">
 				<button type="button" className="btn btn-block btn-lg btn-primary" onClick={this._submitEntry}>
 					Done
 				</button>
