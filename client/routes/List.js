@@ -23,14 +23,6 @@ var List =  React.createClass({
 	},
 
 	componentDidMount: function() {
-		Parse.Cloud.run("mood_history", {}, {
-			success: function(response){
-				console.log(response);
-			},
-			error: function(error){
-				console.log(error);
-			}
-		});
 		DiaryEntryStore.addChangeListener(this._onChange);
 	},
 
