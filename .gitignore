@@ -11,6 +11,9 @@ pids
 lib-cov
 coverage
 
+# Dependency directory
+node_modules
+
 # Generated css
 public/styles/*.css
 
