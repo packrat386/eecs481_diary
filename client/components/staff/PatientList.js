@@ -1,11 +1,11 @@
 var React = require('react');
 var Parse = require('../../utils/ParseInit');
 var CaseListItem = require('../Settings/CaseListItem');
-var PatientListItem = require('../Staff/PatientListItem');
+var PatientListItem = require('../staff/PatientListItem');
 var CaseStore = require('../../stores/CaseStore');
 var CurrentUserStore = require('../../stores/CurrentUserStore');
 var SettingsActions = require('../../actions/SettingsActions');
-var PatientEntryList = require('../Staff/PatientEntryList');
+var PatientEntryList = require('../staff/PatientEntryList');
 
 var PatientList =  React.createClass({
 	getInitialState: function(){
