@@ -39,7 +39,11 @@ app.use('/js', browserify('./client/scripts', {
 app.get('*', function(req, res) {
 	// this route will respond to all requests with the contents of your index
 	// template. Doing this allows react-router to render the view in the app.
+    
+    // if (req.headers["x-forwarded-proto"] === "https")
     res.render('index.html');
+    // else 
+    // 	res.redirect("https://" + req.headers.host + req.url); 
 });
 
 // start the server
