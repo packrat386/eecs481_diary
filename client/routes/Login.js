@@ -3,6 +3,7 @@ var Router = require('react-router');
 var DiaryActions = require('../actions/DiaryActions');
 var ServerRequests = require('../utils/ServerRequests');
 var Parse = require('../utils/ParseInit');
+var CurrentUserStore = require('../stores/CurrentUserStore');
 
 var ButtonGroup = require('react-bootstrap').ButtonGroup;
 var Button = require('react-bootstrap').Button;
@@ -27,19 +28,46 @@ var Login = React.createClass({
 		return {
 			signinMessage: null,
 			signupMessage: null,
+
+			signupUsername: "",
+			signupPassword: "",
+			signupConfirmPassword: "",
+
+			signinUsername: "",
+			signinPassword: "",
+
 			signupType: null,
 			userTypes: getUserTypes()
 		};
 	},
 
+	willTransitionTo: function(transition){
+		//Redirect if logged in
+		if(CurrentUserStore.loggedIn()){
+			console.log("logged in, redirect now");
+			transition.redirect('/add');
+		}
+	},
+
 	componentDidMount: function(){
 		document.title = "ICU Diary | Login";
+
+		//Redirect if logged in (catch on load)
+		if(CurrentUserStore.loggedIn()){
+			console.log("logged in, redirect now");
+			this.context.router.transitionTo('add');
+		}
+
+	},
+
+	componentWillMount: function(){
+
 	},
 
 	handleLogin: function(event){
 		event.preventDefault();
-		var username = this.refs.username.getDOMNode().value;
-		var password = this.refs.pass.getDOMNode().value;
+		var username = this.state.signinUsername;
+		var password = this.state.signinPassword;
 		console.log("handleLogin: " + username + " " + password);
 	
 		DiaryActions.login({
@@ -65,14 +93,18 @@ var Login = React.createClass({
 		this.setState({
 			signupType: event.currentTarget.value
 		});
-		console.log(event.currentTarget);
 	},
 
 	handleSignup: function(event){
 		event.preventDefault();
-		var username = this.refs.username1.getDOMNode().value;
-		var password = this.refs.pass1.getDOMNode().value;
-		var password_confirm = this.refs.pass1_confirm.getDOMNode().value;
+		var username = this.state.signupUsername;
+		var password = this.state.signupPassword;
+		var password_confirm = this.state.signupConfirmPassword;
+
+		if(username === '' || password_confirm === '' || password === ''){
+			this.setState({signupMessage: "Username or password cannot be empty"});
+			return;
+		}
 
 		if(password != password_confirm){
 			this.setState({signupMessage: "Passwords don't match"});
@@ -104,10 +136,40 @@ var Login = React.createClass({
 		}.bind(this));
 	},
 
+	handleSignupUsername: function(event){
+		this.setState({
+			signupUsername: event.target.value
+		});
+	},
+
+	handleSignupPassword: function(event){
+		this.setState({
+			signupPassword: event.target.value
+		});
+	},
+
+	handleSigninUsername: function(event){
+		this.setState({
+			signinUsername: event.target.value
+		});
+	},
+
+	handleSigninPassword: function(event){
+		this.setState({
+			signinPassword: event.target.value
+		});
+	},
+
+	handleSignupConfirmPassword: function(event){
+		this.setState({
+			signupConfirmPassword: event.target.value
+		});
+	},
+
+
+
+
 	render: function(){
-		if(ServerRequests.loggedIn()){
-			this.transitionTo('/add');
-		}
 
 		//Create components for signin/signup error messages
 		signupComponent = null;
@@ -147,9 +209,9 @@ var Login = React.createClass({
 					{signinComponent}
 					<form onSubmit={this.handleLogin}>
 
-						<label><input className={input_className} ref="username" placeholder="Username"/></label><br/>
+						<label><input className={input_className} placeholder="Username" onChange={this.handleSigninUsername}/></label><br/>
 
-						<label><input className={input_className} type="password"  ref="pass" placeholder="Password"/></label><br/>
+						<label><input className={input_className} type="password" placeholder="Password" onChange={this.handleSigninPassword}/></label><br/>
 
 						<button className={button_className} type="submit">Login</button><br/>
 						
@@ -161,21 +223,20 @@ var Login = React.createClass({
 					{signupComponent}
 					<form onSubmit={this.handleSignup} ref="create_user_form">
 				        
-			        	<label><input className={input_className} ref="username1" placeholder="Username"/></label><br/>
+			        	<label><input className={input_className} placeholder="Username" onChange={this.handleSignupUsername}/></label><br/>
 			        
-			       		<label><input className={input_className} type="password" ref="pass1" placeholder="Password"/></label><br/>
+			       		<label><input className={input_className} type="password" placeholder="Password" onChange={this.handleSignupConfirmPassword}/></label><br/>
 			   
-			       		<label><input className={input_className} type="password" ref="pass1_confirm" placeholder="Confirm"/></label><br/>
+			       		<label><input className={input_className} type="password" placeholder="Confirm" onChange={this.handleSignupPassword}/></label><br/>
 			   
 				        <ButtonGroup>
 				        	{radioButtonComponent}
 				        </ButtonGroup>
-				    
+				    	<br/>
 			        	<button className={button_className} type="submit">Create Account</button><br/>
-						
+		
 					</form>
 				</div>
-
 			</div>
 		);
 	}
