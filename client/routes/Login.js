@@ -106,6 +106,11 @@ var Login = React.createClass({
 			return;
 		}
 
+		if(password_confirm.length < 6){
+			this.setState({signupMessage: "Password must be at least 6 characters"});
+			return;
+		}
+
 		if(password != password_confirm){
 			this.setState({signupMessage: "Passwords don't match"});
 			return;

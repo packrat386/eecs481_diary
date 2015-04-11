@@ -116,6 +116,10 @@ var Graffiti = React.createClass({
 				<a className="btn btn-default btn-lg" onClick={this.clearDrawing}>Clear</a>
 				<a className="btn btn-default btn-lg" href="#tools_sketch" data-download="png">Download</a>
 			</div>);
+		} else {
+			tools = <div ref="tools">
+				<a className="btn btn-default btn-lg" href="#tools_sketch" data-download="png">Download</a>
+			</div>
 		}
 
 		return (

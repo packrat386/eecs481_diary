@@ -5,6 +5,9 @@ var Authentication = {
 	statics: {
 		willTransitionTo: function(transition){
 			console.log("Authentication");
+
+			console.log(ServerRequests.currentUser());
+
 			if(!ServerRequests.loggedIn()){
 				Login.attemptedTransition = transition;
 				transition.redirect('/login');

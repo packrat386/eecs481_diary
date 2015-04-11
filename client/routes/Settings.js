@@ -143,9 +143,6 @@ var Settings = React.createClass({
 
 				<UpdatePassword />
 				<hr className="col-md-12"/>
-
-				<UpdateEmail />
-				<hr className="col-md-12"/>
 			</div>
 		)
 	}

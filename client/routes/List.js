@@ -4,13 +4,15 @@ var PanelList = require('../components/PanelList');
 var DiaryActions = require('../actions/DiaryActions');
 var DiaryEntryStore = require('../stores/DiaryEntryStore');
 
+var Authentication = require('../utils/Authentication');
+
+
 function reverseEntries(entries){
 	return Array.prototype.slice.call(entries).reverse();
 }
 
-
-
 var List =  React.createClass({
+	mixins: [Authentication],
 
 	componentWillMount: function(){
 		DiaryActions.getAllEntries();

@@ -51,14 +51,14 @@ var AddBasicEntry = React.createClass({
 				<div className="form-group">
 					<label className="col-sm-1 control-label"></label>
 					<div className="col-sm-10">
-						<input placeholder="Title" ref="title" type="title" className="form-control"/>
+						<input maxLength="100" placeholder="Title" ref="title" type="title" className="form-control"/>
 					</div>
 				</div>
 
 				<div className="form-group">
 					<label className="col-sm-1 control-label"></label>
 					<div className="col-sm-10">
-						<textarea placeholder="What did you do today?" ref="text" className="form-control" rows="4"></textarea>
+						<textarea maxLength="2000" placeholder="What did you do today?" ref="text" className="form-control" rows="4"></textarea>
 					</div>
 				</div>
 			</form>

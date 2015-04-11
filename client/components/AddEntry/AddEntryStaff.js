@@ -50,7 +50,13 @@ var AddEntryStaff = React.createClass({
 		var shareArray = [];
 		var selectedPatient = CaseStore.getCase(CaseStore.getLastSelected());
 		shareArray.push(CurrentUserStore.getUser().id);
-		shareArray.push(selectedPatient.id);
+
+		if(!selectedPatient){
+			alert('No selected patient');
+			return null;
+		}
+
+		shareArray.push(selectedPatient.id);		
 
 		var dataObj = this.state.data;
 		var emptyDataObj = {data:{}};
@@ -90,6 +96,10 @@ var AddEntryStaff = React.createClass({
 		var dataObj = this.state.data;
 		//Go through each callback and merge with data
 		for(var i = 0; i < this.state.callbackList.length; i++){
+			if (!this.state.callbackList[i]()){
+				console.log('yo');
+				return;
+			}
 			dataObj = _.extend({}, dataObj, this.state.callbackList[i]());
 		}
 
