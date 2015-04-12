@@ -72,6 +72,12 @@ var TakeImage = React.createClass({
 			    video.pause();
 			    video.src='';
 			    video.removeAttribute("src");
+
+			    //Video disabled; hide interface
+			    $(photo).hide();
+			    $(canvas).hide();
+			    $(video).hide();
+			    $(startbutton).hide();
 			}
 		);
 
@@ -128,8 +134,9 @@ var TakeImage = React.createClass({
 	componentWillUnmount: function(){
 
 
-		if(this.refs.videoStream !== null &&
-			this.refs.videoStream.streamObj !== null)
+		console.log(this.refs.videoStream);
+		if(this.refs.videoStream !== undefined &&
+			(this.refs.videoStream.streamObj !== undefined))
 		{
 			console.log("unmount");
 		    var video = this.refs.videoStream.getDOMNode();
