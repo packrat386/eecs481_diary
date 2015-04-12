@@ -106,7 +106,8 @@ var routes = {
 	NotFound: require('../routes/NotFound'),
 	AddEntry: require('../routes/AddEntry'),
 	Settings: require('../routes/Settings'),
-	List: require('../routes/List')
+	List: require('../routes/List'),
+	Item: require('../routes/Item')
 };
 
 
@@ -120,8 +121,8 @@ var routes = (
 		<Router.Route name="main" path="/main" handler={routes.Main}/>
 		<Router.Route name="settings" path="/settings" handler={routes.Settings}/>
 		<Router.Route name="list" path="/list" handler={routes.List}/>
-
 		<Router.Route name="add" path="/add" handler={routes.AddEntry}/>
+		<Router.Route name="item" path="/item/:itemId" handler={routes.Item}/>
 		<Router.DefaultRoute handler={routes.Home}/>
 		<Router.NotFoundRoute handler={routes.NotFound}/>
 	</Router.Route>

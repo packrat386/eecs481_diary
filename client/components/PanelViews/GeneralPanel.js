@@ -1,5 +1,6 @@
 var React = require('react');
 var Parse = require('../../utils/ParseInit');
+var Router = require('react-router');
 var CurrentUserStore = require('../../stores/CurrentUserStore');
 var DiaryActions = require('../../actions/DiaryActions');
 
@@ -85,7 +86,9 @@ var GeneralPanel =  React.createClass({
 		}
 
 		var buttons = null;
-		if(this.props.entry.getACL().getWriteAccess(CurrentUserStore.getUser().id)){	
+
+		var writeAccess = this.props.entry.getACL().getWriteAccess(CurrentUserStore.getUser().id);
+		if(writeAccess){	
 			if(this.state.edit === false){
 				buttons = (
 					<div className="form-group">
@@ -145,7 +148,10 @@ var GeneralPanel =  React.createClass({
 				<div className="panel-body"> 
 					{mainView}
 					{buttons}
+
+					<Router.Link to="item" params={{itemId: this.props.entry.id}}>Permalink</Router.Link>
 				</div>
+
 
 			</div>);
 	}
