@@ -7,6 +7,8 @@ var CaseStore = require('../../stores/CaseStore');
 var SettingsActions = require('../../actions/SettingsActions');
 var CurrentUserStore = require('../../stores/CurrentUserStore');
 
+var _stream = undefined;
+
 var TakeImage = React.createClass({
 
 	getInitialState: function(){
@@ -64,7 +66,8 @@ var TakeImage = React.createClass({
 			  video.src = vendorURL.createObjectURL(stream);
 
 			}
-			  	video.streamObj = stream;
+				console.log(stream);
+			  	_stream = stream;
 				video.play();
 			},
 			function(err) {
@@ -133,15 +136,15 @@ var TakeImage = React.createClass({
 
 	componentWillUnmount: function(){
 
-
+		console.log('begin image unmount');
 		console.log(this.refs.videoStream);
 		if(this.refs.videoStream !== undefined &&
-			(this.refs.videoStream.streamObj !== undefined))
+			(_stream !== undefined))
 		{
 			console.log("unmount");
 		    var video = this.refs.videoStream.getDOMNode();
 		    video.pause();
-		    video.streamObj.stop();
+		    _stream.stop();
 		    video.src="";
 		    video.removeAttribute("src");
 		}
