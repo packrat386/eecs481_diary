@@ -14,7 +14,6 @@ var CurrentUserStore = require('../../stores/CurrentUserStore');
 
 
 var AddEntryVisitor = React.createClass({
-	mixins: [Router.Navigation],
 
 	getInitialState: function(){
 		return {

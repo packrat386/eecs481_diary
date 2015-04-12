@@ -2,7 +2,6 @@ var React = require('react');
 var Router = require('react-router');
 
 var TextInput = React.createClass({
-	mixins: [Router.Navigation],
 
 	// submitEntry: function(event){
 	// 	event.preventDefault();

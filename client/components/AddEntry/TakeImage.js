@@ -62,11 +62,16 @@ var TakeImage = React.createClass({
 			} else {
 			  var vendorURL = window.URL || window.webkitURL;
 			  video.src = vendorURL.createObjectURL(stream);
+
 			}
-			video.play();
+			  	video.streamObj = stream;
+				video.play();
 			},
 			function(err) {
-			console.log("An error occured! " + err);
+				console.log("An error occured! " + err);
+			    video.pause();
+			    video.src='';
+			    video.removeAttribute("src");
 			}
 		);
 
@@ -120,11 +125,27 @@ var TakeImage = React.createClass({
 		});
 	},
 
+	componentWillUnmount: function(){
+
+
+		if(this.refs.videoStream !== null &&
+			this.refs.videoStream.streamObj !== null)
+		{
+			console.log("unmount");
+		    var video = this.refs.videoStream.getDOMNode();
+		    video.pause();
+		    video.streamObj.stop();
+		    video.src="";
+		    video.removeAttribute("src");
+		}
+
+	},
+
 	render: function(){
 		var cameraControls = null;
 		if(this.state.hidden === false){
 			cameraControls = (<span>	
-					<button className="btn btn-default btn-lg" ref="startbutton" onClick={this.takepicture}>Take photo</button>
+					<button className="btn btn-default btn-lg" ref="startbutton" onClick={this.takepicture}>Take Photo</button>
 
 					<div className=".col-md-6 .col-sm-6 .col-xs-12">
 						<video ref="videoStream" style={{width: this.state.width}}>Video stream not available.</video>
@@ -141,7 +162,7 @@ var TakeImage = React.createClass({
 
 		} else {
 			cameraControls = (<span>
-				<button className="btn btn-lg btn-default" onClick={this._showControls}>Take Photo</button>
+				<button className="btn btn-lg btn-default" onClick={this._showControls}>Show Photo Controls</button>
 			</span>);
 		}
 
