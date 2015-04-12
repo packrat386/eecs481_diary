@@ -3,6 +3,7 @@ var Parse = require('../../utils/ParseInit');
 var TextPanel = require('./TextPanel');
 var _ = require('underscore');
 var moment = require('moment');
+var UtilityFunctions = require('../../utils/UtilityFunctions');
 
 var VisitPanel =  React.createClass({
 
@@ -44,7 +45,10 @@ var VisitPanel =  React.createClass({
 
 		var photo = null;
 		if(this.props.entry.get("photo")){
-			photo = <img src={this.props.entry.get("photo").url()} />
+			photo = <img src={
+
+				UtilityFunctions.getSecureParseFile(this.props.entry.get("photo").url())
+			} />
 		}
 
 		var visitors = null;
