@@ -23,7 +23,6 @@ var VisitorList = React.createClass({
 			<span>
 			<label className="control-label">Other Visitors (Separate name by comma)</label>
 				<div className="form-group">
-					
 					<div className="col-sm-12">
 						<input ref="list" type="list" className="form-control" defaultValue=""/>
 					</div>

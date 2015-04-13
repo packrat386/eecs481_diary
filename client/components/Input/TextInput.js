@@ -43,16 +43,15 @@ var TextInput = React.createClass({
 	render: function(){
 
 		return (<span>
-				<div className="form-group">
-					<label className="col-sm-1 control-label">Title</label>
-					<div className="col-sm-11">
+				<div className="row">
+					<label className="control-label text-center">Title</label>
+					<div className="col-sm-12 form-group">
 						<input ref="title" type="title" className="form-control" defaultValue={this.props.initialTitle}/>
 					</div>
 				</div>
-
-				<div className="form-group">
-					<label className="col-sm-1 control-label">Entry Text</label>
-					<div className="col-sm-11">
+				<div className="row">
+					<label className="col-sm-12 control-label">Notes</label>
+					<div className="col-sm-12 form-group">
 						<textarea ref="text" className="form-control" rows="4"></textarea>
 					</div>
 				</div>

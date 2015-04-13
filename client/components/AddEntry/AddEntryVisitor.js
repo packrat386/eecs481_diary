@@ -165,13 +165,13 @@ var AddEntryVisitor = React.createClass({
 		var initialTitle = "Visit on " + moment().format("MM-DD-YYYY");
 
 		return (
-			<span>
-				<h3>Add Post</h3> 
+			<span className = "text-center">
+				<h1 > Add a new visit:</h1>
 				<p><b>{text}</b></p>
-				<div className="row">
+				<div>
 					{shareWith}
 				</div>
-				<div className="row">
+				<div className="row form-group">
 					{visitorList}
 				</div>
 				<TextInput registerCallback={this.addToCallbackList} initialTitle={initialTitle}/>

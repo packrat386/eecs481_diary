@@ -101,6 +101,12 @@ var Graffiti = React.createClass({
 		}
 	},
 
+	_downloadImage: function(event){
+		event.preventDefault();
+    	var mime = "image/" + "png";
+    	return window.open(this.refs.sketcher.getDOMNode().toDataURL(mime));
+	},
+
 	render: function(){
 		var inline_style = {
 				width: '100%',
@@ -114,11 +120,11 @@ var Graffiti = React.createClass({
 				<a className="btn btn-default btn-lg" href="#tools_sketch" data-tool="marker" data-color="#000">Draw</a>
 				<a className="btn btn-default btn-lg" href="#tools_sketch" data-color="#fff" style={{background: "#fff"}}>Erase</a>
 				<a className="btn btn-default btn-lg" onClick={this.clearDrawing}>Clear</a>
-				<a className="btn btn-default btn-lg" href="#tools_sketch" data-download="png">Download</a>
+				<a className="btn btn-default btn-lg" onClick={this._downloadImage}>Download</a>
 			</div>);
 		} else {
 			tools = <div ref="tools">
-				<a className="btn btn-default btn-lg" href="#tools_sketch" data-download="png">Download</a>
+				<a className="btn btn-default btn-lg" onClick={this._downloadImage}>Download</a>
 			</div>
 		}
 
