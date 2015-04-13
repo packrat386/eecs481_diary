@@ -44,25 +44,51 @@ var PageNav = React.createClass({
 	render: function() {
 		var extra_nav = [];
 		if(!ServerRequests.loggedIn()){
-			extra_nav.push(<li role="presentation" key="login"> <Router.Link to="login">Login/Create Account</Router.Link> </li>);
+			extra_nav.push(<li role="presentation" key="login"> 
+							<Router.Link to="login">
+								<div><span className="glyphicon glyphicon-log-in" aria-hidden="true"></span></div>
+								Login/Create Account
+							</Router.Link> </li>);
 		} else {
-			extra_nav.push(<li role="presentation" key="main" width="90"> <Router.Link to="main">Old Entries</Router.Link> </li>);
-			extra_nav.push(<li role="presentation" key="list"> <Router.Link to="list">List</Router.Link> </li>);
-			extra_nav.push(<li role="presentation" key="add"> <Router.Link to="add">Write  New Entry</Router.Link> </li>);
-			extra_nav.push(<li role="presentation" key="settings"> <Router.Link to="settings">Settings</Router.Link> </li>);
-			extra_nav.push(<li role="presentation" key="logout"> <Router.Link to="logout"><img src="/images/Slice-3.png"> </img> <br></br> Logout</Router.Link>
-
-			</li>);
+			extra_nav.push(<li role="presentation" key="main" width="90"> 
+							<Router.Link to="main">
+									<div><span className="glyphicon glyphicon-calendar" aria-hidden="true"></span></div>
+							Old Entries
+							</Router.Link> </li>);
+			extra_nav.push(<li role="presentation" key="list"> 
+								<Router.Link to="list">
+									<div><span className="glyphicon glyphicon-th-list" aria-hidden="true"></span></div>
+									List
+								</Router.Link> </li>);
+			extra_nav.push(<li role="presentation" key="add">
+							 <Router.Link to="add">
+							 <div><span className="glyphicon glyphicon-plus" aria-hidden="true"></span></div>
+							 	New Entry
+							 </Router.Link> </li>);
+			extra_nav.push(<li role="presentation" key="settings"> 
+							<Router.Link to="settings">
+								<div><span className="glyphicon glyphicon-wrench" aria-hidden="true"></span></div>
+								Settings
+							</Router.Link> </li>);
+			extra_nav.push(<li role="presentation" key="logout"> 
+								<Router.Link to="logout">
+									<div><span className="glyphicon glyphicon-log-out" aria-hidden="true"></span></div>
+									Logout
+								</Router.Link>
+							</li>);
 
 		}
 		return (
 			<ul className="nav nav-pills nav-justified" id="nav-bar">
 				<li role="presentation"  >
-					<Router.Link to="home"><img src="/images/Slice-2.png"> </img>
-						<br></br>Home</Router.Link>
+					<Router.Link to="home">
+					<div><span className="glyphicon glyphicon-home" aria-hidden="true"></span></div>
+						Home</Router.Link>
 				</li>
 				<li role="presentation">
-					<Router.Link to="about">About</Router.Link>
+					<Router.Link to="about">
+					<div><span className="glyphicon glyphicon-info-sign" aria-hidden="true"></span></div>
+					About</Router.Link>
 				</li>
 				{extra_nav}
 			</ul>
