@@ -92,7 +92,7 @@ var TakeImage = React.createClass({
 	    var photo = this.refs.photo.getDOMNode();
 
 		var context = canvas.getContext('2d');
-		context.fillStyle = "#AAA";
+		context.fillStyle = "#FFF";
 		context.fillRect(0, 0, canvas.width, canvas.height);
 
 		var data = canvas.toDataURL('image/png');
@@ -154,12 +154,14 @@ var TakeImage = React.createClass({
 	render: function(){
 		var cameraControls = null;
 		if(this.state.hidden === false){
-			cameraControls = (<span>	
+			cameraControls = (<div className="row">	
 					<button className="btn btn-default btn-lg" ref="startbutton" onClick={this.takepicture}>Take Photo</button>
 
 					<div className=".col-md-6 .col-sm-6 .col-xs-12">
 						<video ref="videoStream" style={{width: this.state.width}}>Video stream not available.</video>
 					</div>
+
+					<h3>Taken Photo is shown below (if exists)</h3>
 
 					<div className=".col-md-6 .col-sm-6 .col-xs-12" >
 						<img ref="photo" alt="The screen capture will appear in this box."/>
@@ -167,18 +169,18 @@ var TakeImage = React.createClass({
 
 					<canvas ref="canvas" style={{display:"none"}}>
 					</canvas>
-				</span>
+				</div>
 			);
 
 		} else {
-			cameraControls = (<span>
+			cameraControls = (<div>
 				<button className="btn btn-lg btn-default" onClick={this._showControls}>Show Photo Controls</button>
-			</span>);
+			</div>);
 		}
 
-		return (<div>
+		return (<span>
 			{cameraControls}
-		</div>);
+		</span>);
 	}
 });
 
