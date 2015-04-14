@@ -5,6 +5,8 @@ var PanelList = require('../components/PanelList');
 var Authentication = require('../utils/Authentication');
 var _ = require('underscore');
 var ParseReact = require('parse-react');
+var ChangeStore = require('../stores/ChangeStore');
+
 
 //For some reason, ParseReact flattens the object 
 //removing many of the useful Parse.Object functions
@@ -42,6 +44,18 @@ var Item = React.createClass({
 		  item: (new Parse.Query('DiaryEntry').equalTo("objectId", 
 		  	this.context.router.getCurrentParams().itemId))
 		};
+	},
+
+	componentDidMount: function() {
+		ChangeStore.addChangeListener(this._onChange);
+	},
+
+	componentWillUnmount: function() {
+		ChangeStore.removeChangeListener(this._onChange);
+	},
+
+	_onChange: function(){
+		this.refreshQueries();
 	},
 
 	render: function(){

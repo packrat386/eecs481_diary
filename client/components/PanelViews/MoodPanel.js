@@ -59,7 +59,6 @@ var MoodPanel =  React.createClass({
 
 			moodComponents = painList.map(function(pain){
 				var style = pain == this.state.value ? selectedStyle : unselectedStyle;
-				console.log(this.state.value + " " + pain);
 				return (<input 
 					type="image" 
 					className=".col-md-3"
