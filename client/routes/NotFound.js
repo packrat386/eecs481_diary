@@ -9,7 +9,9 @@ var NotFound = React.createClass({
 	render: function(){
 
 		return (
-			<img src="http://cdn.gotraffic.net/business/public/images/bbiz404.3020e8d7.gif" width="675" height="380" />
+			<div className="text-center">
+				<img src="http://cdn.gotraffic.net/business/public/images/bbiz404.3020e8d7.gif" width="675" height="380" />
+			</div>
 		);
 	}
 })

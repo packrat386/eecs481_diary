@@ -10,17 +10,28 @@ var moment = require('moment');
 var CurrentUserStore = require ('../stores/CurrentUserStore');
 var Parse = require('../utils/ParseInit');
 
+var DatePicker = require('react-datepicker');
+
 var PostViewer = React.createClass({
 
     render: function(){
+        if(this.props.variableName){
+            //dostuff
+        }
+
+
         return (
             <div className="container">
                 <div className="row clearfix">
                     <div className="col-md-12 column">
-                        <div className="page-header">
-                            <h1 className="text-center">
+                        <div className="page-header text-center">
+                            <h1>
                                 April 2nd, 2015
                             </h1>
+
+                            <DatePicker
+
+                            />
                         </div>
                     </div>
                 </div>

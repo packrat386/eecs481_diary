@@ -32,7 +32,7 @@ var Header = React.createClass({
 		}
 
 		return (
-			<div className="page-header" id="header">
+			<div className="page-header text-center" id="header">
 				<h1>ICU Diary</h1>
 				{user_header}
 			</div>
@@ -41,6 +41,18 @@ var Header = React.createClass({
 });
 
 var PageNav = React.createClass({
+	componentDidMount: function() {
+		CurrentUserStore.addChangeListener(this._onChange);
+	},
+
+	componentWillUnmount: function() {
+		CurrentUserStore.removeChangeListener(this._onChange);
+	},
+
+	_onChange: function(){
+		this.setState({});
+	},
+
 	render: function() {
 		var extra_nav = [];
 		if(!ServerRequests.loggedIn()){
@@ -65,6 +77,16 @@ var PageNav = React.createClass({
 							 <div><span className="glyphicon glyphicon-plus" aria-hidden="true"></span></div>
 							 	New Entry
 							 </Router.Link> </li>);
+
+			//Only add graphs for patients
+			if(CurrentUserStore.getUser() && CurrentUserStore.getUser().get("user_type") === "patient"){
+				extra_nav.push(<li role="presentation" key="graphs">
+								 <Router.Link to="graphs">
+								 <div><span className="glyphicon glyphicon-signal" aria-hidden="true"></span></div>
+								 	Graphs
+								 </Router.Link> </li>);				
+			}
+
 			extra_nav.push(<li role="presentation" key="settings"> 
 							<Router.Link to="settings">
 								<div><span className="glyphicon glyphicon-wrench" aria-hidden="true"></span></div>
@@ -133,7 +155,8 @@ var routes = {
 	AddEntry: require('../routes/AddEntry'),
 	Settings: require('../routes/Settings'),
 	List: require('../routes/List'),
-	Item: require('../routes/Item')
+	Item: require('../routes/Item'),
+	Graphs: require('../routes/Graphs')
 };
 
 
@@ -148,6 +171,7 @@ var routes = (
 		<Router.Route name="settings" path="/settings" handler={routes.Settings}/>
 		<Router.Route name="list" path="/list" handler={routes.List}/>
 		<Router.Route name="add" path="/add" handler={routes.AddEntry}/>
+		<Router.Route name="graphs" path="/graphs" handler={routes.Graphs}/>
 		<Router.Route name="item" path="/item/:itemId" handler={routes.Item}/>
 		<Router.DefaultRoute handler={routes.Home}/>
 		<Router.NotFoundRoute handler={routes.NotFound}/>

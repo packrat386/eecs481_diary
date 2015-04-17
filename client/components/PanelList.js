@@ -9,12 +9,18 @@ var DropdownButton = require('react-bootstrap').DropdownButton;
 var MenuItem = require('react-bootstrap').MenuItem;
 var Button = require('react-bootstrap').Button;
 
+var DatePicker = require('react-datepicker');
+var moment = require('moment');
+
+
+
 var PanelList =  React.createClass({
 
 	getInitialState: function(){
 		return {
 			typeFilter: null,
-			authorFilter: null
+			authorFilter: null,
+			selectedDate: null
 		}
 	},
 
@@ -63,6 +69,13 @@ var PanelList =  React.createClass({
 		}
 
 		this.setState(newObj);
+	},
+
+	selectDate: function(date){
+		console.log(date);
+		this.setState({
+			selectedDate: date
+		});
 	},
 
 	render: function(){

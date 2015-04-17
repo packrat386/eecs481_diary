@@ -142,7 +142,7 @@ var GeneralPanel =  React.createClass({
 				<div className="panel-heading"> 
 					<p><b>Author: {this.props.entry.get("createdBy").id}</b></p>
 					{editedTime}
-					<p>Added {createdTimeString} ago</p>
+					<p>Added {createdTimeString} ago ({createdTime.format("MM-DD-YYYY")})</p>
 				</div>
 				
 				<div className="panel-body"> 
