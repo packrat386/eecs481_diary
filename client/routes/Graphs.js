@@ -162,8 +162,8 @@ var Graphs = React.createClass({
 			var chartOptions = {
 				scaleOverride: true,
 				scaleStartValue: 0,
-				scaleStepWidth: 1,
-				scaleSteps: 10,
+				scaleStepWidth: 2,
+				scaleSteps: 5,
 				responsive: true,
 				scaleFontSize: 16
 			};
@@ -196,7 +196,7 @@ var Graphs = React.createClass({
 		return (
 			 <div className="text-center">
 			 	<h2>Average Mood Over Time</h2>
-			 	<h3>Lower is happier; Reference below graph</h3>
+			 	<h3>Lower is happier | Reference below graph</h3>
 			 	{graphComponent}
 			 	<div className="row">
 				 	{moodComponents}

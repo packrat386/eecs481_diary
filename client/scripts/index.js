@@ -101,19 +101,21 @@ var PageNav = React.createClass({
 
 		}
 		return (
-			<ul className="nav nav-pills nav-justified" id="nav-bar">
-				<li role="presentation"  >
-					<Router.Link to="home">
-					<div><span className="glyphicon glyphicon-home" aria-hidden="true"></span></div>
-						Home</Router.Link>
-				</li>
-				<li role="presentation">
-					<Router.Link to="about">
-					<div><span className="glyphicon glyphicon-info-sign" aria-hidden="true"></span></div>
-					About</Router.Link>
-				</li>
-				{extra_nav}
-			</ul>
+			<div>
+				<ul className="nav nav-pills nav-justified" id="nav-bar">
+					<li role="presentation"  >
+						<Router.Link to="home">
+						<div><span className="glyphicon glyphicon-home" aria-hidden="true"></span></div>
+							Home</Router.Link>
+					</li>
+					<li role="presentation">
+						<Router.Link to="about">
+						<div><span className="glyphicon glyphicon-info-sign" aria-hidden="true"></span></div>
+						About</Router.Link>
+					</li>
+					{extra_nav}
+				</ul>
+			</div>
 		);
 	}
 });
