@@ -141,7 +141,6 @@ var Graphs = React.createClass({
 				dataArray.push(dateDictionary[sortedDates[i]]);
  			}
 
-
 			console.log(dataLabels);
 			console.log(dataArray);
 			var dataModel = {
@@ -178,8 +177,9 @@ var Graphs = React.createClass({
 					height="250"
 				/>);
 			var style = {
-				height: "250px",
-				borderStyle: "none"
+				height: "200px",
+				borderStyle: "none",
+				paddingBottom: "20px"
 			};
 			var moodComponents = painList.map(function(pain){
 				return (<img 
@@ -196,9 +196,11 @@ var Graphs = React.createClass({
 		return (
 			 <div className="text-center">
 			 	<h2>Average Mood Over Time</h2>
-			 	<h3>Reference below graph</h3>
+			 	<h3>Lower is happier; Reference below graph</h3>
 			 	{graphComponent}
-			 	{moodComponents}
+			 	<div className="row">
+				 	{moodComponents}
+				</div>
 			 </div>
 		);
 	}
