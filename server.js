@@ -41,12 +41,12 @@ app.get('*', function(req, res) {
 	// template. Doing this allows react-router to render the view in the app.
     
     // Uncomment for any heroku push
-    if (req.headers["x-forwarded-proto"] === "https")
-   		res.render('index.html');
-    else 
-    	res.redirect("https://" + req.headers.host + req.url); 
+    // if (req.headers["x-forwarded-proto"] === "https")
+   	// 	res.render('index.html');
+    // else 
+    // 	res.redirect("https://" + req.headers.host + req.url); 
 
-    // res.render('index.html');
+    res.render('index.html');
 });
 
 // start the server
