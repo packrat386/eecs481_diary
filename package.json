@@ -23,7 +23,8 @@
     "classnames": "^1.2.0",
     "react-bootstrap": "^0.20.1",
     "parse-react": "^0.1.4",
-    "react-datepicker": "^0.6.2"
+    "react-datepicker": "^0.6.2",
+    "react-chartjs": "^0.6.0"
   },
   "scripts": {
     "start": "node server.js",
