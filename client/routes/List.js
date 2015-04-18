@@ -14,6 +14,10 @@ function reverseEntries(entries){
 var List =  React.createClass({
 	mixins: [Authentication],
 
+	contextTypes: {
+		router: React.PropTypes.func
+	},
+
 	componentWillMount: function(){
 		DiaryActions.getAllEntries();
 	},
@@ -42,9 +46,12 @@ var List =  React.createClass({
 
 	render: function(){
 		console.log(this.state.entries);
+		console.log(this.context.router.getCurrentQuery());
 		return (
 				<div>
-					<PanelList entries={this.state.entries} />
+					<PanelList 
+						entries={this.state.entries} 
+						query={this.context.router.getCurrentQuery()}/>
 				</div>
 			)
 	}

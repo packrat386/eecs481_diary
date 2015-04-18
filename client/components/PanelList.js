@@ -17,11 +17,18 @@ var moment = require('moment');
 var PanelList =  React.createClass({
 
 	getInitialState: function(){
+		var date = null;
+		if(this.props.query.date){
+			date=moment(this.props.query.date, "MM-DD-YYYY")
+		}
 		return {
 			typeFilter: null,
 			authorFilter: null,
-			selectedDate: null
+			dateFilter: date
 		}
+	},
+
+	componentWillMount: function(){
 	},
 
 	_inFilter: function(entry){
@@ -29,10 +36,17 @@ var PanelList =  React.createClass({
 			&& this.state.typeFilter !== entry.get("type")){
 			return false;
 		} else if(this.state.authorFilter &&
-			(
-				(this.state.authorFilter === "me" && (entry.get("createdBy").id != CurrentUserStore.getUser().id))
+				((this.state.authorFilter === "me" && 
+					(entry.get("createdBy").id != CurrentUserStore.getUser().id))
 				|| 
-				(this.state.authorFilter === "others" && entry.get("createdBy").id == CurrentUserStore.getUser().id))){
+				(this.state.authorFilter === "others" && 
+					entry.get("createdBy").id == CurrentUserStore.getUser().id))
+				){
+			return false;
+		} else if(this.state.dateFilter && 
+			(moment(entry.createdAt, "ddd MMM DD YYYY hh:mm:ss").format("MM-DD-YYYY")
+				!== this.state.dateFilter.format("MM-DD-YYYY")))
+		{
 			return false;
 		}
 
@@ -42,7 +56,8 @@ var PanelList =  React.createClass({
 
 	_hasFilter: function(){
 		if(this.state.typeFilter ||
-			this.state.authorFilter){
+			this.state.authorFilter || 
+			this.state.dateFilter){
 			return true;
 		}
 
@@ -72,25 +87,23 @@ var PanelList =  React.createClass({
 	},
 
 	selectDate: function(date){
-		console.log(date);
 		this.setState({
-			selectedDate: date
+			dateFilter: date
 		});
 	},
 
 	render: function(){
 
-		var filteredEntries = this.props.entries.map(function(entry){
-			if(this._inFilter(entry)){
-				return entry;
-			}
+		// var timeObj = moment(mood.date, "ddd MMM DD YYYY hh:mm:ss");
+		// var date = timeObj.format("MM-DD-YYYY");
+
+		var filteredEntries = this.props.entries.filter(function(entry){
+			return this._inFilter(entry);
+
 		}.bind(this));
 
 		var entries = filteredEntries.map(function(entry){
-			if(entry){
-				return <GeneralPanel key={entry.id} entry={entry} />;	
-			}
-
+			return <GeneralPanel key={entry.id} entry={entry} />;	
 		}.bind(this));
 
 		var filterMessages = [];
@@ -101,8 +114,9 @@ var PanelList =  React.createClass({
 			filterMessages.push(<p key="author">Author: {this.state.authorFilter.capitalizeFirstLetter()}</p>);
 		}
 
+		var filterButton = null;
 		if(this._hasFilter()){
-			filterMessages.push(<Button bsStyle='primary' key="btn" onClick={this._cancelFilter}>Cancel Filter</Button>);
+			filterButton = (<Button bsStyle='primary' key="btn" onClick={this._cancelFilter}>Cancel Filter</Button>);
 		}
 
 
@@ -125,7 +139,15 @@ var PanelList =  React.createClass({
 					{authorDropdowns}
 				</DropdownButton>
 				{filterMessages}
+				<DatePicker
+					key="date"
+					selected={this.state.dateFilter}
+					onChange={this.selectDate}
+					placeholderText="Date Filter"
+				/>
+				{filterButton}
 				{entries} 
+
 			</div>
 			);
 	}
