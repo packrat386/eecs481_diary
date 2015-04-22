@@ -18,7 +18,7 @@ var Logout = React.createClass({
 
 		DiaryActions.logout();
 
-		this.transitionTo("/");
+		this.context.router.transitionTo("/");
 	},
 
 	render: function(){

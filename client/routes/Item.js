@@ -69,12 +69,7 @@ var Item = React.createClass({
 				<GeneralPanel entry={mutableObj} />
 			);
 		} else {
-			itemComponent = (
-				<div className="jumbotron">
-					<h2 className= "text-center">Oops!</h2>
-					<h3 className= "text-center">This entry does not exist or you do not have access to it.</h3>
-				</div>
-			);
+
 		}
 
 		return (

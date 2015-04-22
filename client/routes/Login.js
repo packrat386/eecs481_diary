@@ -82,7 +82,7 @@ var Login = React.createClass({
 					Login.attemptedTransition = null;
 					transition.retry();
 				} else {
-					this.transitionTo('/add');
+					this.context.router.transitionTo('/add');
 				}
 			}
 		}.bind(this));

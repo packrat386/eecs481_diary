@@ -142,15 +142,14 @@ var AddEntryStaff = React.createClass({
 		};
 		return (
 			<div className="container">
+				<div className="row">
 				<PatientList />
+				</div>
 				<div className ="entry col-xs-12 col-sm-12 col-md-8">
 					<span>
 						<h3>{text}</h3>
 						<div className="row">
 							<TextInput registerCallback={this.addToCallbackList} initialTitle={initialTitle}/>
-						</div>
-						<div className="row" style={photoButtonStyle}>
-							<TakeImage registerCallback={this.addToCallbackList}/>
 						</div>
 					</span>
 				</div>

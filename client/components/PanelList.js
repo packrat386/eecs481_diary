@@ -138,13 +138,13 @@ var PanelList =  React.createClass({
 				<DropdownButton title='Author Filter' onSelect={this._changeAuthorFilter}>
 					{authorDropdowns}
 				</DropdownButton>
-				{filterMessages}
 				<DatePicker
 					key="date"
 					selected={this.state.dateFilter}
 					onChange={this.selectDate}
 					placeholderText="Date Filter"
 				/>
+				{filterMessages}
 				{filterButton}
 				{entries} 
 

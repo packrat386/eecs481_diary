@@ -56,6 +56,18 @@ var PageNav = React.createClass({
 	render: function() {
 		var extra_nav = [];
 		if(!ServerRequests.loggedIn()){
+			extra_nav.push(
+					<li role="presentation" key="home" >
+						<Router.Link to="home">
+						<div><span className="glyphicon glyphicon-home" aria-hidden="true"></span></div>
+							Home</Router.Link>
+					</li>);
+			extra_nav.push(
+					<li role="presentation" key="about">
+						<Router.Link to="about">
+						<div><span className="glyphicon glyphicon-info-sign" aria-hidden="true"></span></div>
+						About</Router.Link>
+					</li>);
 			extra_nav.push(<li role="presentation" key="login"> 
 							<Router.Link to="login">
 								<div><span className="glyphicon glyphicon-log-in" aria-hidden="true"></span></div>
@@ -103,16 +115,6 @@ var PageNav = React.createClass({
 		return (
 			<div>
 				<ul className="nav nav-pills nav-justified" id="nav-bar">
-					<li role="presentation"  >
-						<Router.Link to="home">
-						<div><span className="glyphicon glyphicon-home" aria-hidden="true"></span></div>
-							Home</Router.Link>
-					</li>
-					<li role="presentation">
-						<Router.Link to="about">
-						<div><span className="glyphicon glyphicon-info-sign" aria-hidden="true"></span></div>
-						About</Router.Link>
-					</li>
 					{extra_nav}
 				</ul>
 			</div>

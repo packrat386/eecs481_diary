@@ -258,7 +258,7 @@ var Graphs = React.createClass({
 
 	 			<div className="panel panel-default">
 					<div className="panel-heading"> 
-					 	<h2>Mood Distribution</h2>
+					 	<h2>Mood Frequency</h2>
 					</div>
 					<div className="panel-body">
 						<div>
