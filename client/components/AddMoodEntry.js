@@ -10,7 +10,7 @@ function getImageSource(value){
 	return "/images/pain-"+value+".png";
 }
 
-var painList = [0, 2, 4, 8, 10];
+var painList = [0, 2, 4, 6, 8, 10];
 
 var AddMoodEntry = React.createClass({
 

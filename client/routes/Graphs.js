@@ -7,7 +7,7 @@ var Chart = require("react-chartjs");
 var moment = require("moment");
 
 var Authentication = require('../utils/Authentication');
-var painList = [0, 2, 4, 8, 10];
+var painList = [0, 2, 4, 6, 8, 10];
 
 function getImageSource(value){
 	return "/images/pain-"+value+".png";
